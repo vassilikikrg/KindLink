@@ -76,12 +76,11 @@ namespace VolunteeringApp.Controllers
             return View(loginModel);
         }
 
-        //[HttpPost]
-        //[Authorize]
-        //public IActionResult Logout()
-        //{
-        //    // Perform logout logic
-        //    // Redirect to home page or login page
-        //}
+        [Authorize]
+        public async Task<IActionResult> Logout()
+        {
+            await signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+        }
     }
 }
