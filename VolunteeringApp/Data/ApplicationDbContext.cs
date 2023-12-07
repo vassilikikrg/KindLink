@@ -4,7 +4,7 @@ using VolunteeringApp.Models;
 
 namespace VolunteeringApp.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<AppUser>
+    public class ApplicationDbContext : IdentityDbContext<AppIdentityUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
     }

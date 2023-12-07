@@ -2,7 +2,7 @@
 
 namespace VolunteeringApp.Models
 {
-    public class AppUser : IdentityUser
+    public class AppIdentityUser : IdentityUser
     {
     }
 }
