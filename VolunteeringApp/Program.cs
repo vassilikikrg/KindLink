@@ -9,9 +9,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddIdentity<AppIdentityUser, IdentityRole>()
+
+builder.Services.AddDefaultIdentity<AppIdentityUser>()
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+
+builder.Services.AddIdentityCore<Citizen>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services.AddIdentityCore<Organization>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+
 
 var app = builder.Build();
 

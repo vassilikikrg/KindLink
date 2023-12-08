@@ -7,11 +7,17 @@ namespace VolunteeringApp.Data
 {
     public class ApplicationDbContext : IdentityDbContext<AppIdentityUser>
     {
+        public DbSet<Citizen> Citizens { get; set; }
+        public DbSet<Organization> Organizations { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
             SeedRoles(builder);
+            builder.Entity<Citizen>(entity => { entity.ToTable("Citizens"); });
+            builder.Entity<Organization>(entity => { entity.ToTable("Organizations"); });
         }
 
         private static void SeedRoles(ModelBuilder modelBuilder)
