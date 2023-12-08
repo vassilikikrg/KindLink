@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using VolunteeringApp.Data;
-using VolunteeringApp.Models;
+using VolunteeringApp.Models.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 

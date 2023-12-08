@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace VolunteeringApp.Models
+namespace VolunteeringApp.Models.Authentication
 {
     public class LoginViewModel
     {

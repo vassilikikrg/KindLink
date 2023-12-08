@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using VolunteeringApp.Models.Enums;
 
-namespace VolunteeringApp.Models
+namespace VolunteeringApp.Models.Authentication
 {
-    public class CitizenRegisterViewModel
+    public class OrganizationRegisterViewModel
     {
         [Required]
         public string Name { get; set; }
@@ -15,9 +16,14 @@ namespace VolunteeringApp.Models
         public string Password { get; set; }
 
         [Required]
-        public string Firstname { get; set; }
+        public string OfficialName { get; set; }
 
         [Required]
-        public string Lastname { get; set; }
+        public OrganizationType OrganizationType { get; set; }
+
+        public string Phone { get; set; }
+
+        public string Website { get; set; }
+
     }
 }

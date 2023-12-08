@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NuGet.Protocol.Plugins;
-using VolunteeringApp.Models;
+using VolunteeringApp.Models.Authentication;
+using VolunteeringApp.Models.Identity;
 
 namespace VolunteeringApp.Controllers
 {
@@ -10,12 +11,14 @@ namespace VolunteeringApp.Controllers
     {
         private readonly UserManager<AppIdentityUser> userManager; //used to manage Users in Identity
         private readonly UserManager<Citizen> citizenManager; //used to manage Citizens in Identity
+        private readonly UserManager<Organization> organizationManager; //used to manage Citizens in Identity
         private readonly SignInManager<AppIdentityUser> signInManager; //used to perform the authentication procedure
 
-        public AccountController(UserManager<AppIdentityUser> userMgr, UserManager<Citizen> citizen, SignInManager<AppIdentityUser> signinMgr)
+        public AccountController(UserManager<AppIdentityUser> userMgr, UserManager<Citizen> citizenMgr, UserManager<Organization> organizationMgr, SignInManager<AppIdentityUser> signinMgr)
         {
             userManager = userMgr;
-            citizenManager = citizen;
+            citizenManager = citizenMgr;
+            organizationManager = organizationMgr;
             signInManager = signinMgr;
         }
 
@@ -52,6 +55,41 @@ namespace VolunteeringApp.Controllers
             return View(citizen);
         }
 
+
+        [HttpGet("/Account/Register/Organization")]
+        public IActionResult RegisterOrganization()
+        {
+            // Display registration page
+            return View();
+        }
+
+        [HttpPost("/Account/Register/Organization")]
+        public async Task<IActionResult> RegisterOrganization(OrganizationRegisterViewModel organization)
+        {
+            if (ModelState.IsValid)
+            {
+                Organization appUser = new Organization
+                {
+                    UserName = organization.Name,
+                    Email = organization.Email,
+                    OfficialName = organization.OfficialName,
+                    OrganizationType = organization.OrganizationType,
+                    Phone = organization.Phone,
+                    Website = organization.Website
+                };
+
+                IdentityResult resultCreation = await organizationManager.CreateAsync(appUser, organization.Password);
+                IdentityResult resultRole = await userManager.AddToRoleAsync(appUser, "Organization");
+                if (resultCreation.Succeeded && resultRole.Succeeded)
+                    return RedirectToAction("Login");
+                else
+                {
+                    foreach (IdentityError error in resultCreation.Errors)
+                        ModelState.AddModelError("", error.Description);
+                }
+            }
+            return View(organization);
+        }
         [HttpGet]
         public IActionResult Login(string? returnUrl = null)
         {

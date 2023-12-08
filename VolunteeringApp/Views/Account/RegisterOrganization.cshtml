@@ -1,0 +1,44 @@
+﻿@model VolunteeringApp.Models.Authentication.OrganizationRegisterViewModel
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h1>Register</h1>
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Password"></label>
+        <input asp-for="Password" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="OfficialName"></label>
+        <input asp-for="OfficialName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Phone"></label>
+        <input asp-for="Phone" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Website"></label>
+        <input asp-for="Website" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="OrganizationType" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <select asp-for="OrganizationType" asp-items="Html.GetEnumSelectList<VolunteeringApp.Models.Enums.OrganizationType>()">
+                <option selected="selected" value="">Please select</option>
+            </select>
+            <span asp-validation-for="OrganizationType" class="text-danger" />
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Register</button>
+</form>

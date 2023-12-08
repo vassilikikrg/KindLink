@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using VolunteeringApp.Models;
+using VolunteeringApp.Models.Identity;
 
 namespace VolunteeringApp.Data
 {
