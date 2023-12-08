@@ -9,43 +9,47 @@ namespace VolunteeringApp.Controllers
     public class AccountController : Controller
     {
         private readonly UserManager<AppIdentityUser> userManager; //used to manage Users in Identity
+        private readonly UserManager<Citizen> citizenManager; //used to manage Citizens in Identity
         private readonly SignInManager<AppIdentityUser> signInManager; //used to perform the authentication procedure
 
-        public AccountController(UserManager<AppIdentityUser> userMgr, SignInManager<AppIdentityUser> signinMgr)
+        public AccountController(UserManager<AppIdentityUser> userMgr, UserManager<Citizen> citizen, SignInManager<AppIdentityUser> signinMgr)
         {
             userManager = userMgr;
+            citizenManager = citizen;
             signInManager = signinMgr;
         }
 
-        [HttpGet]
-        public IActionResult Register()
+        [HttpGet("/Account/Register/Citizen")]
+        public IActionResult RegisterCitizen()
         {
             // Display registration page
             return View();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Register(User user)
+        [HttpPost("/Account/Register/Citizen")]
+        public async Task<IActionResult> RegisterCitizen(CitizenRegisterViewModel citizen)
         {
             if (ModelState.IsValid)
             {
-                AppIdentityUser appUser = new AppIdentityUser
+                Citizen appUser = new Citizen
                 {
-                    UserName = user.Name,
-                    Email = user.Email
+                    UserName = citizen.Name,
+                    Email = citizen.Email,
+                    Firstname =citizen.Firstname, 
+                    Lastname =citizen.Lastname
                 };
 
-                IdentityResult result = await userManager.CreateAsync(appUser, user.Password);
-                //await userManager.AddToRoleAsync(appUser, "ADMIN");
-                if (result.Succeeded)
+                IdentityResult resultCreation = await citizenManager.CreateAsync(appUser, citizen.Password);
+                IdentityResult resultRole=await userManager.AddToRoleAsync(appUser, "Citizen");
+                if (resultCreation.Succeeded && resultRole.Succeeded)
                     return RedirectToAction("Login");
                 else
                 {
-                    foreach (IdentityError error in result.Errors)
+                    foreach (IdentityError error in resultCreation.Errors)
                         ModelState.AddModelError("", error.Description);
                 }
             }
-            return View(user);
+            return View(citizen);
         }
 
         [HttpGet]
