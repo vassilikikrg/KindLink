@@ -18,7 +18,7 @@ namespace VolunteeringApp.Controllers
         {
             return View();
         }
-        [Authorize]
+        [Authorize(Roles = "Citizen")]
         public IActionResult Privacy()
         {
             return View();

@@ -20,6 +20,11 @@ builder.Services.AddIdentityCore<Citizen>()
 
 builder.Services.AddIdentityCore<Organization>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = new PathString("/Account/Login");
+}
+    );
 
 
 var app = builder.Build();
@@ -39,6 +44,7 @@ app.UseRouting();
 
 app.UseAuthorization();
 app.UseAuthorization();
+
 
 app.MapControllerRoute(
     name: "default",
