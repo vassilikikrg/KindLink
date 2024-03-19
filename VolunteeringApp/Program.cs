@@ -2,11 +2,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using VolunteeringApp.Data;
 using VolunteeringApp.Models.Identity;
+using VolunteeringApp.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddSignalR();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -44,6 +46,7 @@ app.UseRouting();
 
 app.UseAuthorization();
 app.UseAuthorization();
+app.MapHub<ChatHub>("/chatHub");
 
 
 app.MapControllerRoute(
