@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.SignalR;
 using VolunteeringApp.Models;
 using VolunteeringApp.Models.Chat;
 
 namespace VolunteeringApp.Hubs
 {
+    [Authorize]
     public class ChatHub : Hub
     {
         public async Task SendMessage(string roomName, string message)
