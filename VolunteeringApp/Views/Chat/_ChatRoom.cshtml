@@ -1,0 +1,28 @@
+﻿@model VolunteeringApp.Models.Chat.ChatRoom
+
+<div class="container">
+    <div class="row">
+        <h1>Chat with @Model.members[1].UserName</h1>
+    </div>
+    <div class="row p-1">
+        <div class="col-5"><input type="text" class="w-100" id="messageInput" /></div>
+    </div>
+    <div class="row p-1">
+        <div class="col-6 text-end">
+            <input class="btn btn-primary" type="button" id="sendButton" value="Send Message" />
+        </div>
+    </div>
+    <div class="row p-1">
+        <div class="col-6">
+            <hr />
+        </div>
+    </div>
+    <div class="row p-1">
+        <div class="col-6">
+            <ul id="messagesList"></ul>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/chat.js"></script>

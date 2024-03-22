@@ -1,0 +1,17 @@
+﻿@model List<VolunteeringApp.Models.Chat.ChatRoom>
+
+<div class="list-group">
+    @foreach (var conversation in Model)
+    {
+        <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-start" data-userid="@conversation.members[0].Id">
+            <div class="ms-2 me-auto">
+                @Html.DisplayFor(modelItem => conversation.members[0].UserName)
+                <div class="fw-lighter">
+                    @Html.DisplayFor(modelItem => conversation.members[0].UserName)
+                </div>
+            </div>
+        </a>
+    }
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/js/chat/fetch_chat.js"></script>
