@@ -45,7 +45,7 @@ namespace VolunteeringApp.Controllers
             if (sender != null && receiver != null)
             {
                 var members = new List<AppIdentityUser>() { sender, receiver };
-                var model = new ChatRoom { members = members, roomName = "tiropitakia" };
+                var model = new ChatRoom { members = members, roomName = "patatakia" };
 
                 return PartialView("_Chatroom", model); 
             }
@@ -55,9 +55,9 @@ namespace VolunteeringApp.Controllers
         }
 
         [Authorize]
-        public IActionResult RenderMessage(string user, string message)
+        public IActionResult RenderMessage(string userId, string message)
         {
-            var model = new Message { UserId = user, Text = message };
+            var model = new Message { UserId = userId, Text = message };
             return PartialView("_Message", model);
         }
 
