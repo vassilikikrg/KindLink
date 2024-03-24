@@ -16,6 +16,7 @@ connection.on("ReceiveMessage", function (userId, message) {
         });
     } else { // display badge to indicate unread messages
         console.log("message was from other user");
+        $('.list-group-item[data-userid="' + userId + '"] .badge').text('New message');
     }
 
 });

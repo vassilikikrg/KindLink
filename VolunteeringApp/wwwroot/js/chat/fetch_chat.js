@@ -3,6 +3,7 @@
 
     // Get the user ID from the data-userid attribute of the clicked link
     var userId = $(this).data('userid');
+    $(this).find('.badge').text(''); // Remove text inside the badge for unread messages
 
     // Call the RenderChat action with the user ID
     $.ajax({
