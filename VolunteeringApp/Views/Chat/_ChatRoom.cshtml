@@ -9,8 +9,8 @@
     </div>
     <div class="row p-1">
         <div class="col-6 text-end">
-            <input hidden id="userId" value="@Model.members[1].Id" />
-            <input class="btn btn-primary" type="button" id="sendButton" value="Send Message" data-userid="@Model.members[1].Id aria-labelledby="message" placeholder="Message" />
+            <input hidden id="userId" value="@Model.members[1].Id" /> <!--save receiver id-->
+            <input class="btn btn-primary" type="button" id="sendButton" value="Send Message" aria-labelledby="message" placeholder="Message" />
         </div>
     </div>
     <div class="row p-1">
@@ -20,7 +20,7 @@
     </div>
     <div class="row p-1">
         <div class="col-6">
-            <ul id="messagesList" data-roomName="@Model.roomName"></ul>
+            <ul id="messagesList"></ul>
         </div>
     </div>
 </div>

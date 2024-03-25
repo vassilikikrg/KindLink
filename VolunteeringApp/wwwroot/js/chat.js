@@ -6,8 +6,8 @@ var receiverId = document.getElementById("userId").value;
 document.getElementById("sendButton").disabled = true; // disable the send button until connection is established.
 
 connection.on("ReceiveMessage", function (userId, message) {
-    var activeUserId = document.getElementById("userId").value; // get value from input field
-    if (userId === activeUserId) { // if message belongs to the open chat
+    var activeUserId = receiverId; // get value from input field
+    if (userId === activeUserId) { // if message received belongs to the open chat
         $.ajax({
             url: '/Chat/RenderMessage',
             data: { userId: userId, message: message }
