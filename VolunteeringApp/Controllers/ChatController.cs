@@ -55,9 +55,9 @@ namespace VolunteeringApp.Controllers
         }
 
         [Authorize]
-        public IActionResult RenderMessage(string userId, string message)
+        public IActionResult RenderMessage(string userId, string userName, string message)
         {
-            var model = new Message { UserId = userId, Text = message };
+            var model = new Message { UserId = userId,UserName=userName, Text = message };
             return PartialView("_Message", model);
         }
 
