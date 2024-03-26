@@ -1,35 +1,40 @@
 ﻿"use strict";
 
-var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+if (!window.connection) {
+    // Create the SignalR connection
+    window.connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+
+    // Start the connection
+    connection.start().then(function () {
+        console.log("SignalR connection established successfully.");
+        //document.getElementById("sendButton").disabled = true; // disable the send button until connection is established.
+    }).catch(function (err) {
+        console.error("Error occurred while establishing SignalR connection:", err.toString());
+        return console.error(err.toString());
+    });
+
+    window.connection.on("ReceiveMessage", function (id, username, message) {
+        var activeUserId = receiverId; // get value from input field
+        if (id === activeUserId) { // if message received belongs to the open chat
+            $.ajax({
+                url: '/Chat/RenderMessage',
+                data: { userId: id, userName: username, message: message, sent: false }
+            }).done(function (receivedMessageHtml) {
+                addToMessagesList(receivedMessageHtml);
+            });
+        } else { // display badge to indicate unread messages
+            $('.list-group-item[data-userid="' + id + '"] .badge').text('New message');
+        }
+
+    });
+}
+
 var receiverId = document.getElementById("userId").value;
 
-document.getElementById("sendButton").disabled = true; // disable the send button until connection is established.
-
-connection.on("ReceiveMessage", function (id,username, message) {
-    var activeUserId = receiverId; // get value from input field
-    if (id === activeUserId) { // if message received belongs to the open chat
-        $.ajax({
-            url: '/Chat/RenderMessage',
-            data: { userId: id, userName: username, message: message,sent:false }
-        }).done(function (receivedMessageHtml) {
-            addToMessagesList(receivedMessageHtml);
-        });
-    } else { // display badge to indicate unread messages
-        console.log("message was from other user");
-        $('.list-group-item[data-userid="' + id + '"] .badge').text('New message');
-    }
-
-});
-
-connection.start().then(function () {
-    document.getElementById("sendButton").disabled = false;
-}).catch(function (err) {
-    return console.error(err.toString());
-});
-
+// Add send button on click listener
 document.getElementById("sendButton").addEventListener("click", function (event) {
     var message = document.getElementById("messageInput").value;
-    connection.invoke("SendMessageToUser", receiverId, message)
+    window.connection.invoke("SendMessageToUser", receiverId, message)
         .then(function () { // message was successfully sent
             document.getElementById("messageInput").value = ''; //clear message input field
 
@@ -48,6 +53,8 @@ document.getElementById("sendButton").addEventListener("click", function (event)
     
     event.preventDefault();
 });
+
+// Enable users to send messages by clicking enter
 document.getElementById("messageInput").addEventListener("keypress", function (event) {
     if (event.key === "Enter") {
         event.preventDefault();
