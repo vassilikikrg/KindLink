@@ -17,3 +17,6 @@
         }
     });
 });
+
+// Trigger click on the first list-group-item, so that the most recent convo is firstly shown by default
+$('.list-group-item:first').click();
