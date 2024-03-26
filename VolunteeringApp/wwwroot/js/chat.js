@@ -48,6 +48,12 @@ document.getElementById("sendButton").addEventListener("click", function (event)
     
     event.preventDefault();
 });
+document.getElementById("messageInput").addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        document.getElementById("sendButton").click();
+    }
+});
 
 function addToMessagesList(messageHtml) {
     var messagesList = document.getElementById("messagesList");
