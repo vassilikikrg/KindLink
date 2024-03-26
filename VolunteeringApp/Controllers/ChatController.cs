@@ -55,10 +55,25 @@ namespace VolunteeringApp.Controllers
         }
 
         [Authorize]
-        public IActionResult RenderMessage(string userId, string userName, string message)
+        public IActionResult RenderMessage(string userId, string userName, string message, bool sent)
         {
-            var model = new Message { UserId = userId,UserName=userName, Text = message };
-            return PartialView("_Message", model);
+            Message model;
+            if (userId == null)
+            {
+                ClaimsPrincipal currentUser = this.User;
+                model = new Message { UserId = _userManager.GetUserId(currentUser), UserName = _userManager.GetUserName(currentUser), Text = message };
+            }
+            else {
+                model = new Message { UserId = userId, UserName = userName, Text = message };
+            }
+
+            if (sent)
+            {
+                return PartialView("_SentMessage", model);
+            }
+            else { 
+                return PartialView("_ReceivedMessage", model); 
+            }
         }
 
     }
