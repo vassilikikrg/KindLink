@@ -9,14 +9,14 @@ connection.on("ReceiveMessage", function (id,username, message) {
     var activeUserId = receiverId; // get value from input field
     if (id === activeUserId) { // if message received belongs to the open chat
 
-        var receivedMessageHtml = '<div class="row">' +
+        var receivedMessageHtml = '<div class="row g-0">' +
             '<div class="col-5 alert alert-secondary text-break" role="alert">' +
             message +
             '<p class="mb-0 text-end fs-6 fst-italic">@' +
             username +
             '</p>' +
             '</div> <div class="col-7"></div></div>';
-        document.getElementById("messagesList").insertAdjacentHTML('beforeend', receivedMessageHtml); // append the message to the list
+        addToMessagesList(receivedMessageHtml);
     } else { // display badge to indicate unread messages
         console.log("message was from other user");
         $('.list-group-item[data-userid="' + id + '"] .badge').text('New message');
@@ -35,13 +35,13 @@ document.getElementById("sendButton").addEventListener("click", function (event)
     connection.invoke("SendMessageToUser", receiverId, message)
         .then(function () { // message was successfully sent
             document.getElementById("messageInput").value = ''; //clear message input field
-            var messageHtml = '<div class="row">' +
-                '<div class="col-7"></div>' +
+            var sentMessageHtml = '<div class="row g-0">' +
+                '<div class="col-7 "></div>' +
                 '<div class="col-5 alert alert-primary text-break" role="alert">' +
                 message +
                 '<p class="mb-0 text-end fs-6 fst-italic">@' + "me" + '</p>' +
                 '</div></div>';
-            document.getElementById("messagesList").insertAdjacentHTML('beforeend', messageHtml); 
+            addToMessagesList(sentMessageHtml);
 
         })
         .catch(function (err) { // message not sent
@@ -51,3 +51,11 @@ document.getElementById("sendButton").addEventListener("click", function (event)
     
     event.preventDefault();
 });
+
+function addToMessagesList(messageHtml) {
+    var messagesList = document.getElementById("messagesList");
+    // append the message to the list
+    messagesList.insertAdjacentHTML('beforeend', messageHtml);
+    // scroll to the bottom of the div
+    messagesList.scrollTop = messagesList.scrollHeight;
+}

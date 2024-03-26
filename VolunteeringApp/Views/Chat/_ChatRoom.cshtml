@@ -5,19 +5,21 @@
         <h1>Chat with @Model.members[1].UserName</h1>
     </div>
     <div class="row p-1">
-        <div><input type="text" class="w-100" id="messageInput" /></div>
+        <hr />
     </div>
-    <div class="row p-1">
-        <div class="text-end">
+    <!--Message List-->
+    <div class="overflow-auto" style=" height: 60vh" id="messagesList">
+        <!-- Messages will be added dynamically here -->
+    </div>
+    <!--Text input and send button-->
+    <div class="row flex-grow-0 py-3 border-top">
+        <div class="col-8">
+            <input type="text" class="w-100" id="messageInput" />
+        </div>
+        <div class="text-end col-4">
             <input hidden id="userId" value="@Model.members[1].Id" /> <!--save receiver id-->
             <input class="btn btn-primary" type="button" id="sendButton" value="Send Message" aria-labelledby="message" placeholder="Message" />
         </div>
-    </div>
-    <div class="row p-1">
-            <hr />
-    </div>
-    <div class="row p-1">
-        <div id="messagesList"></div>
     </div>
 </div>
 
