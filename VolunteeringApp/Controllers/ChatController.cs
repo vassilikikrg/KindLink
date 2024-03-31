@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using VolunteeringApp.Data;
 using VolunteeringApp.Models.Chat;
@@ -25,7 +26,7 @@ namespace VolunteeringApp.Controllers
         public IActionResult Index()
         {
             ClaimsPrincipal currentUser = this.User;
-            var users=_context.Users
+            var users = _context.Users
             .Where(u => u.Id != _userManager.GetUserId(currentUser)).ToList();
             var conversations = new List<ChatRoom>();
             foreach (var user in users)
@@ -34,7 +35,14 @@ namespace VolunteeringApp.Controllers
             };
             return View(conversations);
         }
-
+        //[Authorize]
+        //public IActionResult Index()
+        //{
+        //    var conversations = _context.GroupMembers
+        //        .Where(m => m.UserId == _userManager.GetUserId(User))
+        //        .Include(m=>m.Conversation).ToList();
+        //    return View(conversations);
+        //}
         [Authorize]
         public async Task<IActionResult> RenderChat(string receiverId)
         {
@@ -57,14 +65,14 @@ namespace VolunteeringApp.Controllers
         [Authorize]
         public IActionResult RenderMessage(string userId, string userName, string message, bool sent)
         {
-            Message model;
+            MessageViewModel model;
             if (userId == null)
             {
                 ClaimsPrincipal currentUser = this.User;
-                model = new Message { UserId = _userManager.GetUserId(currentUser), UserName = _userManager.GetUserName(currentUser), Text = message };
+                model = new MessageViewModel { UserId = _userManager.GetUserId(currentUser), UserName = _userManager.GetUserName(currentUser), Text = message };
             }
             else {
-                model = new Message { UserId = userId, UserName = userName, Text = message };
+                model = new MessageViewModel { UserId = userId, UserName = userName, Text = message };
             }
 
             if (sent)
