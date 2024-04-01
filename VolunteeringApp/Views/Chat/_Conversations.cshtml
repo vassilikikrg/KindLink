@@ -1,16 +1,20 @@
-﻿@model List<VolunteeringApp.Models.Chat.ChatRoom>
+﻿@model Dictionary<string,List<VolunteeringApp.Models.Identity.AppIdentityUser>>
 
 <div class="container" style="max-height: 80vh; overflow-y: auto;">
     <div class="list-group">
         @foreach (var conversation in Model)
         {
-            <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-start" data-userid="@conversation.members[0].Id">
+            <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-start" data-conversationid="@conversation.Key">
                 <div class="ms-2 me-auto">
-                    @Html.DisplayFor(modelItem => conversation.members[0].UserName)
+                    @if (conversation.Value.Count > 1)
+                    {
+                        @Html.DisplayFor(modelItem => string.Join(", ", conversation.Value.Select(m => m.UserName)))
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(modelItem => conversation.Value.First().UserName)
+                    }
                     <span class="badge rounded-pill bg-info float-end"></span>
-                    <div class="fw-lighter">
-                        @Html.DisplayFor(modelItem => conversation.members[0].UserName)
-                    </div>
                 </div>
             </a>
         }

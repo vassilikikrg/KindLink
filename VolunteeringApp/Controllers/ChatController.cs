@@ -25,29 +25,36 @@ namespace VolunteeringApp.Controllers
         [Authorize]
         public IActionResult Index()
         {
-            ClaimsPrincipal currentUser = this.User;
-            var users = _context.Users
-            .Where(u => u.Id != _userManager.GetUserId(currentUser)).ToList();
-            var conversations = new List<ChatRoom>();
-            foreach (var user in users)
+            var currentUserId = _userManager.GetUserId(User);
+
+            // Retrieve group members where the current user is a member
+            var myGroups = _context.GroupMembers
+                .Where(m => m.UserId == currentUserId)
+                .ToList();
+
+            var conversationsWithMembers = new Dictionary<string, List<AppIdentityUser>>();
+            // Loop through the group members
+            foreach (var groupMember in myGroups)
             {
-                conversations.Add(new ChatRoom(new List<AppIdentityUser>() { user }, "patatakia"));
-            };
-            return View(conversations);
+                // Get the conversation ID
+                string conversationId = groupMember.ConversationId;
+
+                // Get all members of the conversation
+                var members = _context.GroupMembers
+                    .Where(m => m.ConversationId == conversationId && m.UserId != currentUserId) // Exclude the current user
+                    .Select(m => m.User)
+                    .ToList();
+
+                // Add the conversation and its members to the dictionary
+                conversationsWithMembers.Add(conversationId, members);
+            }
+            return View(conversationsWithMembers);
         }
-        //[Authorize]
-        //public IActionResult Index()
-        //{
-        //    var conversations = _context.GroupMembers
-        //        .Where(m => m.UserId == _userManager.GetUserId(User))
-        //        .Include(m=>m.Conversation).ToList();
-        //    return View(conversations);
-        //}
         [Authorize]
-        public async Task<IActionResult> RenderChat(string receiverId)
+        public async Task<IActionResult> RenderChat(string id)
         {
             var sender = await _userManager.GetUserAsync(User);
-            var receiver = await _userManager.FindByIdAsync(receiverId);
+            var receiver = await _userManager.FindByIdAsync(id);
 
             // Ensure both the sender and receiver are not null
             if (sender != null && receiver != null)
@@ -83,6 +90,39 @@ namespace VolunteeringApp.Controllers
                 return PartialView("_ReceivedMessage", model); 
             }
         }
+        [Authorize]
+        public async Task<IActionResult> Contact(string id)
+        {
+            var currentUser = await _userManager.GetUserAsync(User);
+            var organization = await _userManager.FindByIdAsync(id);
 
+            if (currentUser != null && organization != null)
+            {
+                // Check if there is an existing conversation between the current user and the organization
+                var existingConversation = _context.Conversations.FirstOrDefault(c =>
+                    c.GroupMembers.Any(m => m.UserId == currentUser.Id) &&
+                    c.GroupMembers.Any(m => m.UserId == organization.Id));
+
+                if (existingConversation != null)
+                {
+                    // Redirect the user to the existing conversation
+                    return RedirectToAction("RenderChat", new { id = organization.Id });
+                }
+                else
+                {
+                    // Create a new conversation and redirect the user to it
+                    var conversation = new Conversation();
+                    conversation.GroupMembers.Add(new GroupMember { UserId = currentUser.Id });
+                    conversation.GroupMembers.Add(new GroupMember { UserId = organization.Id });
+                    _context.Conversations.Add(conversation);
+                    await _context.SaveChangesAsync();
+
+                    return RedirectToAction("RenderChat", new { id = organization.Id });
+                }
+            }
+
+            // Handle the case where either the current user or the organization is not found
+            return NotFound();
+        }
     }
 }

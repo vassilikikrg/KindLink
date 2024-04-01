@@ -8,7 +8,7 @@
     // Call the RenderChat action with the user ID
     $.ajax({
         url: '/Chat/RenderChat',
-        data: { receiverId: userId }, // Send the user ID as data
+        data: { id: userId }, // Send the user ID as data
         success: function (partialView) {
             $('#chatRoomContainer').html(partialView);
         },
