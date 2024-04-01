@@ -8,6 +8,8 @@ namespace VolunteeringApp.Models.Chat
     public class Conversation
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+
         public string Id { get; set; }
         public ICollection<Message> Messages { get;} = [];
         public ICollection<GroupMember> GroupMembers { get; } = [];

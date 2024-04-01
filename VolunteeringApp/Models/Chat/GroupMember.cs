@@ -13,5 +13,9 @@ namespace VolunteeringApp.Models.Chat
         public string ConversationId { get; set; }
         public Conversation Conversation { get; set; } = null!;
         public DateTime JoinedDatetime { get; set; }
+        public GroupMember()
+        {
+            JoinedDatetime = DateTime.UtcNow; // Set the JoinedDatetime to the current UTC time when the object is created
+        }
     }
 }
