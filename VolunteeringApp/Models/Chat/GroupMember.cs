@@ -10,8 +10,8 @@ namespace VolunteeringApp.Models.Chat
     {
         public string UserId { get; set; }
         public AppIdentityUser User { get; set; } = null!;
-        public string ConversationId { get; set; }
-        public Conversation Conversation { get; set; } = null!;
+        public string ConversationId { get; set; } // Required foreign key property
+        public Conversation Conversation { get; set; } = null!; // Required reference navigation to principal
         public DateTime JoinedDatetime { get; set; }
         public GroupMember()
         {

@@ -7,5 +7,6 @@ namespace VolunteeringApp.Models.Identity
     {
         public string? Description { get; set; }
         public ICollection<GroupMember> GroupMembers { get; } = [];
+        public ICollection<Message> Messages { get; } = [];
     }
 }
