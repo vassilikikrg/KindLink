@@ -2,13 +2,13 @@
     e.preventDefault(); // Prevent default link behavior
 
     // Get the user ID from the data-userid attribute of the clicked link
-    var userId = $(this).data('userid');
+    var conversationId = $(this).data('conversationid');
     $(this).find('.badge').text(''); // Remove text inside the badge for unread messages
 
     // Call the RenderChat action with the user ID
     $.ajax({
         url: '/Chat/RenderChat',
-        data: { id: userId }, // Send the user ID as data
+        data: { id: conversationId }, // Send the conversation ID as data
         success: function (partialView) {
             $('#chatRoomContainer').html(partialView);
         },

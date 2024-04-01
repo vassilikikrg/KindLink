@@ -50,19 +50,29 @@ namespace VolunteeringApp.Controllers
             }
             return View(conversationsWithMembers);
         }
+
         [Authorize]
         public async Task<IActionResult> RenderChat(string id)
         {
-            var sender = await _userManager.GetUserAsync(User);
-            var receiver = await _userManager.FindByIdAsync(id);
+            if (id != null)
+            {   //Find all the messages of the specified conversation
+                var messages = _context.Messages
+                    .Where(m => m.ConversationId == id)
+                    .Include(m => m.Sender)
+                    .ToList();
 
-            // Ensure both the sender and receiver are not null
-            if (sender != null && receiver != null)
-            {
-                var members = new List<AppIdentityUser>() { sender, receiver };
-                var model = new ChatRoom { members = members, roomName = "patatakia" };
+                var currentUserId = _userManager.GetUserId(User); // Get current user id
+                var members = _context.GroupMembers
+                    .Where(m => m.ConversationId == id && m.UserId != currentUserId) // Exclude the current user
+                    .Select(m => m.User)
+                    .ToList();
 
-                return PartialView("_Chatroom", model); 
+                // Add values to view bag
+                ViewBag.currentUserId= currentUserId;
+                ViewBag.conversationId = id;
+                ViewBag.usernames = string.Join(", ", members.Select(m => m.UserName));
+
+                return PartialView("_ChatRoom", messages);
             }
 
             // Handle the case where either the current user or the receiver is not found

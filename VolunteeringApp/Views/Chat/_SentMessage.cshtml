@@ -1,9 +1,9 @@
-﻿@model VolunteeringApp.Models.Chat.MessageViewModel;
+﻿@model VolunteeringApp.Models.Chat.Message;
 
 <div class="row g-0">
     <div class="col-7"></div>
     <div class="col-5 alert alert-primary text-break" role="alert">
         @Model.Text
-        <!--<p class="mb-0 text-end fs-6 fst-italic">@Model.UserName</p>-->
+        <p class="mb-0 text-end fs-6 fst-italic">@Model.Sender.UserName</p>
     </div>
 </div>
