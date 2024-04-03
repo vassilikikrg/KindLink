@@ -1,9 +1,15 @@
 ﻿@model VolunteeringApp.Models.Chat.Message;
-
+@{
+    // Convert UTC time to local time in user's timezone
+    var localTime = Model.SentDatetime.ToLocalTime();
+    // Format the local time without seconds
+    var formattedLocalTime = localTime.ToString("yyyy-MM-dd HH:mm");
+}
 <div class="row g-0">
-    <div class="col-7"></div>
-    <div class="col-5 alert alert-primary text-break" role="alert">
+    <div class="col-7 mb-0"></div>
+    <div class="col-5 alert alert-primary text-break mb-0" role="alert">
         @Model.Text
         <p class="mb-0 text-end fs-6 fst-italic">@Model.Sender.UserName</p>
     </div>
+    <p class="mt-0 text-end fs-6 fw-light">@formattedLocalTime</p>
 </div>

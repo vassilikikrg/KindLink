@@ -1,37 +1,25 @@
 ﻿@model List<VolunteeringApp.Models.Chat.Message>
-<style>
-    .truncate-text {
-        max-width: 650px; /* Adjust the maximum width as needed */
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-    .truncate-text:hover {
-        z-index: 10000; /* Ensure the tooltip is displayed on top of other elements */
-    }
-</style>
+
 <div class="container">
     <div class="row">
-        <h1 title="@ViewBag.usernames" class="truncate-text">Chat with @ViewBag.usernames</h1>
+        <h1 title="@ViewBag.usernames" class="text-truncate">Chat with @ViewBag.usernames</h1>
     </div>
     <div class="row p-1">
         <hr />
     </div>
     <!--Message List-->
     <div class="overflow-auto" style=" height: 60vh" id="messagesList">
-        @if (@Model.Count > 0)
+        @if (Model.Count > 0)
         {
             foreach (var message in Model)
             {
                 if (message.SenderId.Equals(ViewBag.currentUserId))
                 {
-                    // If message is sent by the current user,place it to the right part of the container
-                    await Html.PartialAsync("_SentMessage", message);
+                    <partial name="_SentMessage" model="@message"/>
                 }
                 else
                 {
-                    // If message is a received one,place it to the left part of the container
-                    await Html.PartialAsync("_ReceivedMessage", message);
+                    <partial name="_ReceivedMessage" model="@message" />
                 }
             }
         }
