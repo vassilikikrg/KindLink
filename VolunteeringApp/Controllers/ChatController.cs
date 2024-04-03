@@ -7,19 +7,22 @@ using System.Security.Claims;
 using VolunteeringApp.Data;
 using VolunteeringApp.Models.Chat;
 using VolunteeringApp.Models.Identity;
+using VolunteeringApp.Services;
 
 namespace VolunteeringApp.Controllers
 {
     
     public class ChatController : Controller
     {
-        ApplicationDbContext _context;
-        UserManager<AppIdentityUser> _userManager;
+        private readonly ApplicationDbContext _context;
+        private readonly UserManager<AppIdentityUser> _userManager;
+        private readonly ChatDataService _chatDataService;
 
-        public ChatController(ApplicationDbContext context, UserManager<AppIdentityUser> userManager)
+        public ChatController(ApplicationDbContext context, UserManager<AppIdentityUser> userManager, ChatDataService chatDataService)
         {
             _context = context;
             _userManager = userManager;
+            _chatDataService = chatDataService;
         }
 
         [Authorize]
@@ -80,24 +83,17 @@ namespace VolunteeringApp.Controllers
         }
 
         [Authorize]
-        public IActionResult RenderMessage(string userId, string userName, string message, bool sent)
+        public IActionResult RenderMessage(string conversationId, string userId, string message)
         {
-            MessageViewModel model;
-            if (userId == null)
-            {
-                ClaimsPrincipal currentUser = this.User;
-                model = new MessageViewModel { UserId = _userManager.GetUserId(currentUser), UserName = _userManager.GetUserName(currentUser), Text = message };
-            }
-            else {
-                model = new MessageViewModel { UserId = userId, UserName = userName, Text = message };
-            }
-
-            if (sent)
+            var sender= _context.Users.Find(userId);
+            Message model= new Message { Text = message, SenderId = userId,Sender=sender, ConversationId = conversationId };
+            if (userId == _userManager.GetUserId(User))
             {
                 return PartialView("_SentMessage", model);
             }
-            else { 
-                return PartialView("_ReceivedMessage", model); 
+            else {
+                
+                return PartialView("_ReceivedMessage", model);
             }
         }
         [Authorize]
@@ -116,18 +112,13 @@ namespace VolunteeringApp.Controllers
                 if (existingConversation != null)
                 {
                     // Redirect the user to the existing conversation
-                    return RedirectToAction("RenderChat", new { id = organization.Id });
+                    return RedirectToAction("RenderChat", new { id = existingConversation.Id });
                 }
                 else
                 {
                     // Create a new conversation and redirect the user to it
-                    var conversation = new Conversation();
-                    conversation.GroupMembers.Add(new GroupMember { UserId = currentUser.Id });
-                    conversation.GroupMembers.Add(new GroupMember { UserId = organization.Id });
-                    _context.Conversations.Add(conversation);
-                    await _context.SaveChangesAsync();
-
-                    return RedirectToAction("RenderChat", new { id = organization.Id });
+                    string conversationId = await _chatDataService.CreateConversationAsync(new List<AppIdentityUser>() { currentUser, organization });
+                    return RedirectToAction("RenderChat", new { id = conversationId });
                 }
             }
 

@@ -13,46 +13,40 @@ if (!window.connection) {
         return console.error(err.toString());
     });
 
-    window.connection.on("ReceiveMessage", function (id, username, message) {
-        var activeUserId = receiverId; // get value from input field
-        if (id === activeUserId) { // if message received belongs to the open chat
+    window.connection.on("ReceiveMessage", function (conversationId,senderId, message) {
+        var activeConvoId = receiverConvoId; // get value from input field
+        if (conversationId === activeConvoId) { // if message received belongs to the open chat
             $.ajax({
                 url: '/Chat/RenderMessage',
-                data: { userId: id, userName: username, message: message, sent: false }
+                data: { conversationId: conversationId, userId: senderId, message: message}
             }).done(function (receivedMessageHtml) {
                 addToMessagesList(receivedMessageHtml);
             });
         } else { // display badge to indicate unread messages
-            $('.list-group-item[data-userid="' + id + '"] .badge').text('New message');
+            $('.list-group-item[data-conversationid="' + conversationId + '"] .badge').text('New message');
         }
 
     });
 }
 
-var receiverId = document.getElementById("userId").value;
+var receiverConvoId = document.getElementById("conversationId").value;
 
 // Add send button on click listener
 document.getElementById("sendButton").addEventListener("click", function (event) {
-    var message = document.getElementById("messageInput").value;
-    window.connection.invoke("SendMessageToUser", receiverId, message)
-        .then(function () { // message was successfully sent
-            document.getElementById("messageInput").value = ''; //clear message input field
-
-            $.ajax({
-                url: '/Chat/RenderMessage',
-                data: { userId: null, userName: null, message: message, sent: true }
-            }).done(function (sentMessageHtml) {
-                addToMessagesList(sentMessageHtml);
+    var messageInput = document.getElementById("messageInput");
+    var message = messageInput.value.trim(); // Trim whitespace from the message input
+    if (message) { // Check if message is not empty after trimming
+        window.connection.invoke("SendMessageToGroup", receiverConvoId, message)
+            .then(function () { // Message was successfully sent
+                messageInput.value = ''; // Clear message input field
+            })
+            .catch(function (err) { // Message not sent
+                console.error(err.toString());
             });
-
-        })
-        .catch(function (err) { // message not sent
-        return console.error(err.toString());
-        });
-
-    
+    }
     event.preventDefault();
 });
+
 
 // Enable users to send messages by clicking enter
 document.getElementById("messageInput").addEventListener("keypress", function (event) {
