@@ -3,11 +3,14 @@ using Microsoft.EntityFrameworkCore;
 using VolunteeringApp.Data;
 using VolunteeringApp.Models.Identity;
 using VolunteeringApp.Hubs;
+using VolunteeringApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<ChatDataService>();
+
 builder.Services.AddSignalR();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
