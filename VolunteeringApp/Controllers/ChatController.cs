@@ -26,7 +26,7 @@ namespace VolunteeringApp.Controllers
         }
 
         [Authorize]
-        public IActionResult Index()
+        public IActionResult Index(string convId = null)
         {
             var currentUserId = _userManager.GetUserId(User);
 
@@ -50,6 +50,13 @@ namespace VolunteeringApp.Controllers
 
                 // Add the conversation and its members to the dictionary
                 conversationsWithMembers.Add(conversationId, members);
+            }
+            // Order the conversations with the specified conversation at the top
+            if (!string.IsNullOrEmpty(convId) && conversationsWithMembers.ContainsKey(convId))
+            {
+                var conversationToDisplayAtTop = conversationsWithMembers[convId];
+                conversationsWithMembers.Remove(convId);
+                conversationsWithMembers.Add(convId, conversationToDisplayAtTop);
             }
             return View(conversationsWithMembers);
         }
@@ -111,14 +118,14 @@ namespace VolunteeringApp.Controllers
 
                 if (existingConversation != null)
                 {
-                    // Redirect the user to the existing conversation
-                    return RedirectToAction("RenderChat", new { id = existingConversation.Id });
+                    // Redirect the user to the existing conversation with conversationId at the top
+                    return RedirectToAction("Index", new { conversationId = existingConversation.Id });
                 }
                 else
                 {
                     // Create a new conversation and redirect the user to it
                     string conversationId = await _chatDataService.CreateConversationAsync(new List<AppIdentityUser>() { currentUser, organization });
-                    return RedirectToAction("RenderChat", new { id = conversationId });
+                    return RedirectToAction("Index", new { conversationId });
                 }
             }
 
