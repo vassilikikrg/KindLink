@@ -107,15 +107,15 @@ namespace VolunteeringApp.Controllers
             }
         }
         [Authorize]
-        public async Task<IActionResult> Contact(string id)
+        public async Task<IActionResult> CreateOrFetchPrivateChat(string id)
         {
-            var currentUser = await _userManager.GetUserAsync(User);
-            var organization = await _userManager.FindByIdAsync(id);
+            var senderUser = await _userManager.GetUserAsync(User); // current user, here we suppose he is the sender (as he initiates the conversation)
+            var receiverUser = await _userManager.FindByIdAsync(id); // the other user
 
-            if (currentUser != null && organization != null)
+            if (senderUser != null && receiverUser != null)
             {
-                // Check if there is an existing conversation between the current user and the organization
-                var existingConversation = _chatDataService.FindConversationWithExactMembers(new List<AppIdentityUser>() { currentUser, organization });
+                // Check if there is an existing conversation between the 2 users
+                var existingConversation = _chatDataService.FindConversationWithExactMembers(new List<AppIdentityUser>() { senderUser, receiverUser });
 
                 if (existingConversation != null)
                 {
@@ -125,7 +125,7 @@ namespace VolunteeringApp.Controllers
                 else
                 {
                     // Create a new conversation and redirect the user to it
-                    string conversationId = await _chatDataService.CreateConversationAsync(new List<AppIdentityUser>() { currentUser, organization });
+                    string conversationId = await _chatDataService.CreateConversationAsync(new List<AppIdentityUser>() { senderUser, receiverUser });
                     return RedirectToAction("Index", new { conversationId });
                 }
             }
@@ -135,7 +135,7 @@ namespace VolunteeringApp.Controllers
         }
 
         [Authorize(Roles ="Organization")]
-        public IActionResult CreateGroupChat()
+        public IActionResult ShowCreateGroupChatForm()
         {   
             var orgId= _userManager.GetUserId(User);
             // Only organizations can create group chats with both citizens and other organizations
@@ -150,7 +150,7 @@ namespace VolunteeringApp.Controllers
                 Organizations = organizations
             };
 
-            return View(viewModel);
+            return View("CreateGroupChatForm",viewModel);
         }
 
         [HttpPost]

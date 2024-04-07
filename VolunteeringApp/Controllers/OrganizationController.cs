@@ -40,7 +40,7 @@ namespace VolunteeringApp.Controllers
 
        
 
-        private bool OrganizationViewModelExists(string id)
+        private bool OrganizationExists(string id)
         {
             return _context.Organizations.Any(e => e.Id == id);
         }

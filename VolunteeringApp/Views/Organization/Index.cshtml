@@ -52,7 +52,7 @@
                 @Html.DisplayFor(modelItem => item.Website)
             </td>
             <td>
-                <a class="btn btn-primary" asp-controller="Chat" asp-action="Contact" asp-route-id="@item.Id">Contact</a>|
+                    <a class="btn btn-primary" asp-controller="Chat" asp-action="CreateOrFetchPrivateChat" asp-route-id="@item.Id">Contact</a>|
                 <a class="btn btn-outline-primary" asp-action="Details" asp-route-id="@item.Id">Details</a>
 
             </td>
