@@ -5,7 +5,13 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Organizations</h1>
+<form asp-controller="Organization" asp-action="Index">
+    <p>
+        Search by name: <input type="text" name="SearchString" />
+        <input class="btn btn-primary" type="submit" value="Filter" />
+    </p>
+</form>
 <table class="table">
     <thead>
         <tr>
@@ -31,32 +37,33 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OfficialName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OrganizationType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Phone)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Website)
-            </td>
-            <td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OfficialName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrganizationType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Phone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Website)
+                </td>
+                <td>
                     <a class="btn btn-primary" asp-controller="Chat" asp-action="CreateOrFetchPrivateChat" asp-route-id="@item.Id">Contact</a>|
-                <a class="btn btn-outline-primary" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    <a class="btn btn-outline-primary" asp-action="Details" asp-route-id="@item.Id">Details</a>
 
-            </td>
-        </tr>
-}
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
