@@ -1,4 +1,5 @@
-﻿using VolunteeringApp.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using VolunteeringApp.Data;
 using VolunteeringApp.Models.Chat;
 using VolunteeringApp.Models.Identity;
 
@@ -78,5 +79,37 @@ namespace VolunteeringApp.Services
             // Save changes to the database
             await _context.SaveChangesAsync();
         }
+
+        public async Task<Conversation?> FindConversationWithExactMembers(List<AppIdentityUser> users)
+        {
+            // Retrieve the conversation IDs of all conversations involving the users
+            var conversationIds = await _context.GroupMembers
+                .Where(gm => users.Select(u => u.Id).Contains(gm.UserId))
+                .GroupBy(gm => gm.ConversationId)
+                .Where(g => g.Count() == users.Count)
+                .Select(g => g.Key)
+                .ToListAsync();
+            // Check if there is any conversation that includes only the users
+            foreach (var conversationId in conversationIds)
+            {
+                var conversation = await _context.Conversations
+                    .Include(c => c.GroupMembers)
+                    .FirstOrDefaultAsync(c => c.Id == conversationId);
+
+                if (conversation != null && conversation.GroupMembers.Count == users.Count)
+                {
+                    var conversationUsers = conversation.GroupMembers.Select(gm => gm.UserId).ToList();
+                    if (users.All(u => conversationUsers.Contains(u.Id)))
+                    {
+                        return conversation;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+
+
     }
 }

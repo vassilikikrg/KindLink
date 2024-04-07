@@ -6,11 +6,15 @@
 
 <div class="container">
     <div class="row">
-        <h1>Chat</h1>
+        <div class="col-8"><h1>Chat</h1></div>
+        <div class="col-4">
+
+        </div>
     </div>
     <div class="row">
-        <div class="col-4">
-            @await Html.PartialAsync("_Conversations", Model)<!-- Container for conversations -->
+        <div class="col-4 g-0">
+            <!-- Container for conversations -->
+            @await Html.PartialAsync("_Conversations", Model)
         </div>
         <div class="col-8">
             <div id="chatRoomContainer"></div> <!-- Container for chat room content -->

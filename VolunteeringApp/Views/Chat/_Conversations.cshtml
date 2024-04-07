@@ -1,6 +1,6 @@
 ﻿@model Dictionary<string,List<VolunteeringApp.Models.Identity.AppIdentityUser>>
 
-<div class="container" style="max-height: 80vh; overflow-y: auto;">
+<div class="container pe-5" style="max-height: 80vh; overflow-y: auto;">
     <div class="list-group">
         @foreach (var conversation in Model)
         {
@@ -8,7 +8,8 @@
                 <div class="ms-2 me-auto">
                     @if (conversation.Value.Count > 1)
                     {
-                        @Html.DisplayFor(modelItem => string.Join(", ", conversation.Value.Select(m => m.UserName)))
+                        var display = string.Join(", ", conversation.Value.Select(m => m.UserName));
+                        @Html.DisplayFor(modelItem =>display)
                     }
                     else
                     {
@@ -19,6 +20,10 @@
             </a>
         }
     </div>
+    @if (User.IsInRole("Organization"))
+    {
+        <a class="btn btn-dark mt-3 d-flex justify-content-center align-items-center" asp-controller="Chat" asp-action="CreateGroupChat">Create a new group chat</a>
+    }
 </div>
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
