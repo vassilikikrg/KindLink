@@ -3,10 +3,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
+using System;
 using System.Security.Claims;
 using VolunteeringApp.Data;
 using VolunteeringApp.Models.Chat;
 using VolunteeringApp.Models.Identity;
+using VolunteeringApp.Models.ViewModels;
 using VolunteeringApp.Services;
 
 namespace VolunteeringApp.Controllers
@@ -112,9 +115,7 @@ namespace VolunteeringApp.Controllers
             if (currentUser != null && organization != null)
             {
                 // Check if there is an existing conversation between the current user and the organization
-                var existingConversation = _context.Conversations.FirstOrDefault(c =>
-                    c.GroupMembers.Any(m => m.UserId == currentUser.Id) &&
-                    c.GroupMembers.Any(m => m.UserId == organization.Id));
+                var existingConversation = _chatDataService.FindConversationWithExactMembers(new List<AppIdentityUser>() { currentUser, organization });
 
                 if (existingConversation != null)
                 {
@@ -132,5 +133,80 @@ namespace VolunteeringApp.Controllers
             // Handle the case where either the current user or the organization is not found
             return NotFound();
         }
+
+        [Authorize(Roles ="Organization")]
+        public IActionResult CreateGroupChat()
+        {   
+            var orgId= _userManager.GetUserId(User);
+            // Only organizations can create group chats with both citizens and other organizations
+            var citizens = _context.Citizens.ToList();
+            var organizations = _context.Organizations
+                .Where(o => o.Id != orgId)
+                .ToList();
+
+            var viewModel = new UserListViewModel
+            {
+                Citizens = citizens,
+                Organizations = organizations
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Organization")]
+        public async Task<IActionResult> CreateGroupChatAsync(UserListViewModel model)
+        {
+            // Check if any citizens or organizations are selected
+            if (model.SelectedCitizens.Count > 0 || model.SelectedOrganizations.Count > 0)
+            {
+                // Create a list to store selected users
+                List<AppIdentityUser> users = new List<AppIdentityUser>();
+
+                // Retrieve selected citizens
+                foreach (var citizenId in model.SelectedCitizens)
+                {
+                    var citizen = await _context.Citizens.FindAsync(citizenId);
+                    if (citizen != null)
+                    {
+                        users.Add(citizen);
+                    }
+                }
+
+                // Retrieve selected organizations
+                foreach (var orgId in model.SelectedOrganizations)
+                {
+                    var org = await _context.Organizations.FindAsync(orgId);
+                    if (org != null)
+                    {
+                        users.Add(org);
+                    }
+                }
+
+                // Add the current user to the list of users
+                var currentUser = await _userManager.GetUserAsync(User);
+                users.Add(currentUser);
+                // Check if there is an existing conversation between the users
+                var existingConversation = await _chatDataService.FindConversationWithExactMembers(users);
+
+                if (existingConversation != null)
+                {
+                    // Redirect the user to the existing conversation with conversationId at the top
+                    return RedirectToAction("Index", new { conversationId = existingConversation.Id });
+                }
+                else
+                {
+                    // Create a conversation with the selected users
+                    string createdConversationId = await _chatDataService.CreateConversationAsync(users);
+                    // Redirect to the index action with the conversation ID
+                    return RedirectToAction("Index", new { convId = createdConversationId });
+                }
+            }
+
+            // If no citizens or organizations are selected, redirect to the index action
+            return RedirectToAction("Index");
+        }
+
+
     }
 }

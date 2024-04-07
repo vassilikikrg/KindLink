@@ -1,0 +1,35 @@
+﻿@model VolunteeringApp.Models.ViewModels.UserListViewModel
+
+@{
+    ViewData["Title"] = "Create a Group Chat";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("CreateGroupChat", "Chat", FormMethod.Post))
+{
+    <h2>Citizens</h2>
+    @if (Model.Citizens != null && Model.Citizens.Any())
+    {
+        @for (int i = 0; i < Model.Citizens.Count; i++)
+        {
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="SelectedCitizens" value="@Model.Citizens[i].Id" id="citizen_@Model.Citizens[i].Id" />
+                <label class="form-check-label" for="citizen_@Model.Citizens[i].Id">@Model.Citizens[i].Firstname @Model.Citizens[i].Lastname (&#64;@Model.Citizens[i].UserName)</label>
+            </div>
+        }
+        <hr />
+    }
+
+    <h2>Organizations</h2>
+    @if (Model.Organizations != null && Model.Organizations.Any())
+    {
+        @for (int i = 0; i < Model.Organizations.Count; i++)
+        {
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="SelectedOrganizations" value="@Model.Organizations[i].Id" id="organization_@Model.Organizations[i].Id" />
+                <label class="form-check-label" for="organization_@Model.Organizations[i].Id">@Model.Organizations[i].OfficialName (&#64;@Model.Organizations[i].UserName)</label>
+            </div>
+        }
+    }
+    <button class="btn btn-primary" type="submit">Submit</button>
+}
