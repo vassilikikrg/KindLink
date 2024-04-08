@@ -1,0 +1,23 @@
+﻿@import url(colors.css);
+
+.Children_Charity{
+    background-color:var(--pastelpurple);
+}
+.Religious {
+    background-color: var(--pastelbeige);
+}
+.Disaster_Response {
+    background-color: var(--pastelred);
+}
+.Environmental {
+    background-color: var(--pastelgreen);
+}
+.Human_Rights {
+    background-color: var(--pastelblue);
+}
+.Refugee_Aid {
+    background-color: var(--pastelorange);
+}
+.Social_Welfare {
+    background-color: var(--pastelpink);
+}

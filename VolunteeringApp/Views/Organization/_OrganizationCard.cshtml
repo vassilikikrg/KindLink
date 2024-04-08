@@ -1,0 +1,29 @@
+﻿@model VolunteeringApp.Models.Identity.Organization
+@using VolunteeringApp.Models.Enums
+
+@{
+    var organizationType = Model.OrganizationType.GetDisplayName();
+}
+
+<link rel="stylesheet" href="~/css/organization_type_coloring.css" />
+
+<div class="col card m-3 p-0">
+    <div class="card-header">
+        <!--Organization Name,Username,Type-->
+        <h5 class="card-title">@Html.DisplayFor(modelItem => Model.OfficialName)</h5>
+        <h6 class="card-subtitle mb-2 text-body-secondary fw-lighter">&#64; @Html.DisplayFor(modelItem => Model.UserName)</h6>
+        <h5 class="card-text text-end">
+            <span class="badge @Model.OrganizationType">@organizationType</span>
+        </h5>
+    </div>
+    <div class="card-body">
+        <!--Organization Description-->
+        @if (Model.Description != null)
+        {
+            <p class="card-text text-truncate">@Html.DisplayFor(modelItem => Model.Description)</p>
+        }
+        <!--Links-->
+        <a class="btn btn-dark" asp-controller="Chat" asp-action="CreateOrFetchPrivateChat" asp-route-id="@Model.Id">Contact</a>
+        <a class="btn btn-outline-dark" asp-action="Details" asp-route-id="@Model.Id">Details</a>
+    </div>
+</div>
