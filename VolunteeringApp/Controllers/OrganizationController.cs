@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using VolunteeringApp.Data;
+using VolunteeringApp.Helpers;
 using VolunteeringApp.Models.Identity;
 
 namespace VolunteeringApp.Controllers
@@ -18,7 +19,7 @@ namespace VolunteeringApp.Controllers
         }
 
         // GET: Organization
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index(string currentFilter, string searchString, int? pageNumber)
         {
             if (_context.Organizations == null)
             {
@@ -27,10 +28,22 @@ namespace VolunteeringApp.Controllers
 
             var organizations = from o in _context.Organizations
                                 select o;
+            if (searchString != null)
+            {
+                pageNumber = 1; //If the search string is changed during paging, the page has to be reset to 1
+            }
+            else
+            {
+                searchString = currentFilter; // Use currentFilter parameter to retrieve searchString
+            }
+
+            ViewData["CurrentFilter"] = searchString; 
+
             // Apply search filter
             if (!String.IsNullOrEmpty(searchString))
             {
                 organizations = organizations.Where(s => s.OfficialName!.Contains(searchString) || s.UserName!.Contains(searchString));
+                ViewBag.isFiltered = true;
             }
 
             if(User.Identity.IsAuthenticated && User.IsInRole("Organization"))
@@ -39,7 +52,9 @@ namespace VolunteeringApp.Controllers
                 string currentUserId = _userManager.GetUserId(User);
                 organizations = organizations.Where(s=>s.Id!= currentUserId);
             }
-            return View(await organizations.ToListAsync());
+
+            int pageSize = 6;
+            return View(await PaginatedList<Organization>.CreateAsync(organizations.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Organization/Details/5
