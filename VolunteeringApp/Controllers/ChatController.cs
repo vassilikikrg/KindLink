@@ -115,7 +115,7 @@ namespace VolunteeringApp.Controllers
             if (senderUser != null && receiverUser != null)
             {
                 // Check if there is an existing conversation between the 2 users
-                var existingConversation = _chatDataService.FindConversationWithExactMembers(new List<AppIdentityUser>() { senderUser, receiverUser });
+                var existingConversation = await _chatDataService.FindConversationWithExactMembers(new List<AppIdentityUser>() { senderUser, receiverUser });
 
                 if (existingConversation != null)
                 {
