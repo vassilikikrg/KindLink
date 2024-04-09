@@ -40,6 +40,7 @@
             <form asp-controller="Organization" asp-action="Index">
                 <div class="input-group">
                     <!-- Search by name -->
+                    <input type="text" name="TypeFilter" hidden value="@ViewBag.TypeFilter"/>
                     <input class="form-control" type="text" name="SearchString" placeholder="Search by name" value="@ViewData["SearchString"]" />
                     <button class="btn btn-secondary" type="submit">Search</button>
                 </div>
@@ -52,6 +53,33 @@
             }
         </div>
     </div>
+    <!-- Display Filtered Results Message -->
+    @if (ViewBag.isFiltered == true)
+    {
+        <div class="row mt-3">
+            <div class="col">
+                @if (ViewBag.TypeFilter == null)
+                {
+                    <!-- Display message for results found only by search string -->
+                    <div class="alert alert-info" role="alert">
+                        Results found for "@ViewData["SearchString"]"
+                    </div>
+                }
+                else if(ViewData["SearchString"] == null){
+                    <!-- Display message for results found only by filter type -->
+                    <div class="alert alert-info" role="alert">
+                        Results found within the category "@ViewBag.TypeFilter"
+                    </div>
+                }
+                else{
+                    <!-- Display message for results found by both search string and filter type -->
+                    <div class="alert alert-info" role="alert">
+                        Results found for "@ViewData["SearchString"]" within the category "@ViewBag.TypeFilter"
+                    </div> 
+                }
+            </div>
+        </div>
+    }
 </div>
 <!-- List of organizations-->
 <div class="container container-fluid">
