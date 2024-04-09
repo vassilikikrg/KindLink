@@ -1,27 +1,59 @@
 ﻿@model PaginatedList<VolunteeringApp.Models.Identity.Organization>
 @using VolunteeringApp.Helpers
+@using VolunteeringApp.Models.Enums
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="container">
-<h1>Organizations</h1>
-    <form asp-controller="Organization" asp-action="Index">
-        <div class="form-actions no-color">
-            <p>
-                <!--Search by name-->
-                Search by name: <input type="text" name="SearchString" />
-                <input class="btn btn-secondary" type="submit" value="Search" /> 
-                <!--Filter By Type-->
-                @if (ViewBag.isFiltered == true)
-                {
-                <a class="btn btn-outline-secondary" asp-action ="Index" > Back to Full List </a>
-                }
-
-            </p>
+    <!--Title-->
+    <div class="row">
+        <h1>Organizations</h1>
+    </div>
+    <!--Filtering-->
+    <div class="row">
+        <div class="col-auto">
+            <!-- Filter By Type -->
+            <div class="dropdown">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Filter by type
+                </button>
+                <ul class="dropdown-menu">
+                    @foreach (OrganizationType type in Enum.GetValues(typeof(OrganizationType)))
+                    {
+                        var typeDisplayName = type.GetDisplayName();
+                        <li>
+                            @if (type == ViewBag.TypeFilter)
+                            {
+                                <a asp-controller="Organization" asp-action="Index" asp-route-typeFilter="@type" class="dropdown-item active">@typeDisplayName</a>
+                            }
+                            else
+                            {
+                                <a asp-controller="Organization" asp-action="Index" asp-route-typeFilter="@type" class="dropdown-item">@typeDisplayName</a>
+                            }
+                        </li>
+                    }
+                </ul>
+            </div>
         </div>
-    </form>
+        <div class="col-auto">
+            <form asp-controller="Organization" asp-action="Index">
+                <div class="input-group">
+                    <!-- Search by name -->
+                    <input class="form-control" type="text" name="SearchString" placeholder="Search by name" value="@ViewData["SearchString"]" />
+                    <button class="btn btn-secondary" type="submit">Search</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-auto">
+            @if (ViewBag.isFiltered == true)
+            {
+                <a class="btn btn-outline-secondary" asp-action="Index"> Back to Full List </a>
+            }
+        </div>
+    </div>
 </div>
+<!-- List of organizations-->
 <div class="container container-fluid">
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
         @foreach (var item in Model)
@@ -30,21 +62,23 @@
         }   
     </div>
 </div>
+<!-- Nav links between pages-->
 <div class="container">
-    <!-- Nav links between pages-->
     @{
         var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
         var nextDisabled = !Model.HasNextPage ? "disabled" : "";
     }
     <a asp-action="Index"
        asp-route-pageNumber="@(Model.PageIndex - 1)"
-       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       asp-route-searchString="@ViewData["SearchString"]"
+       asp-route-typeFilter="@ViewBag.typeFilter"
        class="btn btn-default @prevDisabled">
         Previous
     </a>
     <a asp-action="Index"
        asp-route-pageNumber="@(Model.PageIndex + 1)"
-       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       asp-route-searchString="@ViewData["SearchString"]"
+       asp-route-typeFilter="@ViewBag.typeFilter"
        class="btn btn-default @nextDisabled">
         Next
     </a>
