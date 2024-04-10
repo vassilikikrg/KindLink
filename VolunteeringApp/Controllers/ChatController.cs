@@ -9,8 +9,8 @@ using System.Security.Claims;
 using VolunteeringApp.Data;
 using VolunteeringApp.Models.Chat;
 using VolunteeringApp.Models.Identity;
-using VolunteeringApp.Models.ViewModels;
 using VolunteeringApp.Services;
+using VolunteeringApp.ViewModels;
 
 namespace VolunteeringApp.Controllers
 {

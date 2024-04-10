@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NuGet.Protocol.Plugins;
-using VolunteeringApp.Models.Authentication;
 using VolunteeringApp.Models.Identity;
+using VolunteeringApp.ViewModels.Authentication;
 
 namespace VolunteeringApp.Controllers
 {
@@ -34,22 +34,27 @@ namespace VolunteeringApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                Citizen appUser = new Citizen
+                var appUser = new Citizen
                 {
-                    UserName = citizen.Name,
+                    UserName = citizen.UserName,
                     Email = citizen.Email,
-                    Firstname =citizen.Firstname, 
-                    Lastname =citizen.Lastname
+                    Firstname = citizen.Firstname,
+                    Lastname = citizen.Lastname
                 };
 
-                IdentityResult resultCreation = await citizenManager.CreateAsync(appUser, citizen.Password);
-                IdentityResult resultRole=await userManager.AddToRoleAsync(appUser, "Citizen");
-                if (resultCreation.Succeeded && resultRole.Succeeded)
-                    return RedirectToAction("Login");
+                var result = await userManager.CreateAsync(appUser, citizen.Password);
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(appUser, "Citizen");
+                    await signInManager.SignInAsync(appUser, isPersistent: false);
+                    return RedirectToAction("Index", "Home");
+                }
                 else
                 {
-                    foreach (IdentityError error in resultCreation.Errors)
-                        ModelState.AddModelError("", error.Description);
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
                 }
             }
             return View(citizen);

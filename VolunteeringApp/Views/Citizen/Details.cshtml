@@ -1,0 +1,52 @@
+﻿@model VolunteeringApp.Models.Identity.Citizen
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Profile Details</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Firstname)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Firstname)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Lastname)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Lastname)
+        </dd>
+        <dt class ="col-sm-2">
+        @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+    </dl>
+</div>
+<div class="d-inline-flex gap-1">
+    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-dark">Edit Profile</a>
+    <a asp-action="Delete" asp-route-id="@Model?.Id" class="btn btn-outline-danger">Delete Profile</a>
+</div>
+@* <div class="d-grid gap-2 col-6">
+    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-dark">Edit Profile</a>
+    <a asp-action="Delete" asp-route-id="@Model?.Id" class="btn btn-outline-danger">Delete Profile</a>
+</div> *@

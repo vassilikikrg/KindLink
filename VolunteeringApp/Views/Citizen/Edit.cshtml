@@ -1,0 +1,47 @@
+﻿@model VolunteeringApp.Models.Identity.Citizen
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit profile</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" asp-asp-controller="Citizen">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label class="control-label">Username</label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Firstname" class="control-label"></label>
+                <input asp-for="Firstname" class="form-control" />
+                <span asp-validation-for="Firstname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Lastname" class="control-label"></label>
+                <input asp-for="Lastname" class="form-control" />
+                <span asp-validation-for="Lastname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control" rows="3" ></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-3">
+                <input type="submit" value="Submit changes" class="btn btn-dark" />
+                <a asp-action="Details" asp-route-id="@Model?.Id" class="btn btn-outline-dark">Back to Profile</a>
+            </div>
+        </form>
+    </div>
+</div>
+
