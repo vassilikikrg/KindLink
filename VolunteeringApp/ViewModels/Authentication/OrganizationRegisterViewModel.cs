@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using VolunteeringApp.Models.Enums;
 
-namespace VolunteeringApp.Models.Authentication
+namespace VolunteeringApp.ViewModels.Authentication
 {
     public class OrganizationRegisterViewModel
     {
+        [Key]
+        public string Id { get; set; }
         [Required]
         public string Name { get; set; }
 

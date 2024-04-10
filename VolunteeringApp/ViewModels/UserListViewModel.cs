@@ -1,6 +1,6 @@
 ﻿using VolunteeringApp.Models.Identity;
 
-namespace VolunteeringApp.Models.ViewModels
+namespace VolunteeringApp.ViewModels
 {
     public class UserListViewModel
     {
