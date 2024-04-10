@@ -210,16 +210,35 @@ namespace VolunteeringApp.Controllers
             {
                 return NotFound();
             }
+            // Retrieve the ID of the currently logged-in user
+            var loggedInUserId = _userManager.GetUserId(User);
+
+            // Check if the logged-in user is the owner of the profile and can delete the account
+            if (id != loggedInUserId)
+            {
+                // If the logged-in user is not the owner, return an access denied response
+                return Forbid();
+            }
 
             var rolesForUser = await _userManager.GetRolesAsync(user);
+            var logins = await _userManager.GetLoginsAsync(user);
+            IdentityResult result = IdentityResult.Success;
+
+            foreach (var login in logins)
+            {
+                result = await _userManager.RemoveLoginAsync(user, login.LoginProvider, login.ProviderKey);
+                if (result != IdentityResult.Success)
+                    break;
+            }
             if (rolesForUser.Count > 0)
             {
                 foreach (var role in rolesForUser)
                 {
-                    var result = await _userManager.RemoveFromRoleAsync(user, role);
+                    result = await _userManager.RemoveFromRoleAsync(user, role);
                     if (!result.Succeeded)
                     {
                         // Handle role removal failure
+                        break;
                     }
                 }
             }
