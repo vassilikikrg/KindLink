@@ -6,47 +6,52 @@
 }
 
 <h1>Profile Details</h1>
-
-<div>
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UserName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UserName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Firstname)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Firstname)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Lastname)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Lastname)
-        </dd>
-        <dt class ="col-sm-2">
-        @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-    </dl>
+<div class="col-8 card p-0 my-4 ">
+    <div class="card-header">
+        <!--Citizen Name,Username,Type-->
+        <h5 class="card-title">@Html.DisplayFor(modelItem => Model.Firstname) @Html.DisplayFor(modelItem => Model.Lastname) </h5>
+        <h6 class="card-subtitle mb-2 text-body-secondary fw-lighter">&#64;@Html.DisplayFor(modelItem => Model.UserName)</h6>
+    </div>
+    <div class="card-body">
+        <dl class="row m-0">
+            <!--Citizen Description-->
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Description)
+                </dt>
+            @if (Model.Description != null)
+            {
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Description)
+                </dd>
+            }
+            else
+            {
+                <dd class="col-sm-10">
+                    -
+                </dd>
+            }
+            <hr/>
+            <!--Contact Info-->
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+            <dd class="col-sm-10">
+                <a href="mailto: @Model.Email">
+                    @Html.DisplayFor(model => model.Email)
+                </a>
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </dt>
+            <a href="tel: @Model.PhoneNumber">
+                @Html.DisplayFor(model => model.PhoneNumber)
+            </a>
+        </dl>
+    </div>
+    <div class="card-footer bg-transparent">
+        <!--Links-->
+        <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-dark">Edit Profile</a>
+        <a asp-action="Delete" asp-route-id="@Model?.Id" class="btn btn-outline-danger">Delete Profile</a>
+    </div>
 </div>
-<div class="d-inline-flex gap-1">
-    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-dark">Edit Profile</a>
-    <a asp-action="Delete" asp-route-id="@Model?.Id" class="btn btn-outline-danger">Delete Profile</a>
-</div>
-@* <div class="d-grid gap-2 col-6">
-    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-dark">Edit Profile</a>
-    <a asp-action="Delete" asp-route-id="@Model?.Id" class="btn btn-outline-danger">Delete Profile</a>
-</div> *@

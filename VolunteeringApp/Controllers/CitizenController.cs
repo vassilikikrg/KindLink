@@ -75,7 +75,7 @@ namespace VolunteeringApp.Controllers
         //    return View(citizenRegisterViewModel);
         //}
 
-        [Authorize]
+        [Authorize(Roles ="Citizen")]
         // GET: Citizen/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
@@ -110,6 +110,7 @@ namespace VolunteeringApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Citizen")]
         public async Task<IActionResult> Edit(string id, [Bind("Id,UserName,Email,Firstname,Lastname,Description")] Citizen citizen)
         {
             if (id != citizen.Id)
@@ -184,6 +185,7 @@ namespace VolunteeringApp.Controllers
 
 
         // GET: Citizen/Delete/5
+        [Authorize(Roles = "Citizen")]
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -205,6 +207,7 @@ namespace VolunteeringApp.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize]
+        [Authorize(Roles = "Citizen")]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             if (id == null)
