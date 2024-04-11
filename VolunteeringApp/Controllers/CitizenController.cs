@@ -33,7 +33,14 @@ namespace VolunteeringApp.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                // If id is null, try to get the ID from the current user
+                id = _userManager.GetUserId(User);
+
+                if (id == null)
+                {
+                    // If the ID is still null, return NotFound
+                    return NotFound();
+                }
             }
 
             var citizen = await _context.Citizens
@@ -252,7 +259,7 @@ namespace VolunteeringApp.Controllers
             else
             {
                 // Handle user deletion failure
-                return View();
+                return RedirectToAction("Citizen", "Delete");
             }
         }
 

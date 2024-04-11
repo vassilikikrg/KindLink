@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - VolunteeringApp</title>
+    <title>@ViewData["Title"] - KindLink</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/VolunteeringApp.styles.css" asp-append-version="true" />
@@ -28,9 +28,36 @@
                     </ul>
                     @if (User?.Identity?.IsAuthenticated ?? false)
                     {
+                        <ul class="navbar-nav ml-auto me-5">
+                            @if (User.IsInRole("Citizen"))
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Hi, @User.Identity.Name</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" asp-controller="Citizen" asp-action="Details">Profile Management</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" asp-controller="Account" asp-action="Logout">Logout</a></li>
+                                    </ul>
+                                </li>
+                            }
+                            @if (User.IsInRole("Organization"))
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Hi, @User.Identity.Name</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" asp-controller="Organization" asp-action="Details">Profile Details</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" asp-controller="Account" asp-action="Logout">Logout</a></li>
+                                    </ul>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
                         <ul class="navbar-nav ml-auto">
                             <li>
-                                <a asp-controller="Account" asp-action="Logout" class="btn btn-danger">Logout</a>
+                                <a asp-controller="Account" asp-action="Login" class="btn btn-dark">Login</a>
                             </li>
                         </ul>
                     }
@@ -46,7 +73,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2023 - Volunteering App - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2024 - KindLink - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
