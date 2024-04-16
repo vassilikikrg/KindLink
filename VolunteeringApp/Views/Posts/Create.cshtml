@@ -1,0 +1,35 @@
+﻿@model VolunteeringApp.ViewModels.Social.PostViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h1>Create a New Post</h1>
+        <hr />
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="Title" class="form-label">Title</label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Body" class="form-label">Body</label>
+                <textarea asp-for="Body" class="form-control" rows="11"></textarea>
+                <span asp-validation-for="Body" class="text-danger"></span>
+            </div>
+
+            <div class="d-grid gap-2">
+                <input type="submit" value="Create" class="btn btn-dark" />
+                <a asp-action="Index" class="btn btn-outline-dark">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+

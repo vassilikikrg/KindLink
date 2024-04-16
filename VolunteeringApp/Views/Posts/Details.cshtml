@@ -1,0 +1,22 @@
+﻿@model VolunteeringApp.Models.Social.Post
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="display-6">@Html.DisplayFor(model => model.Title)</h1>
+<hr />
+<h6 class="text-end text-muted">
+    Posted by @Html.DisplayFor(model => model.Author.OfficialName) (&#64;@Html.DisplayFor(model => model.Author.UserName)) at @Html.DisplayFor(model => model.CreatedAt)
+</h6>
+<div class="lead my-4">
+    @Html.DisplayFor(model => model.Body)
+</div>
+<div>
+    @if(ViewBag.IsTheAuthor){
+        <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-outline-dark">Edit</a>
+        <a asp-action="Delete" asp-route-id="@Model?.Id" class="btn btn-outline-danger">Delete</a>
+    }
+    <a asp-action="Index" class="btn btn-dark">Back to List</a>
+</div>

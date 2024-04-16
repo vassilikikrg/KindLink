@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VolunteeringApp.Data;
 
@@ -11,9 +12,11 @@ using VolunteeringApp.Data;
 namespace VolunteeringApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240416091049_Posts")]
+    partial class Posts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,14 +54,14 @@ namespace VolunteeringApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "e9b2087c-0ad7-4b9a-9bff-4198c5e252d8",
+                            Id = "a3c04081-c36b-44e3-b507-aebc3e533e85",
                             ConcurrencyStamp = "1",
                             Name = "Organization",
                             NormalizedName = "ORGANIZATION"
                         },
                         new
                         {
-                            Id = "7fae40a4-1a28-4536-85c1-88a390297583",
+                            Id = "da89485d-9c8c-403d-b095-b4788d392200",
                             ConcurrencyStamp = "2",
                             Name = "Citizen",
                             NormalizedName = "CITIZEN"
@@ -317,9 +320,6 @@ namespace VolunteeringApp.Migrations
                     b.Property<string>("Body")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
                         .IsRequired()

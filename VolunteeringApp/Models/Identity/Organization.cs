@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using VolunteeringApp.Models.Chat;
 using VolunteeringApp.Models.Enums;
+using VolunteeringApp.Models.Social;
 
 namespace VolunteeringApp.Models.Identity
 {
@@ -14,5 +16,6 @@ namespace VolunteeringApp.Models.Identity
         public string? Website { get; set; }
 
         //public string Location { get; set; }
+        public ICollection<Post> Posts { get; } = [];
     }
 }

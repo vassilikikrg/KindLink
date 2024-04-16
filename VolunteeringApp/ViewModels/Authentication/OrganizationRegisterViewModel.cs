@@ -5,8 +5,6 @@ namespace VolunteeringApp.ViewModels.Authentication
 {
     public class OrganizationRegisterViewModel
     {
-        [Key]
-        public string Id { get; set; }
         [Required]
         public string Name { get; set; }
 

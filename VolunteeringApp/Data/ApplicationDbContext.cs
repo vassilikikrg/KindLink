@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using VolunteeringApp.Models.Chat;
 using VolunteeringApp.Models.Identity;
+using VolunteeringApp.Models.Social;
 
 namespace VolunteeringApp.Data
 {
@@ -13,6 +14,7 @@ namespace VolunteeringApp.Data
         public DbSet<Message> Messages { get; set; }
         public DbSet<Conversation> Conversations { get; set; }
         public DbSet<GroupMember> GroupMembers { get; set; }
+        public DbSet<Post> Posts { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder builder)

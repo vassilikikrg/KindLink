@@ -87,14 +87,20 @@ namespace VolunteeringApp.Controllers
                 IdentityResult resultRole = await userManager.AddToRoleAsync(appUser, "Organization");
                 if (resultCreation.Succeeded && resultRole.Succeeded)
                     return RedirectToAction("Login");
-                else
+            }
+            else
+            {
+                foreach (var modelState in ModelState.Values)
                 {
-                    foreach (IdentityError error in resultCreation.Errors)
-                        ModelState.AddModelError("", error.Description);
+                    foreach (var error in modelState.Errors)
+                    {
+                        ModelState.AddModelError("", error.ErrorMessage);
+                    }
                 }
             }
             return View(organization);
         }
+
         [HttpGet]
         public IActionResult Login(string? returnUrl = null)
         {
