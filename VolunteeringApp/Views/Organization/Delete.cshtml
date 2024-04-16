@@ -1,0 +1,40 @@
+﻿@model VolunteeringApp.Models.Identity.Organization
+
+@{
+    ViewData["Title"] = "Delete Account";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h1 class="display-5 mb-4">Are you sure you want to delete your profile (&#64; @Html.DisplayFor(model => model.UserName))?</h1>
+<div>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        Delete account
+    </button>
+    <a asp-action="Details" class="btn btn-outline-dark">Go back to profile management</a>
+
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Confirm Account Deletion</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-danger">
+                    <img src="~/images/bin.png" class="img-fluid" />
+                    <b>This action CANNOT be undone!</b>
+                </div>
+                <div class="modal-footer">
+                    <form asp-action="Delete" asp-route-id="@Model.Id" method="post">
+                        <!-- Hidden input for CSRF protection -->
+                        <input type="hidden" asp-for="Id" />
+                        <input type="submit" value="Delete Account" class="btn btn-outline-danger" />
+                    </form>
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

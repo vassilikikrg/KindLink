@@ -1,0 +1,51 @@
+﻿@model VolunteeringApp.Models.Identity.Organization
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit profile</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" asp-controller="Organization">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="UserName" class="control-label"></label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OfficialName" class="control-label"></label>
+                <input asp-for="OfficialName" class="form-control" />
+                <span asp-validation-for="OfficialName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrganizationType" class="control-label"></label>
+                <select asp-for="OrganizationType" class="form-control"></select>
+                <span asp-validation-for="OrganizationType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label"></label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Website" class="control-label"></label>
+                <input asp-for="Website" class="form-control" />
+                <span asp-validation-for="Website" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-dark" />
+                <a asp-action="Details" asp-route-id="@Model?.Id" class="btn btn-outline-dark">Back to Profile</a>
+            </div>
+        </form>
+    </div>
+</div>
