@@ -51,7 +51,15 @@
     </div>
     <div class="card-footer bg-transparent">
         <!--Links-->
-        <a class="btn btn-dark" asp-controller="Chat" asp-action="CreateOrFetchPrivateChat" asp-route-id="@Model.Id">Contact</a>
-        <a class="btn btn-outline-dark" asp-action="Index">Back to List</a>
+        @if (ViewBag.isTheProfileOwner)
+        {
+            <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-dark">Edit Profile</a>
+            <a asp-action="Delete" asp-route-id="@Model?.Id" class="btn btn-outline-danger">Delete Profile</a>
+        }
+        else
+        {
+            <a class="btn btn-dark" asp-controller="Chat" asp-action="CreateOrFetchPrivateChat" asp-route-id="@Model.Id">Contact</a>
+            <a class="btn btn-outline-dark" asp-action="Index">Back to List</a>
+        }
     </div>
 </div>

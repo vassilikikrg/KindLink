@@ -75,16 +75,24 @@ namespace VolunteeringApp.Controllers
         // GET: Organization/Details/5
         public async Task<IActionResult> Details(string id)
         {
+            var loggedInId = _userManager.GetUserId(User);
             if (id == null)
             {
                 // If id is null, try to get the ID from the current user
-                id = _userManager.GetUserId(User);
-
+                id = loggedInId;
                 if (id == null)
                 {
                     // If the ID is still null, return NotFound
                     return NotFound();
                 }
+            }
+            if (id != loggedInId)
+            {   // If the logged-in user is not the owner 
+                ViewBag.isTheProfileOwner = false;
+            }
+            else
+            {
+                ViewBag.isTheProfileOwner = true;
             }
 
             var organization = await _context.Organizations
@@ -140,6 +148,23 @@ namespace VolunteeringApp.Controllers
                 return NotFound();
             }
 
+            // Check if email or password is null
+            if (string.IsNullOrWhiteSpace(organization.UserName))
+            {
+                ModelState.AddModelError("UserName", "The username is required");
+            }
+
+            if (string.IsNullOrWhiteSpace(organization.Email))
+            {
+                ModelState.AddModelError("Email", "The email is required");
+            }
+
+            // If email or password is null, return to the view with errors
+            if (!ModelState.IsValid)
+            {
+                return View(organization);
+            }
+
             // Retrieve the ID of the currently logged-in user
             var loggedInUserId = _userManager.GetUserId(User);
 
@@ -182,7 +207,7 @@ namespace VolunteeringApp.Controllers
                     existingOrganization.Email = organization.Email;
                     existingOrganization.OfficialName = organization.OfficialName;
                     existingOrganization.Phone = organization.Phone;
-                    existingOrganization.Website=organization.Website;
+                    existingOrganization.Website = organization.Website;
                     existingOrganization.OrganizationType = organization.OrganizationType;
                     existingOrganization.Description = organization.Description;
 
@@ -205,6 +230,7 @@ namespace VolunteeringApp.Controllers
             }
             return View(organization);
         }
+
 
 
 
