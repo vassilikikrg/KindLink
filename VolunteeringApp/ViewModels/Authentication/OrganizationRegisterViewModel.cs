@@ -1,29 +1,35 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using VolunteeringApp.Models.Enums;
 
 namespace VolunteeringApp.ViewModels.Authentication
 {
     public class OrganizationRegisterViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "Username is required")]
+        [Display(Name = "Username")]
         public string Name { get; set; }
 
-        [Required]
-        [RegularExpression("^[a-zA-Z0-9_\\.-]+@([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$", ErrorMessage = "E-mail is not valid")]
+        [Required(ErrorMessage = "Email is required")]
+        [EmailAddress(ErrorMessage = "Invalid email format")]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Password is required")]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Required]
+        [Required(ErrorMessage ="Please provide the official name of the organization")]
+        [Display(Name="Official Name")]
         public string OfficialName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Please provide the type of the organization")]
+        [Display(Name = "Organization Type")]
         public OrganizationType OrganizationType { get; set; }
 
         public string Phone { get; set; }
 
         public string Website { get; set; }
-
+        [Display(Name = "Short description")]
+        public string Description { get; set; }
     }
 }

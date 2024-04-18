@@ -80,7 +80,8 @@ namespace VolunteeringApp.Controllers
                     OfficialName = organization.OfficialName,
                     OrganizationType = organization.OrganizationType,
                     Phone = organization.Phone,
-                    Website = organization.Website
+                    Website = organization.Website,
+                    Description=organization.Description
                 };
 
                 IdentityResult resultCreation = await organizationManager.CreateAsync(appUser, organization.Password);

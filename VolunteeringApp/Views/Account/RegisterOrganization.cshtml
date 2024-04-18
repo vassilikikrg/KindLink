@@ -1,53 +1,67 @@
 ﻿@model VolunteeringApp.ViewModels.Authentication.OrganizationRegisterViewModel
 
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Organization Registration";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Register</h1>
-
-<form method="post">
-    <div class="form-group">
-        <label asp-for="Name"></label>
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Email"></label>
-        <input asp-for="Email" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Password"></label>
-        <input asp-for="Password" class="form-control" />
-        <span asp-validation-for="Password" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="OfficialName"></label>
-        <input asp-for="OfficialName" class="form-control" />
-        <span asp-validation-for="OfficialName" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Phone"></label>
-        <input asp-for="Phone" class="form-control" />
-        <span asp-validation-for="Phone" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Website"></label>
-        <input asp-for="Website" class="form-control" />
-        <span asp-validation-for="Website" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="OrganizationType" class="col-md-2 control-label"></label>
-        <div class="col-md-10">
-            <select asp-for="OrganizationType" asp-items="Html.GetEnumSelectList<VolunteeringApp.Models.Enums.OrganizationType>()">
-                <option selected="selected" value="">Please select</option>
-            </select>
-            <span asp-validation-for="OrganizationType" class="text-danger"></span>
+<div class="container">
+    <div class="row ">
+        <div class="col-md-6 d-flex align-items-center">
+            <img src="~/images/volunteering_register_org.jpg" class="img-fluid mx-auto" alt="Organization Registration Image" />
+        </div>
+        <div class="col-md-6">
+            <h1 class="text-center display-4">Organization Registration</h1>
+            <h5 class="text-center lead">Join <i>KindLink</i> and make a difference!</h5>
+            <div class="mx-auto col-11">
+            <form method="post" asp-action="RegisterOrganization">
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label"></label>
+                    <input type="text" asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input type="email" asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label"></label>
+                    <input type="password" asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="OfficialName" class="form-label"></label>
+                    <input asp-for="OfficialName" class="form-control" />
+                    <span asp-validation-for="OfficialName" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="OrganizationType" class="form-label"></label>
+                    <select asp-for="OrganizationType" class="form-select" asp-items="Html.GetEnumSelectList<VolunteeringApp.Models.Enums.OrganizationType>()">
+                        <option value="">Please select</option>
+                    </select>
+                    <span asp-validation-for="OrganizationType" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Phone" class="form-label"></label>
+                    <input asp-for="Phone" class="form-control" />
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Website" class="form-label"></label>
+                    <input asp-for="Website" class="form-control" />
+                    <span asp-validation-for="Website" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label"></label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="d-grid gap-2 mt-3">
+                    <button type="submit" class="btn btn-dark">Register</button>
+                </div>
+            </form>
+            </div>
         </div>
     </div>
-    <button type="submit" class="btn btn-primary">Register</button>
-
-    <!-- Display errors at the top of the form -->
-    <div asp-validation-summary="All" class="text-danger"></div>
-</form>
+</div>
