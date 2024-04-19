@@ -15,22 +15,24 @@ namespace VolunteeringApp.Data
         public DbSet<Conversation> Conversations { get; set; }
         public DbSet<GroupMember> GroupMembers { get; set; }
         public DbSet<Post> Posts { get; set; }
+        public DbSet<FollowRelationship> FollowRelationships { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            SeedRoles(builder);
+            //SeedRoles(builder);
             builder.Entity<Citizen>(entity => { entity.ToTable("Citizens"); });
             builder.Entity<Organization>(entity => { entity.ToTable("Organizations"); });
         }
 
-        private static void SeedRoles(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<IdentityRole>().HasData(
-                new IdentityRole() { Name = "Organization", ConcurrencyStamp = "1",NormalizedName="ORGANIZATION"},
-                new IdentityRole() { Name = "Citizen", ConcurrencyStamp = "2", NormalizedName = "CITIZEN" }
-                );
-        }
+        //private static void SeedRoles(ModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Entity<IdentityRole>().HasData(
+        //        new IdentityRole() { Name = "Organization", ConcurrencyStamp = "1",NormalizedName="ORGANIZATION"},
+        //        new IdentityRole() { Name = "Citizen", ConcurrencyStamp = "2", NormalizedName = "CITIZEN" }
+        //        );
+        //}
     }
 }

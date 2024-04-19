@@ -89,6 +89,14 @@ namespace VolunteeringApp.Controllers
             if (id != loggedInId)
             {   // If the logged-in user is not the owner 
                 ViewBag.isTheProfileOwner = false;
+                if (FollowRelationshipExists(loggedInId, id))
+                {
+                    ViewBag.isFollowing = true;
+                }
+                else
+                {
+                    ViewBag.isFollowing = false;
+                }
             }
             else
             {
@@ -321,6 +329,10 @@ namespace VolunteeringApp.Controllers
         private bool OrganizationExists(string id)
         {
             return _context.Organizations.Any(e => e.Id == id);
+        }
+        private bool FollowRelationshipExists(string followerId, string followedId)
+        {
+            return _context.FollowRelationships.Any(e => e.FollowerId == followerId && e.FollowedId == followedId);
         }
     }
 }

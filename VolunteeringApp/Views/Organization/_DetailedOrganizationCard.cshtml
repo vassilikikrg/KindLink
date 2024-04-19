@@ -58,6 +58,21 @@
         }
         else
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (ViewBag.isFollowing)
+                {
+                    <form asp-controller="Follow" asp-action="Unfollow" asp-route-id="@Model.Id" method="post">
+                        <button type="submit" class="btn btn-secondary">Unfollow</button>
+                    </form>
+                }
+                else if (!ViewBag.isFollowing)
+                {
+                    <form asp-controller="Follow" asp-action="Follow" asp-route-id="@Model.Id" method="post">
+                        <button type="submit" class="btn btn-secondary">Follow</button>
+                    </form>
+                }
+            }
             <a class="btn btn-dark" asp-controller="Chat" asp-action="CreateOrFetchPrivateChat" asp-route-id="@Model.Id">Contact</a>
             <a class="btn btn-outline-dark" asp-action="Index">Back to List</a>
         }

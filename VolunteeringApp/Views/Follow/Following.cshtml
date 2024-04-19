@@ -1,0 +1,25 @@
+﻿@model IEnumerable<VolunteeringApp.Models.Social.FollowRelationship>
+
+@{
+    ViewData["Title"] = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="display-4">Following</h1>
+<hr />
+<table class="table lead">
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr class=" row">
+                <td class="col-10">
+                    &#64;@Html.DisplayFor(modelItem => item.Followed.UserName)
+                </td>
+                <td class="col-2">
+                    <a class="btn btn-dark" asp-controller="Organization" asp-action="Details" asp-route-id="@item.Followed.Id">Go to profile</a>
+                    <a class="btn btn-outline-dark" asp-controller="Chat" asp-action="CreateOrFetchPrivateChat" asp-route-id="@item.Followed.Id">Contact</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
