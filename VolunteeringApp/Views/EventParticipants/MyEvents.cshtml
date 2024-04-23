@@ -1,0 +1,24 @@
+﻿@model IEnumerable<VolunteeringApp.Models.Social.EventParticipant>
+
+@{
+    ViewData["Title"] = "My Events";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="display-4">The events I have Joined</h1>
+</hr>
+<table class="table">
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr class="row lead">
+                <td class="col-10">
+                    &#64;@Html.DisplayFor(modelItem => item.Event.Title)
+                </td>
+                <td class="col-2">
+                    <a class="btn btn-dark" asp-controller="Events" asp-action="Details" asp-route-id="@item.EventId">View Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
