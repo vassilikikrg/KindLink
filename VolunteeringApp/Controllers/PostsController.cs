@@ -103,7 +103,7 @@ namespace VolunteeringApp.Controllers
                 return NotFound();
             }
             if (post.AuthorId != _userManager.GetUserId(User))
-            {
+            { //if user is not the author,he can't edit the post
                 return Forbid();
             }
             return View(post);
@@ -123,7 +123,7 @@ namespace VolunteeringApp.Controllers
             }
 
             if (post.AuthorId != _userManager.GetUserId(User))
-            {
+            { //if user is not the author,he can't edit the post
                 return Forbid();
             }
 
@@ -166,7 +166,10 @@ namespace VolunteeringApp.Controllers
             {
                 return NotFound();
             }
-
+            if (post.AuthorId != _userManager.GetUserId(User))
+            { //if user is not the author,he can't delete the post
+                return Forbid();
+            }
             return View(post);
         }
 
@@ -177,6 +180,10 @@ namespace VolunteeringApp.Controllers
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var post = await _context.Posts.FindAsync(id);
+            if (post.AuthorId != _userManager.GetUserId(User))
+            { //if user is not the author,he can't delete the post
+                return Forbid();
+            }
             if (post != null)
             {
                 _context.Posts.Remove(post);

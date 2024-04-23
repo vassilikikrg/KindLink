@@ -1,0 +1,27 @@
+﻿@model VolunteeringApp.Models.Social.Event
+
+@{
+    ViewData["Title"] = "Event Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <div class="card-img-top" style="height: 400px; overflow: hidden; background-image: url('data:image/jpeg;base64,@Convert.ToBase64String(@Model.Image)'); background-size: cover; background-position: center;"></div>
+    <div class="card-body">
+        <div class="text-danger">From @Model.StartTime.ToString("ddd, dd MMM yyyy 'at' hh:mm tt") to @Model.EndTime.ToString("ddd, dd MMM yyyy 'at' hh:mm tt")</div>
+        <h4 class="card-title display-6">@Model.Title</h4>
+        <h6 class="card-text mb-2 text-muted">Organized by @Model.Organizer.OfficialName (&#64;@Model.Organizer.UserName)</h6>
+        <hr />
+        <div class="mt-2 fw-bolder">Description</div>
+        <div>@Model.Description</div>
+        <div class="mt-2 fw-bolder">@Html.DisplayNameFor(model=>model.MaxParticipants)</div>
+        <div>@Model.MaxParticipants</div>
+        <div class="mt-2 fw-bolder">Location</div>
+        <div>@Model.Location</div>
+        <div class="mt-3 row justify-content-end">
+            <a asp-action="Index" class="col-auto link-dark" style="text-decoration: none;">Back to List</a>
+            <a asp-action="Edit" asp-route-id="@Model?.Id" class="col-auto btn btn-outline-dark ms-2">Edit</a>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,62 @@
+﻿@model VolunteeringApp.ViewModels.Social.EventViewModel
+
+@{
+    ViewData["Title"] = "Create a new Event";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h1 class="text-center">Create a new Event</h1>
+        <hr />
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="mb-3">
+                <label asp-for="Title" class="form-label">Title</label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label">Description</label>
+                <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col">
+                    <label asp-for="StartTime" class="form-label">Start Time</label>
+                    <input asp-for="StartTime" class="form-control" />
+                    <span asp-validation-for="StartTime" class="text-danger"></span>
+                </div>
+                <div class="col">
+                    <label asp-for="EndTime" class="form-label">End Time</label>
+                    <input asp-for="EndTime" class="form-control" />
+                    <span asp-validation-for="EndTime" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col">
+                    <label asp-for="MaxParticipants" class="form-label">Max Participants</label>
+                    <input asp-for="MaxParticipants" class="form-control" />
+                    <span asp-validation-for="MaxParticipants" class="text-danger"></span>
+                </div>
+                <div class="col">
+                    <label asp-for="Location" class="form-label">Location</label>
+                    <input asp-for="Location" class="form-control" />
+                    <span asp-validation-for="Location" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label asp-for="ImageFile" class="form-label">Event Background Image</label>
+                <input asp-for="ImageFile" class="form-control" />
+                <span asp-validation-for="ImageFile" class="text-danger"></span>
+            </div>
+            <div class="d-grid gap-2">
+                <input type="submit" value="Create" class="btn btn-dark" />
+                <a asp-action="Index" class="btn btn-outline-dark">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>

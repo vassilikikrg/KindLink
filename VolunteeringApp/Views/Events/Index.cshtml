@@ -1,0 +1,18 @@
+﻿@model IEnumerable<VolunteeringApp.Models.Social.Event>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="display-4">Upcoming Events</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
+    @foreach (var item in Model)
+    {
+        @await Html.PartialAsync("_CompactEventCard", item)
+    }
+</div>

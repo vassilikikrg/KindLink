@@ -16,6 +16,9 @@ namespace VolunteeringApp.Data
         public DbSet<GroupMember> GroupMembers { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<FollowRelationship> FollowRelationships { get; set; }
+        public DbSet<Event> Events { get; set; }
+        public DbSet<EventParticipant> Participants { get; set; }
+
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
@@ -26,7 +29,6 @@ namespace VolunteeringApp.Data
             builder.Entity<Citizen>(entity => { entity.ToTable("Citizens"); });
             builder.Entity<Organization>(entity => { entity.ToTable("Organizations"); });
         }
-
         //private static void SeedRoles(ModelBuilder modelBuilder)
         //{
         //    modelBuilder.Entity<IdentityRole>().HasData(

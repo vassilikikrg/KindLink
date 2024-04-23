@@ -1,0 +1,14 @@
+﻿@model VolunteeringApp.Models.Social.Event
+<div class="col mb-4">
+    <div class="card h-100">
+        <div style="height: 200px; overflow: hidden;">
+            <img src="data:image/jpeg;base64,@Convert.ToBase64String(@Model.Image)" class="card-img-top img-fluid" style="object-fit: cover; height: 100%;" alt="Event Image">
+        </div>
+        <div class="card-body d-flex flex-column">
+            <h6 class="card-subtitle mb-2 text-body-secondary text-danger">@Model.StartTime.ToString("ddd, dd MMM yyyy 'at' hh:mm tt")</h6>
+            <h4 class="card-title">@Html.DisplayFor(model => model.Title)</h4>
+            <p class="card-text">&#64;@Html.DisplayFor(model => model.Organizer.UserName)</p>
+            <a asp-action="Details" class="btn btn-dark mt-auto" asp-route-id="@Model?.Id">View Details</a>
+        </div>
+    </div>
+</div>
