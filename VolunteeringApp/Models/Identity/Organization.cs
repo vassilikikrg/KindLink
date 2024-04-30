@@ -11,8 +11,6 @@ namespace VolunteeringApp.Models.Identity
 
         public OrganizationType OrganizationType { get; set; }
 
-        public string? Phone { get; set; }
-
         public string? Website { get; set; }
 
         //public string Location { get; set; }

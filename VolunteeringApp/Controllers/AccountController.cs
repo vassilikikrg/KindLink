@@ -79,7 +79,7 @@ namespace VolunteeringApp.Controllers
                     Email = organization.Email,
                     OfficialName = organization.OfficialName,
                     OrganizationType = organization.OrganizationType,
-                    Phone = organization.Phone,
+                    PhoneNumber = organization.Phone,
                     Website = organization.Website,
                     Description=organization.Description
                 };

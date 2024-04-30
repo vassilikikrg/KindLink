@@ -1,0 +1,14 @@
+﻿@model IEnumerable<VolunteeringApp.Models.Identity.Organization>
+
+<div class="card" style="width: 18rem;">
+    <div class="card-body">
+        <h5 class="card-title">Recently Joined</h5>
+        <hr/>
+        <div class="list-group list-group-flush">
+            @foreach (var item in Model)
+            {
+                <a asp-controller="Organization" asp-action="Details" asp-route-id="@item.Id" class="list-group-item list-group-item-action fs-6">@item.OfficialName (&#64;@item.UserName)</a>
+            }
+        </div>
+    </div>
+</div>

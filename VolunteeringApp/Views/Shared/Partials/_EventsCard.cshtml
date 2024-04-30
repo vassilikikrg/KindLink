@@ -1,0 +1,40 @@
+﻿@model IEnumerable<VolunteeringApp.Models.Social.Event>
+
+<div class="card" style="width: 18rem;">
+    <div class="card-body">
+        <h5 class="card-title">Don't miss these events!</h5>
+        <hr />
+        <h6 class="card-subtitle">From organizations you follow</h6>
+        <div class="list-group list-group-flush">
+            @foreach (var item in Model)
+            {
+                <a asp-controller="Events" asp-action="Details" asp-route-id="@item.Id" class="list-group-item list-group-item-action">
+                    <div>
+                        <div class="fs-6"><strong>@item.Title</strong></div>
+                        <div class="text-muted">
+                            @item.StartTime.ToString("ddd, dd MMM yyyy 'at' hh:mm tt")
+                        </div>
+                    </div>
+                </a>
+            }
+        </div>
+        <hr />
+        <h6 class="card-subtitle mt-4">From other organizations</h6>
+        <div class="list-group list-group-flush">
+            @foreach (var item in Model)
+            {
+                <a asp-controller="Events" asp-action="Details" asp-route-id="@item.Id" class="list-group-item list-group-item-action">
+                    <div>
+                        <div class="fs-6"><strong>@item.Title</strong></div>
+                        <div class="text-muted">
+                            @item.StartTime.ToString("ddd, dd MMM yyyy 'at' hh:mm tt")
+                        </div>
+                    </div>
+                </a>
+            }
+        </div>
+    </div>
+    <div class="mb-2 text-center">
+        <a asp-controller="Events" asp-action="Index" class="btn btn-dark">Explore More</a>
+    </div>
+</div>

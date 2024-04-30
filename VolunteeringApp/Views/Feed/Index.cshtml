@@ -1,0 +1,47 @@
+﻿@model IEnumerable<VolunteeringApp.Models.Social.Post>
+
+@{
+    ViewData["Title"] = "Feed";
+}
+<style>
+    .postContainer {
+        max-height: 500px;
+        overflow-y: scroll; /* Add the ability to scroll */
+    }
+
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .postContainer::-webkit-scrollbar {
+            display: none;
+        }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .postContainer {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+    }
+</style>
+<div class="row my-4">
+    <h3 >
+        Welcome back, @User.Identity.Name !
+    </h3>
+
+</div>
+<div class="row">
+    
+    <div class="col-3">
+        @Html.Partial("~/Views/Shared/Partials/_EventsCard.cshtml", @ViewData["FeaturedEvents"])
+    </div>
+    <div class="col-6">
+        <!-- Post feed -->
+        <h6 class="display-6">Recent Posts</h6>
+        <div class="postContainer">
+            @foreach (var item in Model)
+            {
+                @Html.Partial("~/Views/Shared/Partials/_PostTemplate.cshtml", item)
+            }
+        </div>
+    </div>
+    <div class="col-3">
+        @Html.Partial("~/Views/Shared/Partials/_RecentlyJoinedOrganizationsCard.cshtml", @ViewData["RecentOrganizations"])
+    </div>
+</div>

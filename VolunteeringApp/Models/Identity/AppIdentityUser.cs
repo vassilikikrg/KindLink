@@ -6,6 +6,7 @@ namespace VolunteeringApp.Models.Identity
     public class AppIdentityUser : IdentityUser
     {
         public string? Description { get; set; }
+        public DateTime? CreatedAt { get; set; } = DateTime.UtcNow;
         public ICollection<GroupMember> GroupMembers { get; } = [];
         public ICollection<Message> Messages { get; } = [];
     }

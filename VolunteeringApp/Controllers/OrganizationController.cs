@@ -214,7 +214,7 @@ namespace VolunteeringApp.Controllers
                     existingOrganization.UserName = organization.UserName;
                     existingOrganization.Email = organization.Email;
                     existingOrganization.OfficialName = organization.OfficialName;
-                    existingOrganization.Phone = organization.Phone;
+                    existingOrganization.PhoneNumber = organization.PhoneNumber;
                     existingOrganization.Website = organization.Website;
                     existingOrganization.OrganizationType = organization.OrganizationType;
                     existingOrganization.Description = organization.Description;
