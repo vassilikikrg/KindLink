@@ -13,6 +13,6 @@ namespace VolunteeringApp.Models.Social
         public AppIdentityUser Follower { get; set; } // Navigation property to the follower user
 
         public string FollowedId { get; set; } // The user who is being followed
-        public AppIdentityUser Followed { get; set; } // Navigation property to the followed user
+        public Organization Followed { get; set; } // Navigation property to the followed user
     }
 }
