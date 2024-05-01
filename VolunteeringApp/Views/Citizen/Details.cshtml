@@ -5,53 +5,100 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Profile Details</h1>
-    <hr />
-<div class="col-8 card p-0 my-4 ">
+<h1 class="mb-4">Profile Details</h1>
+<hr class="mb-4" />
+
+<div class="col-8 card p-0 my-4">
     <div class="card-header">
-        <!--Citizen Name,Username,Type-->
-        <h5 class="card-title">@Html.DisplayFor(modelItem => Model.Firstname) @Html.DisplayFor(modelItem => Model.Lastname) </h5>
-        <h6 class="card-subtitle mb-2 text-body-secondary fw-lighter">&#64;@Html.DisplayFor(modelItem => Model.UserName)</h6>
+        <!-- Citizen Name, Username, Type -->
+        <h5 class="card-title">@Html.DisplayFor(modelItem => Model.Firstname) @Html.DisplayFor(modelItem => Model.Lastname)</h5>
+        <h6 class="card-subtitle mb-2 text-body-secondary fw-light">&#64;@Html.DisplayFor(modelItem => Model.UserName)</h6>
     </div>
     <div class="card-body">
         <dl class="row m-0">
-            <!--Citizen Description-->
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Description)
-                </dt>
-            @if (Model.Description != null)
-            {
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.Description)
-                </dd>
-            }
-            else
-            {
-                <dd class="col-sm-10">
-                    -
-                </dd>
-            }
-            <hr/>
-            <!--Contact Info-->
+            <!-- Citizen Description -->
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Email)
+                <i class="bi bi-sticky-fill"></i>
+                Description
+            </dt>
+            <dd class="col-sm-10">
+                @if (Model.Description != null)
+                {
+                    @Html.DisplayFor(model => model.Description)
+                }
+                else
+                {
+                    <em>No description provided.</em>
+                }
+            </dd>
+            <hr />
+
+            <!-- Email -->
+            <dt class="col-sm-2">
+                <i class="bi bi-envelope-fill"></i> <!-- Email icon -->
+                Email
             </dt>
             <dd class="col-sm-10">
                 <a href="mailto: @Model.Email">
                     @Html.DisplayFor(model => model.Email)
                 </a>
             </dd>
+
+            <!-- Phone Number -->
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.PhoneNumber)
+                <i class="bi bi-telephone-fill"></i> <!-- Phone icon -->
+                Phone
             </dt>
-            <a href="tel: @Model.PhoneNumber">
-                @Html.DisplayFor(model => model.PhoneNumber)
-            </a>
+            <dd class="col-sm-10">
+                <a href="tel: @Model.PhoneNumber">
+                    @Html.DisplayFor(model => model.PhoneNumber)
+                </a>
+            </dd>
         </dl>
     </div>
     <div class="card-footer bg-transparent">
-        <!--Links-->
-        <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-dark">Edit Profile</a>
-        <a asp-action="Delete" asp-route-id="@Model?.Id" class="btn btn-outline-danger">Delete Profile</a>
+        <!-- Links -->
+        <div class="d-flex justify-content-between">
+            <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-dark">Edit Profile</a>
+            <a asp-action="Delete" asp-route-id="@Model?.Id" class="btn btn-outline-danger">Delete Profile</a>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <!--List of following organizations-->
+    <div class="col-6">
+        <h4><i class="bi bi-person-heart"></i> Following</h4>
+        <hr />
+        <div class="list-group list-group-flush">
+            @if (ViewData["Following"] != null && ((IEnumerable<VolunteeringApp.Models.Social.FollowRelationship>)ViewData["Following"]).Any())
+            {
+                foreach (var item in ViewData["Following"] as IEnumerable<VolunteeringApp.Models.Social.FollowRelationship>)
+                {
+                    <a href="@Url.Action("Details", "Organization", new { id = item.FollowedId })" class="list-group-item">@item.Followed.OfficialName (&#64;@item.Followed.UserName)</a>
+                }
+            }
+            else
+            {
+                <p>No organizations followed.</p>
+            }
+        </div>
+    </div>
+    <!--List of attended events-->
+    <div class="col-6">
+        <h4><i class="bi bi-calendar-event-fill"></i> Participated in</h4>
+        <hr />
+        <div class="list-group list-group-flush">
+            @if (ViewData["MyEvents"] != null && ((IEnumerable<VolunteeringApp.Models.Social.EventParticipant>)ViewData["MyEvents"]).Any())
+            {
+                foreach (var item in ViewData["MyEvents"] as IEnumerable<VolunteeringApp.Models.Social.EventParticipant>)
+                {
+                    <a href="@Url.Action("Details", "Events", new { id = item.Event.Id })" class="list-group-item">@item.Event.Title (@item.Event.StartTime.ToString("ddd, dd MMM yyyy 'at' hh:mm tt"))</a>
+                }
+            }
+            else
+            {
+                <p>No events attended.</p>
+            }
+        </div>
     </div>
 </div>
