@@ -4,7 +4,9 @@
 <div class="card my-4">
     <div class="card-header">
         <h5 class="card-title">@Html.DisplayFor(modelItem => Model.Title)</h5>
-        <h6 class="card-subtitle mb-2 text-muted">@Html.DisplayFor(modelItem => Model.Author.OfficialName) (&#64;@Html.DisplayFor(modelItem => Model.Author.UserName))</h6>
+        <a class="link-secondary link-offset-2 link-underline link-underline-opacity-0" style="text-decoration:none" asp-controller="Organization" asp-action="Details" asp-route-id="@Model.Author.Id">
+            @Html.DisplayFor(modelItem => Model.Author.OfficialName) (&#64;@Html.DisplayFor(modelItem => Model.Author.UserName))
+        </a>
     </div>
     <div class="card-body">
         <p class="card-text">@Html.DisplayFor(modelItem => Model.Body)</p>

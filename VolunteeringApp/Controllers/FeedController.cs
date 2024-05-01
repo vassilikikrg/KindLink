@@ -27,9 +27,8 @@ namespace VolunteeringApp.Controllers
             var featuredEvents = await _context.Events
                             .Where(e => e.StartTime >= DateTime.UtcNow)
                             .OrderBy(e => e.StartTime)
-                            .Take(2)
+                            .Take(5)
                             .ToListAsync();
-
             ViewData["RecentOrganizations"] =recentOrgs;
             ViewData["FeaturedEvents"] = featuredEvents;
             return View(posts);

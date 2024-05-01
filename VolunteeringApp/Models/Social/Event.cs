@@ -30,5 +30,7 @@ namespace VolunteeringApp.Models.Social
         [ValidateNever]
         public byte[] Image { get; set; }
 
+        // Navigation property to represent the collection of participants
+        public ICollection<EventParticipant> Participants { get; set; }
     }
 }

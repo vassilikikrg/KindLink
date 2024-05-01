@@ -12,20 +12,23 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using VolunteeringApp.Data;
 using VolunteeringApp.Models.Identity;
+using VolunteeringApp.Services;
 
 namespace VolunteeringApp.Controllers
 {
     public class CitizenController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly SocialService _socialService;
         private readonly UserManager<AppIdentityUser> _userManager;
         private readonly SignInManager<AppIdentityUser> _signInManager; 
 
-        public CitizenController(ApplicationDbContext context, UserManager<AppIdentityUser> userManager, SignInManager<AppIdentityUser> signInManager)
+        public CitizenController(ApplicationDbContext context, UserManager<AppIdentityUser> userManager, SignInManager<AppIdentityUser> signInManager,SocialService socialService)
         {
             _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
+            _socialService = socialService;
         }
 
         // GET: Citizen/Details/5
@@ -49,31 +52,12 @@ namespace VolunteeringApp.Controllers
             {
                 return NotFound();
             }
-
+            var following = await _socialService.GetFollowing(id);
+            var myEvents = await _socialService.GetJoinedEvents(id);
+            ViewData["Following"] = following;
+            ViewData["MyEvents"] = myEvents;
             return View(citizen);
         }
-
-        //// GET: Citizen/Create
-        //public IActionResult Create()
-        //{
-        //    return View();
-        //}
-
-        //// POST: Citizen/Create
-        //// To protect from overposting attacks, enable the specific properties you want to bind to.
-        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("Id,Name,Email,Password,Firstname,Lastname")] Citizen citizenRegisterViewModel)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(citizenRegisterViewModel);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(citizenRegisterViewModel);
-        //}
 
         [Authorize(Roles ="Citizen")]
         // GET: Citizen/Edit/5
