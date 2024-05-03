@@ -9,6 +9,10 @@ using VolunteeringApp.Models.Identity;
 using VolunteeringApp.Models.Social;
 using VolunteeringApp.ViewModels.Social;
 using Microsoft.AspNetCore.Http;
+using System.Reflection;
+using VolunteeringApp.Helpers;
+using VolunteeringApp.Models.Enums;
+using System.Linq;
 
 namespace VolunteeringApp.Controllers
 {
@@ -25,12 +29,54 @@ namespace VolunteeringApp.Controllers
         }
 
         // GET: Events
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string eventType,string organizerType, int? pageNumber)
         {
-            var applicationDbContext = _context.Events
-                .OrderBy(e=>e.StartTime)
+            if (_context.Events == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.Organizations' is null.");
+            }
+
+            var events = from e in _context.Events
+                                select e;
+
+            // Apply event type filter
+            if (!String.IsNullOrEmpty(eventType))
+            {
+                ViewBag.isFiltered = true;// Indicate that filtering is applied
+                ViewBag.eventType = eventType;
+                if (eventType.Equals("Upcoming"))
+                {
+                    events = events.Where(e => e.StartTime>=DateTime.UtcNow).Include(e => e.Organizer).OrderBy(e => e.StartTime);
+                }else if (eventType.Equals("Past"))
+                {
+                    events = events.Where(e => e.StartTime<DateTime.UtcNow).Include(e => e.Organizer).OrderByDescending(e => e.StartTime);
+                }
+            }
+
+            // Apply filter based on organization type
+            if (!String.IsNullOrEmpty(organizerType))
+            {
+                // Check if the provided type corresponds to an existing OrganizationType enum value
+                bool correspondsToExistingType = Enum.TryParse(organizerType, out OrganizationType type);
+                if (correspondsToExistingType)
+                {
+                    events = events
+                    .Include(e => e.Organizer)
+                    .Where(e => e.Organizer.OrganizationType == type)
+                    .OrderBy(e => e.StartTime);
+                    ViewBag.isFiltered = true;// Indicate that filtering is applied
+                    ViewBag.organizerType = type;// Indicate that filtering is applied
+                }
+            }
+            if (String.IsNullOrEmpty(organizerType) && String.IsNullOrEmpty(eventType))
+            {
+                events=_context.Events
+                .OrderBy(e => e.StartTime)
                 .Include(e => e.Organizer);
-            return View(await applicationDbContext.ToListAsync());
+            }
+            // Define the page size for pagination
+            int pageSize = 8;
+            return View(await PaginatedList<Event>.CreateAsync(events.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Events/Details/5

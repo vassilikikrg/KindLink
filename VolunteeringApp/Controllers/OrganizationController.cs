@@ -27,7 +27,7 @@ namespace VolunteeringApp.Controllers
         {
             if (_context.Organizations == null)
             {
-                return Problem("Entity set 'MvcMovieContext.Organizations'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Organizations' is null.");
             }
 
             var organizations = from o in _context.Organizations

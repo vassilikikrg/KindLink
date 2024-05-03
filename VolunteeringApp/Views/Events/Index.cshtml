@@ -1,18 +1,126 @@
-﻿@model IEnumerable<VolunteeringApp.Models.Social.Event>
-
+﻿@model PaginatedList<VolunteeringApp.Models.Social.Event>
+@using VolunteeringApp.Helpers
+@using VolunteeringApp.Models.Enums
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="display-4">Upcoming Events</h1>
+<h1 class="display-4">Events</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+@if (User.IsInRole("Organization"))
+{
+    <p>
+        <a asp-action="Create" class="link-dark">Create New</a>
+    </p>
+}
+
+<!-- Filtering-->
+<div class="my-4">
+    <form asp-controller="Events" asp-action="Index" method="get">
+        <label>Filter by Event Type:</label>
+        <select name="eventType">
+            <option value="">All</option>
+            @if (ViewBag.eventType == "Upcoming")
+            {
+                <option value="Upcoming" selected>Upcoming Events</option>
+                <option value="Past">Past Events</option>
+            }
+            else if (ViewBag.eventType == "Past")
+            {
+                <option value="Upcoming">Upcoming Events</option>
+                <option value="Past" selected>Past Events</option>
+            }
+            else
+            {
+                <option value="Upcoming">Upcoming Events</option>
+                <option value="Past">Past Events</option>
+            }
+        </select>
+        <label class="ms-3">Filter by Organizer Type:</label>
+        <select name="organizerType">
+            <option value="">All</option>
+            @foreach (OrganizationType type in Enum.GetValues(typeof(OrganizationType)))
+            {
+                var typeDisplayName = type.GetDisplayName();
+                @if (type == ViewBag.organizerType)
+                {
+                    <option value="@type" selected>@typeDisplayName</option>
+                }
+                else
+                {
+                    <option value="@type">@typeDisplayName</option>
+                }
+            }
+
+        </select>
+
+        <button type="submit" class="btn btn-secondary ms-1">Apply Filters</button>
+        @if (ViewBag.isFiltered == true)
+        {
+            <a class="btn btn-outline-secondary ms-3" asp-action="Index"> Remove all filters</a>
+        }
+    </form>
+</div>
+<!-- Display Filtered Results Message -->
+@if (ViewBag.isFiltered==true)
+{
+    <div class="row mt-3">
+        <div class="col">
+            @if (ViewBag.eventType == null && ViewBag.organizerType != null)
+            {
+                var typeDisplayName = ((OrganizationType)@ViewBag.organizerType).GetDisplayName();
+                <!-- Display message for results found only by search string -->
+                <div class="alert alert-info" role="alert">
+                    Events organized by @typeDisplayName organizations.
+                </div>
+            }
+            else if (ViewBag.eventType != null)
+            {
+                if (ViewBag.organizerType != null)
+                {
+                    var typeDisplayName = ((OrganizationType)@ViewBag.organizerType).GetDisplayName();
+                    <!-- Display message for results found only by filter type -->
+                    <div class="alert alert-info" role="alert">
+                        @ViewBag.eventType events organized by @typeDisplayName organizations.
+                    </div>
+                }
+                else
+                {
+                    <!-- Display message for results found only by filter type -->
+                    <div class="alert alert-info" role="alert">
+                        All @ViewBag.eventType events.
+                    </div>
+                }
+
+            }
+        </div>
+    </div>
+}
 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
     @foreach (var item in Model)
     {
         @await Html.PartialAsync("_CompactEventCard", item)
     }
+</div>
+<!-- Nav links between pages-->
+<div class="container">
+    @{
+        var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+    }
+    <a asp-action="Index"
+       asp-route-pageNumber="@(Model.PageIndex - 1)"
+       asp-route-eventType="@ViewBag.eventType"
+       asp-route-organizerType="@ViewBag.organizerType"
+       class="btn btn-default @prevDisabled">
+        Previous
+    </a>
+    <a asp-action="Index"
+       asp-route-pageNumber="@(Model.PageIndex + 1)"
+       asp-route-eventType="@ViewBag.eventType"
+       asp-route-organizerType="@ViewBag.organizerType"
+       class="btn btn-default @nextDisabled">
+        Next
+    </a>
 </div>
