@@ -109,7 +109,8 @@ namespace VolunteeringApp.Controllers
             {
                 return NotFound();
             }
-
+            int followerNumber= await _context.FollowRelationships.Where(f=>f.FollowedId==id).CountAsync();
+            ViewBag.followerNumber = followerNumber;
             return View(organization);
         }
 

@@ -1,56 +1,41 @@
 ﻿@model VolunteeringApp.Models.Identity.Organization
 @using VolunteeringApp.Models.Enums
 
+<link rel="stylesheet" href="~/css/organization_type_coloring.css" />
+
 @{
     var organizationType = Model.OrganizationType.GetDisplayName();
 }
 
-<link rel="stylesheet" href="~/css/organization_type_coloring.css" />
-
 <div class="col-8 card p-0 my-4">
     <div class="card-header">
-        <!--Organization Name,Username,Type-->
+        <!-- Organization Name, Username, Type -->
         <h5 class="card-title">@Html.DisplayFor(modelItem => Model.OfficialName)</h5>
-        <h6 class="card-subtitle mb-2 text-body-secondary fw-lighter">&#64; @Html.DisplayFor(modelItem => Model.UserName)</h6>
+        <h6 class="card-subtitle mb-2 text-body-secondary fw-light">&#64; @Html.DisplayFor(modelItem => Model.UserName)</h6>
         <h5 class="card-text text-end">
             <span class="badge @Model.OrganizationType">@organizationType</span>
+            <a asp-controller="Follow" asp-action="GetFollowers" asp-route-id="@Model.Id"><span class="badge bg-primary">@ViewBag.followerNumber Followers</span></a>
         </h5>
     </div>
     <div class="card-body">
         <dl class="row m-0">
-            <!--Organization Description-->
+            <!-- Organization Description -->
             @if (Model.Description != null)
             {
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Description)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.Description)
-                </dd>
+                <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Description)</dt>
+                <dd class="col-sm-10">@Html.DisplayFor(model => model.Description)</dd>
             }
-            <!--Contact Info-->
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Email)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Email)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.PhoneNumber)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.PhoneNumber)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Website)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Website)
-            </dd>
+            <!-- Contact Info -->
+            <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Email)</dt>
+            <dd class="col-sm-10">@Html.DisplayFor(model => model.Email)</dd>
+            <dt class="col-sm-2">Phone</dt>
+            <dd class="col-sm-10">@Html.DisplayFor(model => model.PhoneNumber)</dd>
+            <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Website)</dt>
+            <dd class="col-sm-10">@Html.DisplayFor(model => model.Website)</dd>
         </dl>
     </div>
     <div class="card-footer bg-transparent">
-        <!--Links-->
+        <!-- Links -->
         @if (ViewBag.isTheProfileOwner)
         {
             <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-dark">Edit Profile</a>
@@ -58,7 +43,7 @@
         }
         else
         {
-            if (User.Identity.IsAuthenticated)
+            @if (User.Identity.IsAuthenticated)
             {
                 if (ViewBag.isFollowing)
                 {
