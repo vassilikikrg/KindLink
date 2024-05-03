@@ -54,9 +54,9 @@ namespace VolunteeringApp.Controllers
         }
 
         // POST: Events/Join/5
+        [Authorize(Roles ="Citizen")]
         [HttpPost, ActionName("Join")]
         [ValidateAntiForgeryToken]
-        [Authorize("Citizen")]
         public async Task<IActionResult> JoinEvent(int id)
         {
 
@@ -87,9 +87,9 @@ namespace VolunteeringApp.Controllers
             return RedirectToAction("Details", "Events", new { id = id });
         }
         // POST
+        [Authorize(Roles ="Citizen")]
         [HttpPost,ActionName("Leave")]
         [ValidateAntiForgeryToken]
-        [Authorize("Citizen")]
         public async Task<IActionResult> LeaveEvent(int id)
         {
             // Check if the provided id is null or empty, or if a user with that id exists

@@ -85,12 +85,25 @@
     </div>
     <!--List of attended events-->
     <div class="col-6">
-        <h4><i class="bi bi-calendar-event-fill"></i> Participated in</h4>
+        <h4><i class="bi bi-calendar-event-fill"></i> Joined Events</h4>
         <hr />
+        <h5> Upcoming</h5>
         <div class="list-group list-group-flush">
-            @if (ViewData["MyEvents"] != null && ((IEnumerable<VolunteeringApp.Models.Social.EventParticipant>)ViewData["MyEvents"]).Any())
+            @if (ViewData["MyUpcomingEvents"] != null && ((IEnumerable<VolunteeringApp.Models.Social.EventParticipant>)ViewData["MyUpcomingEvents"]).Any())
             {
-                foreach (var item in ViewData["MyEvents"] as IEnumerable<VolunteeringApp.Models.Social.EventParticipant>)
+                foreach (var item in ViewData["MyUpcomingEvents"] as IEnumerable<VolunteeringApp.Models.Social.EventParticipant>)
+                {
+                    <a href="@Url.Action("Details", "Events", new { id = item.Event.Id })" class="list-group-item">@item.Event.Title (@item.Event.StartTime.ToString("ddd, dd MMM yyyy 'at' hh:mm tt"))</a>
+                }
+            }
+            else
+            {
+                <p>No upcoming events.</p>
+            }
+            <h5>Past</h5>
+            @if (ViewData["MyPastEvents"] != null && ((IEnumerable<VolunteeringApp.Models.Social.EventParticipant>)ViewData["MyPastEvents"]).Any())
+            {
+                foreach (var item in ViewData["MyPastEvents"] as IEnumerable<VolunteeringApp.Models.Social.EventParticipant>)
                 {
                     <a href="@Url.Action("Details", "Events", new { id = item.Event.Id })" class="list-group-item">@item.Event.Title (@item.Event.StartTime.ToString("ddd, dd MMM yyyy 'at' hh:mm tt"))</a>
                 }

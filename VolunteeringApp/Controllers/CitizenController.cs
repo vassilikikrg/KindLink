@@ -53,9 +53,11 @@ namespace VolunteeringApp.Controllers
                 return NotFound();
             }
             var following = await _socialService.GetFollowing(id);
-            var myEvents = await _socialService.GetJoinedEvents(id);
+            var myPastEvents = await _socialService.GetPastJoinedEvents(id);
+            var myUpcomingEvents = await _socialService.GetUpcomingJoinedEvents(id);
             ViewData["Following"] = following;
-            ViewData["MyEvents"] = myEvents;
+            ViewData["MyPastEvents"] = myPastEvents;
+            ViewData["MyUpcomingEvents"] = myUpcomingEvents;
             return View(citizen);
         }
 
