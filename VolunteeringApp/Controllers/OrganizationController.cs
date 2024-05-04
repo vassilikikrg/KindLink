@@ -111,6 +111,11 @@ namespace VolunteeringApp.Controllers
             }
             int followerNumber= await _context.FollowRelationships.Where(f=>f.FollowedId==id).CountAsync();
             ViewBag.followerNumber = followerNumber;
+
+            var posts=await _context.Posts.Where(p=>p.AuthorId==id).ToListAsync();
+            var events=await _context.Events.Where(e=>e.OrganizerId==id).ToListAsync();
+            ViewData["Posts"] = posts;
+            ViewData["Events"] = events;
             return View(organization);
         }
 

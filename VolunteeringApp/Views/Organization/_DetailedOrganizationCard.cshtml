@@ -7,59 +7,118 @@
     var organizationType = Model.OrganizationType.GetDisplayName();
 }
 
-<div class="col-8 card p-0 my-4">
-    <div class="card-header">
-        <!-- Organization Name, Username, Type -->
-        <h5 class="card-title">@Html.DisplayFor(modelItem => Model.OfficialName)</h5>
-        <h6 class="card-subtitle mb-2 text-body-secondary fw-light">&#64; @Html.DisplayFor(modelItem => Model.UserName)</h6>
-        <h5 class="card-text text-end">
-            <span class="badge @Model.OrganizationType">@organizationType</span>
-            <a asp-controller="Follow" asp-action="GetFollowers" asp-route-id="@Model.Id"><span class="badge bg-primary">@ViewBag.followerNumber Followers</span></a>
-        </h5>
-    </div>
-    <div class="card-body">
-        <dl class="row m-0">
-            <!-- Organization Description -->
-            @if (Model.Description != null)
-            {
-                <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Description)</dt>
-                <dd class="col-sm-10">@Html.DisplayFor(model => model.Description)</dd>
-            }
-            <!-- Contact Info -->
-            <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Email)</dt>
-            <dd class="col-sm-10">@Html.DisplayFor(model => model.Email)</dd>
-            <dt class="col-sm-2">Phone</dt>
-            <dd class="col-sm-10">@Html.DisplayFor(model => model.PhoneNumber)</dd>
-            <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Website)</dt>
-            <dd class="col-sm-10">@Html.DisplayFor(model => model.Website)</dd>
-        </dl>
-    </div>
-    <div class="card-footer bg-transparent">
-        <!-- Links -->
-        @if (ViewBag.isTheProfileOwner)
-        {
-            <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-dark">Edit Profile</a>
-            <a asp-action="Delete" asp-route-id="@Model?.Id" class="btn btn-outline-danger">Delete Profile</a>
-        }
-        else
-        {
-            @if (User.Identity.IsAuthenticated)
-            {
-                if (ViewBag.isFollowing)
-                {
-                    <form asp-controller="Follow" asp-action="Unfollow" asp-route-id="@Model.Id" method="post">
-                        <button type="submit" class="btn btn-secondary">Unfollow</button>
-                    </form>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <!--Column 1-->
+        <!-- Avatar and Basic Info -->
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="text-end">
+                        <!-- Organization Type Badge -->
+                        <h6><span class="badge @Model.OrganizationType">@organizationType</span></h6>
+                    </div>
+                    <div class="text-center">                 
+                        <!-- Avatar Photo -->
+                        <img src="~/images/avatar.png" class="img-fluid rounded-circle mb-3" style="max-height:96px;max-width:96px" alt="Avatar">
+                        <!-- Organization Name -->
+                        <h4 class="card-title">@Html.DisplayFor(modelItem => Model.OfficialName)</h4>
+                        <h6 class="card-subtitle mb-2 text-muted">&#64;@Html.DisplayFor(modelItem => Model.UserName)</h6>
+                        <!-- Follower Count -->
+                        <h4 class="mt-3">
+                            <span class="badge bg-primary">@ViewBag.followerNumber Followers</span>
+                        </h4>
+                        <!-- Contact Info -->
+                        <ul class="list-unstyled">
+                            <li>Email: @Html.DisplayFor(model => model.Email)</li>
+                            <li>Phone: @Html.DisplayFor(model => model.PhoneNumber)</li>
+                            <li>Website: @Html.DisplayFor(model => model.Website)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent text-center">
+                    <!-- Edit and Delete Buttons -->
+                    @if (ViewBag.isTheProfileOwner)
+                    {
+                        <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-dark">Edit Profile</a>
+                        <a asp-action="Delete" asp-route-id="@Model?.Id" class="btn btn-outline-danger">Delete Profile</a>
+                    }
+                    else
+                    {
+                                            
+                        <!-- Follow/Unfollow Button -->
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            if (ViewBag.isFollowing)
+                            {
+                                <form asp-controller="Follow" asp-action="Unfollow" asp-route-id="@Model.Id" method="post">
+                                    <button type="submit" class="btn btn-secondary">Unfollow</button>
+                                </form>
+                            }
+                            else if (!ViewBag.isFollowing)
+                            {
+                                <form asp-controller="Follow" asp-action="Follow" asp-route-id="@Model.Id" method="post">
+                                    <button type="submit" class="btn btn-secondary">Follow</button>
+                                </form>
+                            }
+                        }
+                    <a class="btn btn-dark" asp-controller="Chat" asp-action="CreateOrFetchPrivateChat" asp-route-id="@Model.Id">Message</a>
+                    }
+                </div>
+            </div>
+            
+        </div>
+        <!--Column 2-->
+        <!-- Main Content -->
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <!-- Organization Description -->
+                    <h5 class="card-title">Description</h5>
+                    @if (Model.Description != null)
+                    {
+                        <p class="card-text">@Html.DisplayFor(model => model.Description)</p>
+                    }
+                    else
+                    {
+                        <p class="card-text">No description provided.</p>
+                    }
+                </div>
+            </div>
+            <!-- Posts Section -->
+            <div class="mt-4">
+                <h4>Posts</h4>
+                <hr />
+                @if (ViewData["Posts"] != null && ((IEnumerable<VolunteeringApp.Models.Social.Post>)ViewData["Posts"]).Any()){
+                    <div class="list-group">
+
+                        @foreach (var post in ViewData["Posts"] as IEnumerable<VolunteeringApp.Models.Social.Post>)
+                        {
+                            @Html.Partial("~/Views/Shared/Partials/_PostTemplate.cshtml", post)
+                        }
+                    </div>
                 }
-                else if (!ViewBag.isFollowing)
+                else
                 {
-                    <form asp-controller="Follow" asp-action="Follow" asp-route-id="@Model.Id" method="post">
-                        <button type="submit" class="btn btn-secondary">Follow</button>
-                    </form>
+                    <p>Nothing posted yet.</p>
                 }
-            }
-            <a class="btn btn-dark" asp-controller="Chat" asp-action="CreateOrFetchPrivateChat" asp-route-id="@Model.Id">Contact</a>
-            <a class="btn btn-outline-dark" asp-action="Index">Back to List</a>
-        }
+            </div>
+            <!-- Events Section -->
+            <div class="mt-4">
+                <h4>Events</h4>
+                <hr />
+                @if (ViewData["Events"] != null && ((IEnumerable<VolunteeringApp.Models.Social.Event>)ViewData["Events"]).Any())
+                {
+                    @foreach (var @event in ViewData["Events"] as IEnumerable<VolunteeringApp.Models.Social.Event>)
+                    {
+                        @Html.Partial("~/Views/Shared/Partials/_DetailedEventCard.cshtml", @event)
+                    }
+                }
+                else
+                {
+                    <p>No events organized yet.</p>
+                }
+            </div>
+        </div>
     </div>
 </div>

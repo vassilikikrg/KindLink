@@ -69,12 +69,12 @@ namespace VolunteeringApp.Controllers
             var user = await _userManager.GetUserAsync(User);
             // Get the roles of the current user
             var userRoles = await _userManager.GetRolesAsync(user);
-            // Check if the user is assigned the "Citizen" role
-            if (userRoles.Contains("Citizen"))
-            {
-                // If the user is a "Citizen", forbid following
-                return Forbid();
-            }
+            //// Check if the user is assigned the "Citizen" role
+            //if (userRoles.Contains("Citizen"))
+            //{
+            //    // If the user is a "Citizen", forbid following
+            //    return Forbid();
+            //}
             // Get the id of the current user
             string followerId = user.Id;
             // Check if the user is trying to follow themselves
