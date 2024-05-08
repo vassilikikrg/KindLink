@@ -34,6 +34,20 @@ namespace VolunteeringApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                var existingUser = await userManager.FindByNameAsync(citizen.UserName);
+                if (existingUser != null)
+                {
+                    ModelState.AddModelError("UserName", "Username is already taken.");
+                    return View(citizen);
+                }
+
+                existingUser = await userManager.FindByEmailAsync(citizen.Email);
+                if (existingUser != null)
+                {
+                    ModelState.AddModelError("Email", "Email address is already registered.");
+                    return View(citizen);
+                }
+
                 var appUser = new Citizen
                 {
                     UserName = citizen.UserName,
@@ -73,6 +87,19 @@ namespace VolunteeringApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                var existingUser = await userManager.FindByNameAsync(organization.Name);
+                if (existingUser != null)
+                {
+                    ModelState.AddModelError("UserName", "Username is already taken.");
+                    return View(organization);
+                }
+
+                existingUser = await userManager.FindByEmailAsync(organization.Email);
+                if (existingUser != null)
+                {
+                    ModelState.AddModelError("Email", "Email address is already registered.");
+                    return View(organization);
+                }
                 Organization appUser = new Organization
                 {
                     UserName = organization.Name,

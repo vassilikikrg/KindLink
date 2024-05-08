@@ -116,6 +116,11 @@ namespace VolunteeringApp.Controllers
                     ModelState.AddModelError("StartTime", "The event must start before it ends");
                     return View(eventViewModel);
                 }
+                if (eventViewModel.StartTime < DateTime.UtcNow)
+                {
+                    ModelState.AddModelError("StartTime", "The event must start in a future hour and date");
+                    return View(eventViewModel);
+                }
                 var organizerId = _userManager.GetUserId(User); // the organizer is the current logged in user
                 Event @event = new Event()
                 {
@@ -284,6 +289,24 @@ namespace VolunteeringApp.Controllers
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        // GET: Events
+        [Authorize(Roles = "Organization")]
+        public async Task<IActionResult> Manage()
+        {
+            if (_context.Events == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.Organizations' is null.");
+            }
+
+            var events = _context.Events
+                .Include(e => e.Organizer)
+                .Where(e=>e.OrganizerId==_userManager.GetUserId(User))
+                .ToList();
+
+            return View(events);
+
         }
         [HttpGet]
         [Authorize(Roles="Organization")]

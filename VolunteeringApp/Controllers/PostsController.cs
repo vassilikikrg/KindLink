@@ -28,7 +28,9 @@ namespace VolunteeringApp.Controllers
         // GET: Posts
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Posts.Include(p => p.Author);
+            var applicationDbContext = _context.Posts
+                .Include(p => p.Author)
+                .OrderByDescending(p => p.CreatedAt);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -191,6 +193,15 @@ namespace VolunteeringApp.Controllers
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+        [Authorize(Roles ="Organization")]
+        public async Task<IActionResult> Manage()
+        {
+            var applicationDbContext = _context.Posts
+                .Include(p => p.Author)
+                .Where(p=>p.AuthorId== _userManager.GetUserId(User))
+                .OrderByDescending(p=>p.CreatedAt);
+            return View(await applicationDbContext.ToListAsync());
         }
 
         private bool PostExists(string id)
