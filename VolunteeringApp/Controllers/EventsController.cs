@@ -285,6 +285,26 @@ namespace VolunteeringApp.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        [HttpGet]
+        [Authorize(Roles="Organization")]
+        public IActionResult GetEvents()
+        {
+            // Retrieve events from your data source (e.g., database)
+            var events = _context.Events.Where(e=>e.OrganizerId== _userManager.GetUserId(User));
+
+            // Convert events to a format that FullCalendar understands (e.g., JSON)
+            var calendarEvents = events.Select(e => new
+            {
+                id = e.Id,
+                title = e.Title,
+                start = e.StartTime,
+                end = e.EndTime
+                // Add more properties as needed
+            });
+
+            return Json(calendarEvents);
+        }
+
 
         private bool EventExists(int id)
         {
