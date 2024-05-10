@@ -155,29 +155,29 @@ namespace VolunteeringApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Organization")]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,UserName,Email,OfficialName,Phone,Website,OrganizationType,Description")] Organization organization)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,UserName,Email,OfficialName,PhoneNumber,Website,OrganizationType,Description")] Organization organization)
         {
             if (id != organization.Id)
             {
                 return NotFound();
             }
 
-            // Check if email or password is null
-            if (string.IsNullOrWhiteSpace(organization.UserName))
-            {
-                ModelState.AddModelError("UserName", "The username is required");
-            }
+            //// Check if email or password is null
+            //if (string.IsNullOrWhiteSpace(organization.UserName))
+            //{
+            //    ModelState.AddModelError("UserName", "The username is required");
+            //}
 
-            if (string.IsNullOrWhiteSpace(organization.Email))
-            {
-                ModelState.AddModelError("Email", "The email is required");
-            }
+            //if (string.IsNullOrWhiteSpace(organization.Email))
+            //{
+            //    ModelState.AddModelError("Email", "The email is required");
+            //}
 
-            // If email or password is null, return to the view with errors
-            if (!ModelState.IsValid)
-            {
-                return View(organization);
-            }
+            //// If email or password is null, return to the view with errors
+            //if (!ModelState.IsValid)
+            //{
+            //    return View(organization);
+            //}
 
             // Retrieve the ID of the currently logged-in user
             var loggedInUserId = _userManager.GetUserId(User);
@@ -189,19 +189,19 @@ namespace VolunteeringApp.Controllers
                 return Forbid();
             }
 
-            // Check if the entered username is already in use by another user
-            var existingUserWithSameUsername = await _userManager.FindByNameAsync(organization.UserName);
-            if (existingUserWithSameUsername != null && existingUserWithSameUsername.Id != organization.Id)
-            {
-                ModelState.AddModelError("UserName", "The username is already in use by another user");
-            }
+            //// Check if the entered username is already in use by another user
+            //var existingUserWithSameUsername = await _userManager.FindByNameAsync(organization.UserName);
+            //if (existingUserWithSameUsername != null && existingUserWithSameUsername.Id != organization.Id)
+            //{
+            //    ModelState.AddModelError("UserName", "The username is already in use by another user");
+            //}
 
-            // Check if the entered email is already in use
-            var existingUserWithSameEmail = await _userManager.FindByEmailAsync(organization.Email);
-            if (existingUserWithSameEmail != null && existingUserWithSameEmail.Id != organization.Id)
-            {
-                ModelState.AddModelError("Email", "The email is already in use");
-            }
+            //// Check if the entered email is already in use
+            //var existingUserWithSameEmail = await _userManager.FindByEmailAsync(organization.Email);
+            //if (existingUserWithSameEmail != null && existingUserWithSameEmail.Id != organization.Id)
+            //{
+            //    ModelState.AddModelError("Email", "The email is already in use");
+            //}
 
             if (ModelState.IsValid)
             {
@@ -220,7 +220,7 @@ namespace VolunteeringApp.Controllers
                     existingOrganization.UserName = organization.UserName;
                     existingOrganization.Email = organization.Email;
                     existingOrganization.OfficialName = organization.OfficialName;
-                    existingOrganization.PhoneNumber = organization.PhoneNumber;
+                    existingOrganization.PhoneNumber = organization.PhoneNumber; // Make sure PhoneNumber is properly bound
                     existingOrganization.Website = organization.Website;
                     existingOrganization.OrganizationType = organization.OrganizationType;
                     existingOrganization.Description = organization.Description;

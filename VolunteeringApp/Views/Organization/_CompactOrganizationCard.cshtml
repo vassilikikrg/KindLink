@@ -11,7 +11,7 @@
     <div class="card-header">
         <!--Organization Name,Username,Type-->
         <h5 class="card-title">@Html.DisplayFor(modelItem => Model.OfficialName)</h5>
-        <h6 class="card-subtitle mb-2 text-body-secondary fw-lighter">&#64; @Html.DisplayFor(modelItem => Model.UserName)</h6>
+        <h6 class="card-subtitle mb-2 text-body-secondary fw-light">&#64; @Html.DisplayFor(modelItem => Model.UserName)</h6>
         <h5 class="card-text text-end">
             <span class="badge @Model.OrganizationType">@organizationType</span>
         </h5>
@@ -23,7 +23,9 @@
             <p class="card-text text-truncate">@Html.DisplayFor(modelItem => Model.Description)</p>
         }
         <!--Links-->
-        <a class="btn btn-dark" asp-controller="Chat" asp-action="CreateOrFetchPrivateChat" asp-route-id="@Model.Id">Contact</a>
-        <a class="btn btn-outline-dark" asp-action="Details" asp-route-id="@Model.Id">Details</a>
+        <div class="mb-auto">
+            <a class="btn btn-dark" asp-controller="Chat" asp-action="CreateOrFetchPrivateChat" asp-route-id="@Model.Id">Contact</a>
+            <a class="btn btn-outline-dark" asp-action="Details" asp-route-id="@Model.Id">Details</a>
+        </div>
     </div>
 </div>

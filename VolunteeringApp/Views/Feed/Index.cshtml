@@ -33,12 +33,16 @@
     </div>
     <div class="col-6">
         <!-- Post feed -->
-        <h6 class="display-6">Recent Posts</h6>
-        <div class="postContainer">
-            @foreach (var item in Model)
-            {
-                @Html.Partial("~/Views/Shared/Partials/_PostTemplate.cshtml", item)
-            }
+        <div class="card">
+             <div class="card-body">
+                <h6 class="display-6">Recent Posts</h6>
+                <div class="postContainer">
+                    @foreach (var item in Model)
+                    {
+                        @Html.Partial("~/Views/Shared/Partials/_PostTemplate.cshtml", item)
+                    }
+                </div>
+             </div>
         </div>
     </div>
     <div class="col-3">

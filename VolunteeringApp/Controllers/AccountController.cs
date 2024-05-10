@@ -87,47 +87,53 @@ namespace VolunteeringApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Check for existing users with the same username or email
                 var existingUser = await userManager.FindByNameAsync(organization.Name);
                 if (existingUser != null)
                 {
-                    ModelState.AddModelError("UserName", "Username is already taken.");
-                    return View(organization);
+                    ModelState.AddModelError(nameof(organization.Name), "Username is already taken.");
                 }
 
                 existingUser = await userManager.FindByEmailAsync(organization.Email);
                 if (existingUser != null)
                 {
-                    ModelState.AddModelError("Email", "Email address is already registered.");
-                    return View(organization);
+                    ModelState.AddModelError(nameof(organization.Email), "Email address is already registered.");
                 }
-                Organization appUser = new Organization
-                {
-                    UserName = organization.Name,
-                    Email = organization.Email,
-                    OfficialName = organization.OfficialName,
-                    OrganizationType = organization.OrganizationType,
-                    PhoneNumber = organization.Phone,
-                    Website = organization.Website,
-                    Description=organization.Description
-                };
 
-                IdentityResult resultCreation = await organizationManager.CreateAsync(appUser, organization.Password);
-                IdentityResult resultRole = await userManager.AddToRoleAsync(appUser, "Organization");
-                if (resultCreation.Succeeded && resultRole.Succeeded)
-                    return RedirectToAction("Login");
-            }
-            else
-            {
-                foreach (var modelState in ModelState.Values)
+                if (ModelState.IsValid)
                 {
-                    foreach (var error in modelState.Errors)
+                    // No duplicate username or email found, proceed with registration
+                    Organization appUser = new Organization
                     {
-                        ModelState.AddModelError("", error.ErrorMessage);
+                        UserName = organization.Name,
+                        Email = organization.Email,
+                        OfficialName = organization.OfficialName,
+                        OrganizationType = organization.OrganizationType,
+                        PhoneNumber = organization.Phone,
+                        Website = organization.Website,
+                        Description = organization.Description
+                    };
+
+                    IdentityResult resultCreation = await organizationManager.CreateAsync(appUser, organization.Password);
+                    IdentityResult resultRole = await userManager.AddToRoleAsync(appUser, "Organization");
+                    if (resultCreation.Succeeded && resultRole.Succeeded)
+                    {
+                        return RedirectToAction("Login");
+                    }
+                    else
+                    {
+                        // Handle registration failure
+                        foreach (var error in resultCreation.Errors.Concat(resultRole.Errors))
+                        {
+                            ModelState.AddModelError("", error.Description);
+                        }
                     }
                 }
             }
+
             return View(organization);
         }
+
 
         [HttpGet]
         public IActionResult Login(string? returnUrl = null)
@@ -150,7 +156,33 @@ namespace VolunteeringApp.Controllers
                     await signInManager.SignOutAsync(); //sign out any already logged in user that attempts to login
                     Microsoft.AspNetCore.Identity.SignInResult result = await signInManager.PasswordSignInAsync(appUser, loginModel.Password, false, false); //attempts to sign in the user based on the info provided
                     if (result.Succeeded)
-                        return Redirect(loginModel.ReturnUrl ?? "/");
+                    {
+                        // Get the roles of the signed-in user
+                        var roles = await userManager.GetRolesAsync(appUser);
+
+                        // Check the roles and redirect accordingly
+                        if (roles.Contains("Organization"))
+                        {
+                            // Redirect to organization dashboard
+                            return RedirectToAction("Index", "Dashboard");
+                        }
+                        else if (roles.Contains("Citizen"))
+                        {
+                            // Redirect to citizen dashboard
+                            return RedirectToAction("Index", "Feed");
+                        }
+                        // Add other role checks if necessary
+
+                        if (!string.IsNullOrEmpty(loginModel.ReturnUrl))
+                        {
+                            return Redirect(loginModel.ReturnUrl);
+                        }
+                        else
+                        {
+                            // Redirect to default page
+                            return RedirectToAction("Index", "Home");
+                        }
+                    }
                 }
                 ModelState.AddModelError(nameof(loginModel.Email), "Login Failed: Invalid Email or password");
             }

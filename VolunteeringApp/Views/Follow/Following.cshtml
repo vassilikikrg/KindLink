@@ -4,22 +4,38 @@
     ViewData["Title"] = "View";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@using VolunteeringApp.Models.Enums
+<link rel="stylesheet" href="~/css/organization_type_coloring.css" />
 
 <h1 class="display-4">Following</h1>
 <hr />
-<table class="table lead">
-    <tbody>
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
         @foreach (var item in Model)
         {
-            <tr class=" row">
-                <td class="col-10">
-                    &#64;@Html.DisplayFor(modelItem => item.Followed.UserName)
-                </td>
-                <td class="col-2">
-                    <a class="btn btn-dark" asp-controller="Organization" asp-action="Details" asp-route-id="@item.Followed.Id">Go to profile</a>
-                    <a class="btn btn-outline-dark" asp-controller="Chat" asp-action="CreateOrFetchPrivateChat" asp-route-id="@item.Followed.Id">Contact</a>
-                </td>
-            </tr>
+            <div class="col card m-3 p-0">
+                <div class="card-header">
+                    @{
+                        var organizationType = item.Followed.OrganizationType.GetDisplayName();
+                    }
+                    <!--Organization Name,Username,Type-->
+                    <h5 class="card-title">@Html.DisplayFor(modelItem => item.Followed.OfficialName)</h5>
+                    <h6 class="card-subtitle mb-2 text-body-secondary fw-light">&#64; @Html.DisplayFor(modelItem => item.Followed.UserName)</h6>
+                    <h5 class="card-text text-end">
+                        <span class="badge @item.Followed.OrganizationType">@organizationType</span>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <!--Organization Description-->
+                    @if (item.Followed.Description != null)
+                    {
+                        <p class="card-text text-truncate">@Html.DisplayFor(modelItem => item.Followed.Description)</p>
+                    }
+                    <!--Links-->
+                <div class="mb-auto">
+                    <a class="btn btn-dark" asp-controller="Chat" asp-action="CreateOrFetchPrivateChat" asp-route-id="@item.Followed.Id">Contact</a>
+                    <a class="btn btn-outline-dark" asp-action="Details" asp-route-id="@item.Followed.Id">Details</a>
+                </div>
+                </div>
+            </div>
         }
-    </tbody>
-</table>
+</div>

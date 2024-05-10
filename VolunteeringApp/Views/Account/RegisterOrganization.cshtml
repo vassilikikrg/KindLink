@@ -44,23 +44,26 @@
                 </div>
                 <div class="mb-3">
                     <label asp-for="Phone" class="form-label"></label>
-                    <input asp-for="Phone" class="form-control" />
+                    <input asp-for="Phone" class="form-control" type="tel" />
                     <span asp-validation-for="Phone" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label asp-for="Website" class="form-label"></label>
-                    <input asp-for="Website" class="form-control" />
+                    <input asp-for="Website" class="form-control" type="url"/>
                     <span asp-validation-for="Website" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label asp-for="Description" class="form-label"></label>
-                    <input asp-for="Description" class="form-control" />
+                    <input asp-for="Description" class="form-control" type="text" />
                     <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
                 <div class="d-grid gap-2 mt-3">
                     <button type="submit" class="btn btn-dark">Register</button>
                 </div>
             </form>
+                <div class="mt-2 text-center">
+                    Already have an account? <a class="link-dark" asp-controller="Account" asp-action="Login">Log in</a>
+                </div>
             </div>
         </div>
     </div>
