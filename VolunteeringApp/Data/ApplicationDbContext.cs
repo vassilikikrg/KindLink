@@ -26,8 +26,6 @@ namespace VolunteeringApp.Data
         {
             base.OnModelCreating(builder);
             //SeedRoles(builder);
-            builder.Entity<Citizen>(entity => { entity.ToTable("Citizens"); });
-            builder.Entity<Organization>(entity => { entity.ToTable("Organizations"); });
         }
         //private static void SeedRoles(ModelBuilder modelBuilder)
         //{
