@@ -26,6 +26,7 @@ namespace VolunteeringApp.Controllers
         }
 
         // GET: EventParticipants
+        [HttpGet]
         public async Task<IActionResult> Index(int id)
         {
             var @event = _context.Events.Find(id);

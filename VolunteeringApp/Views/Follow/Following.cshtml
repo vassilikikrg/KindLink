@@ -8,7 +8,6 @@
 <link rel="stylesheet" href="~/css/organization_type_coloring.css" />
 
 <h1 class="display-4">Following</h1>
-<hr />
 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
         @foreach (var item in Model)
         {
@@ -30,9 +29,15 @@
                     {
                         <p class="card-text text-truncate">@Html.DisplayFor(modelItem => item.Followed.Description)</p>
                     }
+                    else
+                    {
+                        <p class="card-text text-muted">
+                            <i>No description provided</i>
+                        </p>
+                    }
                     <!--Links-->
                 <div class="mb-auto">
-                    <a class="btn btn-dark" asp-controller="Chat" asp-action="CreateOrFetchPrivateChat" asp-route-id="@item.Followed.Id">Contact</a>
+                    <a class="btn btn-dark" asp-controller="Chat" asp-action="CreateOrFetchPrivateChat" asp-route-id="@item.Followed.Id">Message</a>
                     <a class="btn btn-outline-dark" asp-action="Details" asp-route-id="@item.Followed.Id">Details</a>
                 </div>
                 </div>

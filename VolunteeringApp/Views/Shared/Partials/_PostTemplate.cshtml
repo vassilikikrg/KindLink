@@ -1,8 +1,8 @@
 ﻿@model VolunteeringApp.Models.Social.Post
 
 
-<div class="card my-4">
-    <div class="card-header">
+<div class="card mb-4" style="border-color:var(--secondary-color)">
+    <div class="card-header" style="background-color:var(--bg-color)">
         <h5 class="card-title">@Html.DisplayFor(modelItem => Model.Title)</h5>
         <a class="link-secondary link-offset-2 link-underline link-underline-opacity-0" style="text-decoration:none" asp-controller="Organization" asp-action="Details" asp-route-id="@Model.Author.Id">
             @Html.DisplayFor(modelItem => Model.Author.OfficialName) (&#64;@Html.DisplayFor(modelItem => Model.Author.UserName))
@@ -13,7 +13,7 @@
         <div class="row mt-4">
             <div class="col-3">
                 <!-- Take 3 columns for the button -->
-                <a asp-controller="Posts" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-dark">Go to post</a>
+                <a asp-controller="Posts" asp-action="Details" asp-route-id="@Model.Id" class="btn" style="background-color:var(--primary-color);color:white">Go to post</a>
             </div>
             <div class="col-9 text-end font-monospace">
                 <!-- Take 9 columns for the CreatedAt -->

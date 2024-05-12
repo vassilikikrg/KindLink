@@ -94,6 +94,18 @@ namespace VolunteeringApp.Controllers
             {
                 return NotFound();
             }
+            string loggedInId = _userManager.GetUserId(User);
+            if (@event.OrganizerId != loggedInId)
+            {   // If the logged-in user is not the owner 
+                if (HasJoinedEvent(id,loggedInId))
+                {
+                    ViewBag.HasJoined = true;
+                }
+                else
+                {
+                    ViewBag.HasJoined = false;
+                }
+            }
 
             return View(@event);
         }
@@ -347,6 +359,10 @@ namespace VolunteeringApp.Controllers
             var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
             var fileExtension = Path.GetExtension(file.FileName).ToLowerInvariant();
             return allowedExtensions.Contains(fileExtension);
+        }
+        private bool HasJoinedEvent(int id,string participantId)
+        {
+            return _context.Events.Any(e => e.Id == id && e.Participants.Any(p => p.CitizenId == participantId));
         }
 
     }

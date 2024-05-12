@@ -20,11 +20,19 @@
         <!--Organization Description-->
         @if (Model.Description != null)
         {
-            <p class="card-text text-truncate">@Html.DisplayFor(modelItem => Model.Description)</p>
+            <p class="card-text text-truncate">
+                @Html.DisplayFor(modelItem => Model.Description)
+            </p>
+        }
+        else
+        {
+            <p class="card-text text-muted">
+                <i>No description provided</i>
+            </p>
         }
         <!--Links-->
         <div class="mb-auto">
-            <a class="btn btn-dark" asp-controller="Chat" asp-action="CreateOrFetchPrivateChat" asp-route-id="@Model.Id">Contact</a>
+            <a class="btn btn-dark" asp-controller="Chat" asp-action="CreateOrFetchPrivateChat" asp-route-id="@Model.Id">Message</a>
             <a class="btn btn-outline-dark" asp-action="Details" asp-route-id="@Model.Id">Details</a>
         </div>
     </div>

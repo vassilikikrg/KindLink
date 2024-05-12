@@ -2,10 +2,19 @@
 @using VolunteeringApp.Helpers
 @using VolunteeringApp.Models.Enums
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Events";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+    .custom-alert {
+        background-color: var(--bg-color);
+        color: black;
+        border: 1px solid var(--secondary-color);
 
+        /* Add any other custom styling */
+    }
+
+</style>
 <h1 class="display-4">Events</h1>
 
 @if (User.IsInRole("Organization"))
@@ -55,10 +64,10 @@
 
         </select>
 
-        <button type="submit" class="btn btn-secondary ms-1">Apply Filters</button>
+        <button type="submit" class="btn ms-1" style="background-color: var(--primary-color);color:white">Apply Filters</button>
         @if (ViewBag.isFiltered == true)
         {
-            <a class="btn btn-outline-secondary ms-3" asp-action="Index"> Remove all filters</a>
+            <a class="btn ms-3" style="background-color:white;color:var(--primary-color);border:var(--primary-color)" asp-action="Index"> Remove all filters</a>
         }
     </form>
 </div>
@@ -71,7 +80,7 @@
             {
                 var typeDisplayName = ((OrganizationType)@ViewBag.organizerType).GetDisplayName();
                 <!-- Display message for results found only by search string -->
-                <div class="alert alert-info" role="alert">
+                <div class="alert custom-alert" role="alert">
                     Events organized by @typeDisplayName organizations.
                 </div>
             }
@@ -81,14 +90,14 @@
                 {
                     var typeDisplayName = ((OrganizationType)@ViewBag.organizerType).GetDisplayName();
                     <!-- Display message for results found only by filter type -->
-                    <div class="alert alert-info" role="alert">
+                    <div class="alert custom-alert" role="alert">
                         @ViewBag.eventType events organized by @typeDisplayName organizations.
                     </div>
                 }
                 else
                 {
                     <!-- Display message for results found only by filter type -->
-                    <div class="alert alert-info" role="alert">
+                    <div class="alert custom-alert" role="alert">
                         All @ViewBag.eventType events.
                     </div>
                 }

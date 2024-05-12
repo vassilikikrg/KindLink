@@ -157,10 +157,14 @@ namespace VolunteeringApp.Controllers
                     Microsoft.AspNetCore.Identity.SignInResult result = await signInManager.PasswordSignInAsync(appUser, loginModel.Password, false, false); //attempts to sign in the user based on the info provided
                     if (result.Succeeded)
                     {
-                        // Get the roles of the signed-in user
+                        // Get the roles of the signed-in user to heck the roles and redirect accordingly
                         var roles = await userManager.GetRolesAsync(appUser);
 
-                        // Check the roles and redirect accordingly
+                        if (!string.IsNullOrEmpty(loginModel.ReturnUrl) && loginModel.ReturnUrl!="/")
+                        { 
+                            return Redirect(loginModel.ReturnUrl);
+                        }
+                        
                         if (roles.Contains("Organization"))
                         {
                             // Redirect to organization dashboard
@@ -170,12 +174,6 @@ namespace VolunteeringApp.Controllers
                         {
                             // Redirect to citizen dashboard
                             return RedirectToAction("Index", "Feed");
-                        }
-                        // Add other role checks if necessary
-
-                        if (!string.IsNullOrEmpty(loginModel.ReturnUrl))
-                        {
-                            return Redirect(loginModel.ReturnUrl);
                         }
                         else
                         {

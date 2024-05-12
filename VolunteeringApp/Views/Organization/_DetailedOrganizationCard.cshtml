@@ -26,13 +26,13 @@
                         <h6 class="card-subtitle mb-2 text-muted">&#64;@Html.DisplayFor(modelItem => Model.UserName)</h6>
                         <!-- Follower Count -->
                         <h4 class="mt-3">
-                            <span class="badge bg-primary">@ViewBag.followerNumber Followers</span>
+                            <span class="badge" style="background-color:var(--primary-color)">@ViewBag.followerNumber Followers</span>
                         </h4>
                         <!-- Contact Info -->
                         <ul class="list-unstyled">
-                            <li>Email: @Html.DisplayFor(model => model.Email)</li>
-                            <li>Phone: @Html.DisplayFor(model => model.PhoneNumber)</li>
-                            <li>Website: @Html.DisplayFor(model => model.Website)</li>
+                            <li>Email: <a href="mailto:@Model.Email" class="link-dark">@Html.DisplayFor(model => model.Email)</a></li>
+                            <li>Phone: <a href="tel:@Model.PhoneNumber" class="link-dark">@Html.DisplayFor(model => model.PhoneNumber)</a></li>
+                            <li>Website: <a href="@Model.Website" class="link-dark">@Html.DisplayFor(model => model.Website)</a></li>
                         </ul>
                     </div>
                 </div>
@@ -40,29 +40,30 @@
                     <!-- Edit and Delete Buttons -->
                     @if (ViewBag.isTheProfileOwner)
                     {
-                        <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-outline-dark">Edit Profile</a>
-                        <a asp-action="Delete" asp-route-id="@Model?.Id" class="btn btn-outline-danger">Delete Profile</a>
+                        <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-outline-secondary-custom">Edit Profile</a>
+                        <a asp-action="Delete" asp-route-id="@Model?.Id" class="btn btn-outline-danger-custom">Delete Profile</a>
                     }
                     else
-                    {
-                                            
+                    {                     
                         <!-- Follow/Unfollow Button -->
                         @if (User.Identity.IsAuthenticated)
                         {
-                            if (ViewBag.isFollowing)
-                            {
-                                <form asp-controller="Follow" asp-action="Unfollow" asp-route-id="@Model.Id" method="post">
-                                    <button type="submit" class="btn btn-secondary">Unfollow</button>
-                                </form>
-                            }
-                            else if (!ViewBag.isFollowing)
-                            {
-                                <form asp-controller="Follow" asp-action="Follow" asp-route-id="@Model.Id" method="post">
-                                    <button type="submit" class="btn btn-secondary">Follow</button>
-                                </form>
-                            }
+                            <div class="d-flex justify-content-center">
+                                @if (ViewBag.isFollowing)
+                                {
+                                    <form asp-controller="Follow" asp-action="Unfollow" asp-route-id="@Model.Id" method="post">
+                                        <button type="submit" class="btn btn-danger-custom me-2"><i class="bi bi-person-dash-fill"></i> Unfollow</button>
+                                    </form>
+                                }
+                                else if (!ViewBag.isFollowing)
+                                {
+                                    <form asp-controller="Follow" asp-action="Follow" asp-route-id="@Model.Id" method="post">
+                                        <button type="submit" class="btn btn-secondary-custom me-2"><i class="bi bi-person-plus-fill"></i> Follow</button>
+                                    </form>
+                                }
+                                <a class="btn btn-dark" asp-controller="Chat" asp-action="CreateOrFetchPrivateChat" asp-route-id="@Model.Id"><i class="bi bi-send-fill"></i> Message</a>
+                            </div>
                         }
-                    <a class="btn btn-dark" asp-controller="Chat" asp-action="CreateOrFetchPrivateChat" asp-route-id="@Model.Id">Message</a>
                     }
                 </div>
             </div>
@@ -86,27 +87,37 @@
                 </div>
             </div>
             <!-- Posts Section -->
-            <div class="mt-4">
-                <h4>Posts</h4>
-                <hr />
-                @if (ViewData["Posts"] != null && ((IEnumerable<VolunteeringApp.Models.Social.Post>)ViewData["Posts"]).Any()){
-                    <div class="list-group">
-
-                        @foreach (var post in ViewData["Posts"] as IEnumerable<VolunteeringApp.Models.Social.Post>)
-                        {
-                            @Html.Partial("~/Views/Shared/Partials/_PostTemplate.cshtml", post)
-                        }
-                    </div>
-                }
-                else
+            <div class="mt-4 d-flex justify-content-between align-items-center">
+                <h3>Posts</h3>
+                @if (ViewBag.isTheProfileOwner)
                 {
-                    <p>Nothing posted yet.</p>
+                    <a asp-action="Manage" asp-controller="Posts" class="btn btn-dark"><i class="bi bi-pencil"></i> Manage Posts</a>
                 }
             </div>
+            <hr />
+            @if (ViewData["Posts"] != null && ((IEnumerable<VolunteeringApp.Models.Social.Post>)ViewData["Posts"]).Any())
+            {
+                <div class="list-group">
+                    @foreach (var post in ViewData["Posts"] as IEnumerable<VolunteeringApp.Models.Social.Post>)
+                    {
+                        @Html.Partial("~/Views/Shared/Partials/_PostTemplate.cshtml", post)
+                    }
+                </div>
+            }
+            else
+            {
+                <p>Nothing posted yet.</p>
+            }
+
             <!-- Events Section -->
-            <div class="mt-4">
-                <h4>Events</h4>
-                <hr />
+            <div class="mt-4 d-flex justify-content-between align-items-center">
+                <h3>Events</h3>
+                @if (ViewBag.isTheProfileOwner)
+                {
+                    <a asp-action="Manage" asp-controller="Events" class="btn btn-dark"><i class="bi bi-pencil"></i> Manage Events</a>
+                }
+            </div>
+            <hr />
                 @if (ViewData["Events"] != null && ((IEnumerable<VolunteeringApp.Models.Social.Event>)ViewData["Events"]).Any())
                 {
                     @foreach (var @event in ViewData["Events"] as IEnumerable<VolunteeringApp.Models.Social.Event>)
@@ -118,7 +129,6 @@
                 {
                     <p>No events organized yet.</p>
                 }
-            </div>
         </div>
     </div>
 </div>

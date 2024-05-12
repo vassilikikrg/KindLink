@@ -6,42 +6,71 @@
 }
 
 <div class="card">
+    <!-- Event Image -->
     <div class="card-img-top" style="height: 400px; overflow: hidden; background-image: url('data:image/jpeg;base64,@Convert.ToBase64String(@Model.Image)'); background-size: cover; background-position: center;"></div>
+    <!-- Event Details -->
     <div class="card-body">
         <div class="text-danger">🎉 From @Model.StartTime.ToString("ddd, dd MMM yyyy 'at' hh:mm tt") to @Model.EndTime.ToString("ddd, dd MMM yyyy 'at' hh:mm tt")</div>
         <h2 class="card-title display-4">@Model.Title</h2>
         <h5 class="card-text mb-3">Organized by @Model.Organizer.OfficialName (<a class="text-primary" asp-controller="Organization" asp-action="Details" asp-route-id="@Model.OrganizerId">@Model.Organizer.UserName</a>)</h5>
+        <!-- Description -->
         <hr />
         <div class="mb-4">
             <h5 class="fw-bold">Description</h5>
             <p>@Model.Description</p>
         </div>
+        <!-- Max Participants -->
         <div class="mb-4">
             <h5 class="fw-bold">Max Participants</h5>
             <p>@Model.MaxParticipants</p>
         </div>
+        <!-- Location -->
         <div class="mb-4">
             <h5 class="fw-bold">Location</h5>
             <p>@Model.Location</p>
         </div>
+        <!-- Join/Leave Event Buttons -->
         @if (User?.Identity?.IsAuthenticated ?? false)
         {
-            @if (@Model.StartTime > DateTime.UtcNow)
-            {
-                <div class="mt-5 d-flex justify-content-center">
-
-                    <form asp-controller="EventParticipants" asp-action="Join" asp-route-id="@Model.Id" method="post">
-                        <button type="submit" class="btn btn-primary me-3"><i class="bi bi-plus"></i> Join Event</button>
-                    </form>
-                    <form asp-controller="EventParticipants" asp-action="Leave" asp-route-id="@Model.Id" method="post">
-                        <button type="submit" class="btn btn-danger"><i class="bi bi-x"></i> Leave Event</button>
-                    </form>
-                </div>
-            }
+            <div class="mt-5 d-flex justify-content-center">
+                @if (ViewBag.HasJoined == false)
+                {
+                    @if (@Model.StartTime >= DateTime.UtcNow)
+                    {
+                        <form asp-controller="EventParticipants" asp-action="Join" asp-route-id="@Model.Id" method="post" class="me-3">
+                            <button type="submit" class="btn btn-secondary-custom"><i class="bi bi-plus"></i> Join Event</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-secondary-custom disabled" disabled><i class="bi bi-plus"></i> Join Event</button>
+                    }
+                }
+                else if (ViewBag.HasJoined == true)
+                {
+                    @if (@Model.EndTime > DateTime.UtcNow)
+                    {
+                        <form asp-controller="EventParticipants" asp-action="Leave" asp-route-id="@Model.Id" method="post" class="me-3">
+                            <button type="submit" class="btn btn-danger-custom"><i class="bi bi-x"></i> Leave Event</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-danger-custom disabled" disabled><i class="bi bi-x"></i> Leave Event</button>
+                    }
+                }
+            </div>
         }
-        <div class="mt-5 d-flex justify-content-end">
-            <a asp-action="Index" class="col-auto link-dark me-3"><i class="bi bi-arrow-left"></i> Back to List</a>            
 
+        <!-- View Participants Button -->
+        <div class="mt-3 d-flex justify-content-center">
+            <a asp-action="Index" asp-controller="EventParticipants" asp-route-id="@Model.Id" class="btn btn-primary-custom"><i class="bi bi-people-fill"></i> View Event Participants</a>
+        </div>
+
+        <!-- Back to List Button -->
+        <div class="mt-3 d-flex justify-content-center">
+            <a asp-action="Index" class="btn btn-outline-dark me-3"><i class="bi bi-arrow-left"></i> Back to List</a>
         </div>
     </div>
 </div>
+

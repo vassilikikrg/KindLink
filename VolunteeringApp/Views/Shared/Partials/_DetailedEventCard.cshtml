@@ -17,42 +17,9 @@
                 <div class="mt-2 fw-bolder">Location</div>
                 <div>@Model.Location</div>
                 <div class="mt-3 row justify-content-end">
-                    @if (ViewBag.isTheProfileOwner == true)
-                    {
-                        <div class="col-auto">
-                            <a asp-controller="Events" asp-action="Details" asp-route-id="@Model?.Id" class="btn btn-dark">View More</a>
-                        </div>
-                        <div class="col-auto">
-                            <a asp-controller="Events" asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-outline-dark">Edit</a>
-                        </div>
-
-                        <div class="col-auto">
-                            <a asp-controller="Events" asp-action="Delete" asp-route-id="@Model?.Id" class="btn btn-outline-danger">Delete</a>
-
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="col-auto">
-                            <a asp-controller="Events" asp-action="Details" asp-route-id="@Model?.Id" class="btn btn-dark">View More</a>
-                        </div>
-                        @if (ViewBag.HasJoined == true)
-                        {
-                            <div class="col-auto">
-                                <form asp-controller="EventParticipants" asp-action="Leave" asp-route-id="@Model.Id" method="post">
-                                    <button type="submit" class="btn btn-secondary">Leave Event</button>
-                                </form>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="col-auto">
-                                <form asp-controller="EventParticipants" asp-action="Join" asp-route-id="@Model.Id" method="post">
-                                    <button type="submit" class="btn btn-secondary">Join Event</button>
-                                </form>
-                            </div>
-                        }
-                    }
+                    <div class="col-auto">
+                        <a asp-controller="Events" asp-action="Details" asp-route-id="@Model?.Id" class="btn btn-primary-custom">View More</a>
+                    </div>
                 </div>
             </div>
         </div>

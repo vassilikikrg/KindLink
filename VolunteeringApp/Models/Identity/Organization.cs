@@ -12,8 +12,6 @@ namespace VolunteeringApp.Models.Identity
         public OrganizationType OrganizationType { get; set; }
 
         public string? Website { get; set; }
-
-        //public string Location { get; set; }
         public ICollection<Post> Posts { get; } = [];
     }
 }

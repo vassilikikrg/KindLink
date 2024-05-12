@@ -2,7 +2,7 @@
 
 <div class="card" style="width: 18rem;">
     <div class="card-body">
-        <h5 class="card-title"><i class="bi bi-calendar-event-fill"></i> Upcoming Events</h5>
+        <h5 class="card-title"><i class="bi bi-calendar-event-fill" style="color:var(--secondary-color)"></i> Upcoming Events</h5>
         <hr />
         <div class="list-group list-group-flush">
             @foreach (var item in Model)
@@ -19,6 +19,6 @@
         </div>
     </div>
     <div class="mb-2 text-center">
-        <a asp-controller="Events" asp-action="Index" class="btn btn-dark">Explore More</a>
+        <a asp-controller="Events" asp-action="Index" class="btn" style="background-color:var(--primary-color);color:white">Explore More</a>
     </div>
 </div>

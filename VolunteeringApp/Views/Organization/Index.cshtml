@@ -5,6 +5,15 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+    .custom-alert {
+        background-color: var(--bg-color);
+        color: black;
+        border: 1px solid var(--secondary-color);
+        /* Add any other custom styling */
+    }
+
+</style>
 <div class="container">
     <!--Title-->
     <div class="row">
@@ -15,7 +24,7 @@
         <div class="col-auto">
             <!-- Filter By Type -->
             <div class="dropdown">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-outline-primary-custom dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Filter by type
                 </button>
                 <ul class="dropdown-menu">
@@ -42,14 +51,14 @@
                     <!-- Search by name -->
                     <input type="text" name="TypeFilter" hidden value="@ViewBag.TypeFilter"/>
                     <input class="form-control" type="text" name="SearchString" placeholder="Search by name" value="@ViewData["SearchString"]" />
-                    <button class="btn btn-secondary" type="submit">Search</button>
+                    <button class="btn btn-primary-custom" type="submit">Search</button>
                 </div>
             </form>
         </div>
         <div class="col-auto">
             @if (ViewBag.isFiltered == true)
             {
-                <a class="btn btn-outline-secondary" asp-action="Index"> Remove all filters</a>
+                <a class="btn btn-outline-primary-custom" asp-action="Index"> Remove all filters</a>
             }
         </div>
     </div>
@@ -61,19 +70,19 @@
                 @if (ViewBag.TypeFilter == null)
                 {
                     <!-- Display message for results found only by search string -->
-                    <div class="alert alert-info" role="alert">
+                    <div class="alert custom-alert" role="alert">
                         Results found for "@ViewData["SearchString"]"
                     </div>
                 }
                 else if(ViewData["SearchString"] == null){
                     <!-- Display message for results found only by filter type -->
-                    <div class="alert alert-info" role="alert">
+                    <div class="alert custom-alert" role="alert">
                         Results found within the category "@ViewBag.TypeFilter"
                     </div>
                 }
                 else{
                     <!-- Display message for results found by both search string and filter type -->
-                    <div class="alert alert-info" role="alert">
+                    <div class="alert custom-alert" role="alert">
                         Results found for "@ViewData["SearchString"]" within the category "@ViewBag.TypeFilter"
                     </div> 
                 }

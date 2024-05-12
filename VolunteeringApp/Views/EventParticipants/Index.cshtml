@@ -8,19 +8,19 @@
     var eventName = ViewBag.Event.Title;
 }
 
-<h1 class="display-4">Participants of Event "@eventName"</h1>
-</hr>
+<h1 class="display-6">Participants of Event "@eventName"</h1>
+<hr/>
 <table class="table">
     <tbody>
         @foreach (var item in Model)
         {
             <tr class="row lead">
-                <td class="col-10">
+                <td class="col-9">
                     &#64;@Html.DisplayFor(modelItem => item.Citizen.UserName)
                 </td>
-                <td class="col-2">
-                    <a class="btn btn-dark" asp-controller="Citizen" asp-action="Details" asp-route-id="@item.CitizenId">Go to profile</a>
-                    <a class="btn btn-outline-dark" asp-controller="Chat" asp-action="CreateOrFetchPrivateChat" asp-route-id="@item.CitizenId">Contact</a>
+                <td class="col-3">
+                    <a class="btn btn-primary-custom" asp-controller="Citizen" asp-action="Details" asp-route-id="@item.CitizenId">View profile</a>
+                    <a class="btn btn-outline-primary-custom" asp-controller="Chat" asp-action="CreateOrFetchPrivateChat" asp-route-id="@item.CitizenId"><i class="bi bi-send-fill"></i> Message</a>
                 </td>
             </tr>
         }

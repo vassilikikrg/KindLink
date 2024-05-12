@@ -34,10 +34,11 @@ namespace VolunteeringApp.Controllers
         // GET: Citizen/Details/5
         public async Task<IActionResult> Details(string id)
         {
+            var loggedInId= _userManager.GetUserId(User);
             if (id == null)
             {
                 // If id is null, try to get the ID from the current user
-                id = _userManager.GetUserId(User);
+                id = loggedInId;
 
                 if (id == null)
                 {
@@ -52,6 +53,10 @@ namespace VolunteeringApp.Controllers
             {
                 return NotFound();
             }
+
+            // Check if the logged-in user is the owner 
+            ViewBag.isTheProfileOwner = id == loggedInId;
+
             var following = await _socialService.GetFollowing(id);
             var myPastEvents = await _socialService.GetPastJoinedEvents(id);
             var myUpcomingEvents = await _socialService.GetUpcomingJoinedEvents(id);

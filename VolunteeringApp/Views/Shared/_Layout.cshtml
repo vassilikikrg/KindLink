@@ -35,6 +35,9 @@
                         {
                             @if (User.IsInRole("Citizen"))
                             {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Feed" asp-action="Index">Feed</a>
+                                </li>
                                 <li class="nav-item dropdown ">
                                     <a class="nav-link dropdown-toggle text-dark" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Organizations</a>
                                     <ul class="dropdown-menu">
@@ -112,8 +115,10 @@
                                     </ul>
                                 </li>
                             }
-                            <li class="nav-item">
-                                <a asp-controller="Chat" asp-action="Index" class="nav-link text-dark"><i class="bi bi-chat-fill" style="font-size: 1.2rem;"></i></a>
+                            <li class="nav-item ms-3">
+                                <a asp-controller="Chat" asp-action="Index" class="nav-link" style="color:var(--secondary-color)"><i class="bi bi-chat-fill" style="font-size: 1.2rem;"></i>
+
+                        </a>
                             </li>
 
                         </ul>
