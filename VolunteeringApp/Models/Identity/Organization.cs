@@ -13,5 +13,6 @@ namespace VolunteeringApp.Models.Identity
 
         public string? Website { get; set; }
         public ICollection<Post> Posts { get; } = [];
+        public ICollection<Event> Events { get; } = [];
     }
 }
