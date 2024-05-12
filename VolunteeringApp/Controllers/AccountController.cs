@@ -21,6 +21,11 @@ namespace VolunteeringApp.Controllers
             organizationManager = organizationMgr;
             signInManager = signinMgr;
         }
+        [HttpGet("/Account/Register")]
+        public IActionResult ChooseRegistrationType()
+        {
+            return View();
+        }
 
         [HttpGet("/Account/Register/Citizen")]
         public IActionResult RegisterCitizen()
@@ -61,7 +66,7 @@ namespace VolunteeringApp.Controllers
                 {
                     await userManager.AddToRoleAsync(appUser, "Citizen");
                     await signInManager.SignInAsync(appUser, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Feed");
                 }
                 else
                 {
@@ -118,7 +123,7 @@ namespace VolunteeringApp.Controllers
                     IdentityResult resultRole = await userManager.AddToRoleAsync(appUser, "Organization");
                     if (resultCreation.Succeeded && resultRole.Succeeded)
                     {
-                        return RedirectToAction("Login");
+                        return RedirectToAction("Index", "Dashboard");
                     }
                     else
                     {
