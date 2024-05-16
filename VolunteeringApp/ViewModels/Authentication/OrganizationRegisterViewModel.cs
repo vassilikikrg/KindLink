@@ -31,7 +31,7 @@ namespace VolunteeringApp.ViewModels.Authentication
         [Display(Name = "Organization Type")]
         public OrganizationType OrganizationType { get; set; }
 
-        [RegularExpression(@"^\+(?:[0-9] ?){6,14}[0-9]$", ErrorMessage = "Invalid phone number format")]
+        [RegularExpression(@"^\d+$", ErrorMessage = "Invalid phone number format")]
         [StringLength(20, ErrorMessage = "Phone number cannot exceed 20 characters")]
         public string Phone { get; set; }
 

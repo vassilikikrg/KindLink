@@ -12,12 +12,12 @@
         @foreach (var item in Model)
         {
             <tr class="row lead">
-                <td class="col-10">
+                <td class="col-9">
                     &#64;@Html.DisplayFor(modelItem => item.Follower.UserName)
                 </td>
-                <td class="col-2">
-                    <a class="btn btn-dark" asp-controller="Follow" asp-action="RedirectToDetails" asp-route-id="@item.Follower.Id">Go to profile</a>
-                    <a class="btn btn-outline-dark" asp-controller="Chat" asp-action="CreateOrFetchPrivateChat" asp-route-id="@item.Follower.Id">Contact</a>
+                <td class="col-3">
+                    <a class="btn btn-secondary-custom" asp-controller="Follow" asp-action="RedirectToDetails" asp-route-id="@item.Follower.Id"><i class="bi bi-person-badge"></i> Go to profile</a>
+                    <a class="btn btn-outline-secondary-custom" asp-controller="Chat" asp-action="CreateOrFetchPrivateChat" asp-route-id="@item.Follower.Id"><i class="bi bi-send-fill"></i> Message</a>
                 </td>
             </tr>
         }
