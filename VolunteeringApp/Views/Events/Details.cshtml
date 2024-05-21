@@ -12,7 +12,13 @@
     <div class="card-body">
         <div class="text-danger">🎉 From @Model.StartTime.ToString("ddd, dd MMM yyyy 'at' hh:mm tt") to @Model.EndTime.ToString("ddd, dd MMM yyyy 'at' hh:mm tt")</div>
         <h2 class="card-title display-4">@Model.Title</h2>
-        <h5 class="card-text mb-3">Organized by @Model.Organizer.OfficialName (<a class="text-primary" asp-controller="Organization" asp-action="Details" asp-route-id="@Model.OrganizerId">@Model.Organizer.UserName</a>)</h5>
+        <h5 class="card-text mb-3">
+            @if (Model.Organizer.Image != null && Model.Organizer.Image.Length > 0)
+            {
+                <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Organizer.Image)" alt="Profile Picture" class="rounded-circle shadow" style="height:24px;width:24px; object-fit: cover;">
+            }
+            Organized by @Model.Organizer.OfficialName (<a class="text-primary" asp-controller="Organization" asp-action="Details" asp-route-id="@Model.OrganizerId">@Model.Organizer.UserName</a>)
+        </h5>
         <!-- Description -->
         <hr />
         <div class="mb-4">

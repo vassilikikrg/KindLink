@@ -62,10 +62,17 @@
         <div class="card mb-3 flex-grow-1">
             <div class="card-body">
                 <h2 class="card-title">Followers</h2>
-                <div class="list-group">
+                <div class="list-group list-group-flush">
                     @foreach (var volunteer in Model.Followers)
                     {
-                        <a class="list-group-item" asp-controller="Follow" asp-action="RedirectToDetails" asp-route-id="@volunteer.Follower.Id">@volunteer.Follower.UserName</a>
+                        <a class="list-group-item list-group-item d-flex align-items-center" asp-controller="Follow" asp-action="RedirectToDetails" asp-route-id="@volunteer.Follower.Id">
+                            <img src="@(volunteer.Follower.Image!= null && volunteer.Follower.Image.Length > 0 ? "data:image/jpeg;base64," + Convert.ToBase64String(volunteer.Follower.Image) : Url.Content("~/images/avatar.png"))"
+                                 alt="Profile Picture"
+                                 class="rounded-circle me-3 shadow"
+                                 style="height:24px; width: 24px; object-fit: cover;">
+                            <span>@volunteer.Follower.UserName</span>
+                            
+                        </a>
                     }
                 </div>
                 <div class="d-grid gap-2">

@@ -5,18 +5,21 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="display-6">@Html.DisplayFor(model => model.Title)</h1>
-<hr />
-<h6 class="text-end text-muted">
-    Posted by @Html.DisplayFor(model => model.Author.OfficialName) (&#64;@Html.DisplayFor(model => model.Author.UserName)) at @Html.DisplayFor(model => model.CreatedAt)
-</h6>
-<div class="lead my-4">
-    @Html.DisplayFor(model => model.Body)
-</div>
-<div>
-    @if(ViewBag.IsTheAuthor){
-        <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-outline-dark">Edit</a>
-        <a asp-action="Delete" asp-route-id="@Model?.Id" class="btn btn-outline-danger">Delete</a>
-    }
-    <a asp-action="Index" class="btn" style="background-color:var(--primary-color);color:white"><i class="bi bi-arrow-left"></i> Back to List</a>
+<div class="col-10 justify-content-center mx-auto">
+    <h2>@Html.DisplayFor(model => model.Title)</h2>
+    <hr />
+    <h6 class="text-end text-muted">
+        Posted by @Html.DisplayFor(model => model.Author.OfficialName) (&#64;@Html.DisplayFor(model => model.Author.UserName)) at @Html.DisplayFor(model => model.CreatedAt)
+    </h6>
+    <div class="lead my-4">
+        @Html.DisplayFor(model => model.Body)
+    </div>
+    <div>
+        @if (ViewBag.IsTheAuthor)
+        {
+            <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-outline-dark">Edit</a>
+            <a asp-action="Delete" asp-route-id="@Model?.Id" class="btn btn-outline-danger">Delete</a>
+        }
+        <a asp-action="Index" class="btn" style="background-color:var(--primary-color);color:white"><i class="bi bi-arrow-left"></i> Back to List</a>
+    </div>
 </div>

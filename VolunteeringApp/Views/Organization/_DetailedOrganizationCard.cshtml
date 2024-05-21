@@ -43,18 +43,21 @@
                         </ul>
                     </div>
                 </div>
-                <div class="card-footer bg-transparent text-center">
-                    <!-- Edit and Delete Buttons -->
-                    @if (ViewBag.isTheProfileOwner)
-                    {
+                
+                <!-- Edit and Delete Buttons -->
+                @if(ViewBag.isTheProfileOwner)
+                {
+                    <div class="card-footer bg-transparent text-center">
                         <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-outline-secondary-custom">Edit Profile</a>
                         <a asp-action="Delete" asp-route-id="@Model?.Id" class="btn btn-outline-danger-custom">Delete Profile</a>
-                    }
-                    else
-                    {                     
+                    </div>
+                }
+                else
+                {                     
                         <!-- Follow/Unfollow Button -->
-                        @if (User.Identity.IsAuthenticated)
-                        {
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div class="card-footer bg-transparent text-center">
                             <div class="d-flex justify-content-center">
                                 @if (ViewBag.isFollowing)
                                 {
@@ -70,9 +73,10 @@
                                 }
                                 <a class="btn btn-dark" asp-controller="Chat" asp-action="CreateOrFetchPrivateChat" asp-route-id="@Model.Id"><i class="bi bi-send-fill"></i> Message</a>
                             </div>
-                        }
+                        </div>
                     }
-                </div>
+                }
+                
             </div>
             
         </div>

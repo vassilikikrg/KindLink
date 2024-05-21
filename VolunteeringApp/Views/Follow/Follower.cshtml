@@ -13,6 +13,10 @@
         {
             <tr class="row lead">
                 <td class="col-9">
+                    <img src="@(item.Follower.Image!= null && item.Follower.Image.Length > 0 ? "data:image/jpeg;base64," + Convert.ToBase64String(item.Follower.Image) : Url.Content("~/images/avatar.png"))"
+                         alt="Profile Picture"
+                         class="rounded-circle me-3 shadow"
+                         style="height: 40px; width: 40px; object-fit: cover;">
                     &#64;@Html.DisplayFor(modelItem => item.Follower.UserName)
                 </td>
                 <td class="col-3">

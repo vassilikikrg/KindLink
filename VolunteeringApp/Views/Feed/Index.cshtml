@@ -36,7 +36,7 @@
                         {
                             <a asp-controller="Events" asp-action="Details" asp-route-id="@item.Id" class="list-group-item list-group-item-action">
                                 <div class="d-flex align-items-center">
-                                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(@item.Image)" class="img-thumbnail me-3" alt="Event Image" style="width: 50px; height: 50px; object-fit: cover;">
+                                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(@item.Image)" class="img-thumbnail me-3 shadow" alt="Event Image" style="width: 50px; height: 50px; object-fit: cover;">
                                     <div>
                                         <div class="fs-6"><strong>@item.Title</strong></div>
                                         <div class="text-muted">
@@ -60,7 +60,13 @@
                     <div class="list-group list-group-flush">
                         @foreach (var item in ViewData["RecentOrganizations"] as IEnumerable<VolunteeringApp.Models.Identity.Organization>)
                         {
-                            <a asp-controller="Organization" asp-action="Details" asp-route-id="@item.Id" class="list-group-item list-group-item-action fs-6">@item.OfficialName (&#64;@item.UserName)</a>
+                            <a asp-controller="Organization" asp-action="Details" asp-route-id="@item.Id" class="list-group-item list-group-item-action d-flex align-items-center">
+                                <img src="@(item.Image != null && item.Image.Length > 0 ? "data:image/jpeg;base64," + Convert.ToBase64String(item.Image) : Url.Content("~/images/avatar.png"))"
+                                     alt="Profile Picture"
+                                     class="rounded-circle me-3"
+                                     style="height: 40px; width: 40px; object-fit: cover;">
+                                <span class="fs-6">@item.OfficialName <div class="text-muted">@@@item.UserName</div></span>
+                            </a>
                         }
                     </div>
                 </div>
