@@ -42,6 +42,8 @@ namespace VolunteeringApp.ViewModels.Authentication
         [StringLength(500, ErrorMessage = "Description cannot exceed 500 characters")]
         [Display(Name = "Short description")]
         public string Description { get; set; }
+        public IFormFile? ImageFile { get; set; }
+
     }
 
 }

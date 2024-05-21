@@ -13,7 +13,8 @@
             <h5 class="text-center lead">Join <i>KindLink</i> and make a difference!</h5>
 
             <div class="mx-auto col-9" >
-                <form method="post" asp-action="RegisterCitizen">
+                <form method="post" asp-action="RegisterCitizen" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="mb-3">
                         <label asp-for="UserName" class="form-label">Username</label>
                         <input asp-for="UserName" class="form-control" />
@@ -38,6 +39,16 @@
                         <label asp-for="Lastname" class="form-label">Last Name</label>
                         <input asp-for="Lastname" class="form-control" />
                         <span asp-validation-for="Lastname" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Description" class="form-label"></label>
+                        <input asp-for="Description" class="form-control" type="text" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="ImageFile" class="form-label">Profile Image</label>
+                        <input asp-for="ImageFile" class="form-control" />
+                        <span asp-validation-for="ImageFile" class="text-danger"></span>
                     </div>
                     <div class="d-grid gap-2 mt-3">
                         <button type="submit" class="btn btn-dark">Register</button>

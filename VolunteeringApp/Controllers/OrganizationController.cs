@@ -155,29 +155,13 @@ namespace VolunteeringApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Organization")]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,UserName,Email,OfficialName,PhoneNumber,Website,OrganizationType,Description")] Organization organization)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,UserName,Email,OfficialName,PhoneNumber,Website,OrganizationType,Description")] Organization organization, IFormFile? ImageFile)
         {
             if (id != organization.Id)
             {
                 return NotFound();
             }
 
-            //// Check if email or password is null
-            //if (string.IsNullOrWhiteSpace(organization.UserName))
-            //{
-            //    ModelState.AddModelError("UserName", "The username is required");
-            //}
-
-            //if (string.IsNullOrWhiteSpace(organization.Email))
-            //{
-            //    ModelState.AddModelError("Email", "The email is required");
-            //}
-
-            //// If email or password is null, return to the view with errors
-            //if (!ModelState.IsValid)
-            //{
-            //    return View(organization);
-            //}
 
             // Retrieve the ID of the currently logged-in user
             var loggedInUserId = _userManager.GetUserId(User);
@@ -188,20 +172,6 @@ namespace VolunteeringApp.Controllers
                 // If the logged-in user is not the owner, return an access denied response
                 return Forbid();
             }
-
-            //// Check if the entered username is already in use by another user
-            //var existingUserWithSameUsername = await _userManager.FindByNameAsync(organization.UserName);
-            //if (existingUserWithSameUsername != null && existingUserWithSameUsername.Id != organization.Id)
-            //{
-            //    ModelState.AddModelError("UserName", "The username is already in use by another user");
-            //}
-
-            //// Check if the entered email is already in use
-            //var existingUserWithSameEmail = await _userManager.FindByEmailAsync(organization.Email);
-            //if (existingUserWithSameEmail != null && existingUserWithSameEmail.Id != organization.Id)
-            //{
-            //    ModelState.AddModelError("Email", "The email is already in use");
-            //}
 
             if (ModelState.IsValid)
             {
@@ -214,6 +184,26 @@ namespace VolunteeringApp.Controllers
                     if (existingOrganization == null)
                     {
                         return NotFound();
+                    }
+
+                    if (ImageFile != null && ImageFile.Length > 0)
+                    {
+                        // Check if the uploaded file is an image
+                        if (!IsImage(ImageFile))
+                        {
+                            ModelState.AddModelError("ImageFile", "Please upload a valid image file (jpeg, png, gif)");
+                            return View(organization);
+                        }
+
+                        // Convert the image file to a byte array
+                        byte[] imageData;
+                        using (var memoryStream = new MemoryStream())
+                        {
+                            await ImageFile.CopyToAsync(memoryStream);
+                            imageData = memoryStream.ToArray();
+                        }
+
+                        existingOrganization.Image = imageData;
                     }
 
                     // Update the existing Organization entity with the new values
@@ -331,6 +321,18 @@ namespace VolunteeringApp.Controllers
         }
 
 
+        private bool IsImage(IFormFile file)
+        {
+            if (file == null)
+            {
+                return false;
+            }
+
+            // Check file extension
+            var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+            var fileExtension = Path.GetExtension(file.FileName).ToLowerInvariant();
+            return allowedExtensions.Contains(fileExtension);
+        }
 
         private bool OrganizationExists(string id)
         {

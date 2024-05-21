@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using VolunteeringApp.Data;
 using VolunteeringApp.Models.Identity;
+using VolunteeringApp.Models.Social;
 using VolunteeringApp.Services;
 
 namespace VolunteeringApp.Controllers
@@ -102,7 +103,7 @@ namespace VolunteeringApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Citizen")]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,UserName,Email,Firstname,Lastname,Description")] Citizen citizen)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,UserName,Email,Firstname,Lastname,Description,Image")] Citizen citizen, IFormFile? ImageFile)
         {
             if (id != citizen.Id)
             {
@@ -119,20 +120,6 @@ namespace VolunteeringApp.Controllers
                 return Forbid();
             }
 
-            // Check if the entered username is already in use by another user
-            var existingUserWithSameUsername = await _userManager.FindByNameAsync(citizen.UserName);
-            if (existingUserWithSameUsername != null && existingUserWithSameUsername.Id != citizen.Id)
-            {
-                ModelState.AddModelError("UserName", "The username is already in use by another user");
-            }
-
-            // Check if the entered email is already in use
-            var existingUserWithSameEmail = await _userManager.FindByEmailAsync(citizen.Email);
-            if (existingUserWithSameEmail != null && existingUserWithSameEmail.Id != citizen.Id)
-            {
-                ModelState.AddModelError("Email", "The email is already in use");
-            }
-
             if (ModelState.IsValid)
             {
                 try
@@ -144,6 +131,26 @@ namespace VolunteeringApp.Controllers
                     if (existingCitizen == null)
                     {
                         return NotFound();
+                    }
+
+                    if (ImageFile != null && ImageFile.Length>0)
+                    {
+                        // Check if the uploaded file is an image
+                        if (!IsImage(ImageFile))
+                        {
+                            ModelState.AddModelError("ImageFile", "Please upload a valid image file (jpeg, png, gif)");
+                            return View(citizen);
+                        }
+
+                        // Convert the image file to a byte array
+                        byte[] imageData;
+                        using (var memoryStream = new MemoryStream())
+                        {
+                            await ImageFile.CopyToAsync(memoryStream);
+                            imageData = memoryStream.ToArray();
+                        }
+
+                        existingCitizen.Image = imageData;
                     }
 
                     // Update the existing citizen entity with the new values
@@ -255,6 +262,20 @@ namespace VolunteeringApp.Controllers
                 // Handle user deletion failure
                 return RedirectToAction("Citizen", "Delete");
             }
+        }
+
+        // Method to check if a file is an image
+        private bool IsImage(IFormFile file)
+        {
+            if (file == null)
+            {
+                return false;
+            }
+
+            // Check file extension
+            var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+            var fileExtension = Path.GetExtension(file.FileName).ToLowerInvariant();
+            return allowedExtensions.Contains(fileExtension);
         }
 
         private bool CitizenExists(string id)

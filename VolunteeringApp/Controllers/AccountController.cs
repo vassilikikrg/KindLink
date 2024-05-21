@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NuGet.Protocol.Plugins;
 using VolunteeringApp.Models.Identity;
+using VolunteeringApp.Models.Social;
 using VolunteeringApp.ViewModels.Authentication;
+using VolunteeringApp.ViewModels.Social;
 
 namespace VolunteeringApp.Controllers
 {
@@ -60,7 +62,26 @@ namespace VolunteeringApp.Controllers
                     Firstname = citizen.Firstname,
                     Lastname = citizen.Lastname
                 };
-
+                if (citizen.ImageFile != null && citizen.ImageFile.Length > 0)
+                {
+                    if (IsImage(citizen.ImageFile))
+                    {
+                        // convert image form file to byte array
+                        byte[] imageData = null;
+                        using (var formStream = citizen.ImageFile.OpenReadStream())
+                        using (var memoryStream = new MemoryStream())
+                        {
+                            formStream.CopyTo(memoryStream);
+                            imageData = memoryStream.ToArray();
+                        }
+                        appUser.Image = imageData;
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("ImageFile", "Please upload a photo file (accepted jpeg,png,gif)");
+                        return View(citizen);
+                    }
+                }
                 var result = await userManager.CreateAsync(appUser, citizen.Password);
                 if (result.Succeeded)
                 {
@@ -107,6 +128,7 @@ namespace VolunteeringApp.Controllers
 
                 if (ModelState.IsValid)
                 {
+
                     // No duplicate username or email found, proceed with registration
                     Organization appUser = new Organization
                     {
@@ -118,6 +140,27 @@ namespace VolunteeringApp.Controllers
                         Website = organization.Website,
                         Description = organization.Description
                     };
+
+                    if (organization.ImageFile != null && organization.ImageFile.Length > 0)
+                    {
+                        if (IsImage(organization.ImageFile))
+                        {
+                            // convert image form file to byte array
+                            byte[] imageData = null;
+                            using (var formStream = organization.ImageFile.OpenReadStream())
+                            using (var memoryStream = new MemoryStream())
+                            {
+                                formStream.CopyTo(memoryStream);
+                                imageData = memoryStream.ToArray();
+                            }
+                            appUser.Image = imageData;
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("ImageFile", "Please upload a photo file (accepted jpeg,png,gif)");
+                            return View(organization);
+                        }
+                    }
 
                     IdentityResult resultCreation = await organizationManager.CreateAsync(appUser, organization.Password);
                     IdentityResult resultRole = await userManager.AddToRoleAsync(appUser, "Organization");
@@ -197,6 +240,20 @@ namespace VolunteeringApp.Controllers
         {
             await signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
+        }
+
+        // Method to check if a file is an image
+        private bool IsImage(IFormFile file)
+        {
+            if (file == null)
+            {
+                return false;
+            }
+
+            // Check file extension
+            var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+            var fileExtension = Path.GetExtension(file.FileName).ToLowerInvariant();
+            return allowedExtensions.Contains(fileExtension);
         }
     }
 }

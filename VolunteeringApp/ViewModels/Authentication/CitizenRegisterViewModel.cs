@@ -25,5 +25,9 @@ namespace VolunteeringApp.ViewModels.Authentication
 
         [Display(Name = "Last Name")]
         public string Lastname { get; set; }
+
+        public string? Description { get; set; }
+
+        public IFormFile? ImageFile { get; set; }
     }
 }

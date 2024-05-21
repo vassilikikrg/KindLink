@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using VolunteeringApp.Models.Chat;
 
 namespace VolunteeringApp.Models.Identity
@@ -7,7 +8,9 @@ namespace VolunteeringApp.Models.Identity
     {
         public string? Description { get; set; }
         public DateTime? CreatedAt { get; set; } = DateTime.UtcNow;
-        public ICollection<GroupMember> GroupMembers { get; } = [];
-        public ICollection<Message> Messages { get; } = [];
+        [ValidateNever]
+        public byte[]? Image { get; set; }
+        public ICollection<GroupMember> GroupMembers { get; } = new List<GroupMember>();
+        public ICollection<Message> Messages { get; } = new List<Message>();
     }
 }

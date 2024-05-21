@@ -19,10 +19,17 @@
                         <h6><span class="badge @Model.OrganizationType">@organizationType</span></h6>
                     </div>
                     <div class="text-center">                 
-                        <!-- Avatar Photo -->
-                        <img src="~/images/avatar.png" class="img-fluid rounded-circle mb-3" style="max-height:96px;max-width:96px" alt="Avatar">
+                        <!-- Profile Picture -->
+                        @if (Model.Image != null && Model.Image.Length > 0)
+                        {
+                            <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Image)" alt="Profile Picture" class="rounded-circle me-3" style="width: 96px; height: 96px; object-fit: cover;">
+                        }
+                        else
+                        {
+                            <img src="~/images/avatar.png" alt="Profile Picture" class="rounded-circle me-3" style="height:96px;width:96px; object-fit: cover;">
+                        }
                         <!-- Organization Name -->
-                        <h4 class="card-title">@Html.DisplayFor(modelItem => Model.OfficialName)</h4>
+                        <h4 class="card-title mt-2">@Html.DisplayFor(modelItem => Model.OfficialName)</h4>
                         <h6 class="card-subtitle mb-2 text-muted">&#64;@Html.DisplayFor(modelItem => Model.UserName)</h6>
                         <!-- Follower Count -->
                         <h4 class="mt-3">
