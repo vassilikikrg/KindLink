@@ -3,10 +3,11 @@
 @{
     ViewData["Title"] = "Feed";
 }
+
 <style>
     .postContainer {
         max-height: 680px;
-        overflow-y: scroll; /* Add the ability to scroll */
+        overflow-y: scroll;
     }
 
         /* Hide scrollbar for Chrome, Safari and Opera */
@@ -16,36 +17,72 @@
 
     /* Hide scrollbar for IE, Edge and Firefox */
     .postContainer {
-        -ms-overflow-style: none; /* IE and Edge */
-        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none;
+        scrollbar-width: none;
     }
 </style>
-<div class="row my-4">
-    <h3 >
-        Welcome back, @User.Identity.Name !
-    </h3>
 
-</div>
-<div class="row">
-    
-    <div class="col-3">
-        @Html.Partial("~/Views/Shared/Partials/_EventsCard.cshtml", @ViewData["FeaturedEvents"])
-    </div>
-    <div class="col-6">
-        <!-- Post feed -->
-        <div class="card">
-             <div class="card-body">
-                <h6 class="display-6">Recent Posts</h6>
-                <div class="postContainer">
-                    @foreach (var item in Model)
-                    {
-                        @Html.Partial("~/Views/Shared/Partials/_PostTemplate.cshtml", item)
-                    }
+<div class="container mt-5">
+    <h1 class="text-center mb-4 display-5">Welcome back, @User.Identity.Name!</h1>
+    <div class="row">
+        <div class="col-md-4">
+            <!-- Events Card -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-calendar-event-fill" style="color:var(--primary-color)"></i> Upcoming Events</h5>
+                    <hr class="mb-3">
+                    <div class="list-group list-group-flush">
+                        @foreach (var item in ViewData["FeaturedEvents"] as IEnumerable<VolunteeringApp.Models.Social.Event>)
+                        {
+                            <a asp-controller="Events" asp-action="Details" asp-route-id="@item.Id" class="list-group-item list-group-item-action">
+                                <div class="d-flex align-items-center">
+                                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(@item.Image)" class="img-thumbnail me-3" alt="Event Image" style="width: 50px; height: 50px; object-fit: cover;">
+                                    <div>
+                                        <div class="fs-6"><strong>@item.Title</strong></div>
+                                        <div class="text-muted">
+                                            @item.StartTime.ToString("ddd, dd MMM yyyy 'at' hh:mm tt")
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        }
+                    </div>
                 </div>
-             </div>
+                <div class="card-footer text-center">
+                    <a asp-controller="Events" asp-action="Index" asp-route-eventType="Upcoming" class="btn btn-secondary-custom btn-sm">Explore More</a>
+                </div>
+            </div>
+            <!-- Recently Joined Organizations Card -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-plus-circle-fill" style="color:var(--primary-color)"></i> Recently Joined Organizations</h5>
+                    <hr class="mb-3">
+                    <div class="list-group list-group-flush">
+                        @foreach (var item in ViewData["RecentOrganizations"] as IEnumerable<VolunteeringApp.Models.Identity.Organization>)
+                        {
+                            <a asp-controller="Organization" asp-action="Details" asp-route-id="@item.Id" class="list-group-item list-group-item-action fs-6">@item.OfficialName (&#64;@item.UserName)</a>
+                        }
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <a asp-controller="Organization" asp-action="Index" class="btn btn-secondary-custom btn-sm">Explore More</a>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="col-3">
-        @Html.Partial("~/Views/Shared/Partials/_RecentlyJoinedOrganizationsCard.cshtml", @ViewData["RecentOrganizations"])
+        <div class="col-md-8">
+            <!-- Post Feed -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Recent Posts</h5>
+                    <hr class="mb-4">
+                    <div class="postContainer">
+                        @foreach (var item in Model)
+                        {
+                            @Html.Partial("~/Views/Shared/Partials/_PostTemplate.cshtml", item)
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
