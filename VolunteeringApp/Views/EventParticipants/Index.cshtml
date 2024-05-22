@@ -6,6 +6,7 @@
 }
 @{
     var eventName = ViewBag.Event.Title;
+    var authenticatedUserId = ViewBag.AuthenticatedUserId;
 }
 
 <h1 class="display-6">Participants of Event "@eventName"</h1>
@@ -28,7 +29,10 @@
                 </td>
                 <td class="col-3">
                     <a class="btn btn-primary-custom" asp-controller="Citizen" asp-action="Details" asp-route-id="@item.CitizenId">View profile</a>
-                    <a class="btn btn-outline-primary-custom" asp-controller="Chat" asp-action="CreateOrFetchPrivateChat" asp-route-id="@item.CitizenId"><i class="bi bi-send-fill"></i> Message</a>
+                    @if (item.CitizenId != authenticatedUserId)
+                    {
+                        <a class="btn btn-outline-primary-custom" asp-controller="Chat" asp-action="CreateOrFetchPrivateChat" asp-route-id="@item.CitizenId"><i class="bi bi-send-fill"></i> Message</a>
+                    }
                 </td>
             </tr>
         }

@@ -60,7 +60,8 @@ namespace VolunteeringApp.Controllers
                     UserName = citizen.UserName,
                     Email = citizen.Email,
                     Firstname = citizen.Firstname,
-                    Lastname = citizen.Lastname
+                    Lastname = citizen.Lastname,
+                    Description=citizen.Description
                 };
                 if (citizen.ImageFile != null && citizen.ImageFile.Length > 0)
                 {

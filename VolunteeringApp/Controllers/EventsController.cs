@@ -289,13 +289,18 @@ namespace VolunteeringApp.Controllers
         [Authorize(Roles = "Organization")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var @event = await _context.Events.FindAsync(id);
+            var @event = await _context.Events
+                    .Include(e => e.Participants)
+                    .FirstOrDefaultAsync(e => e.Id == id);
+            
             if (@event.OrganizerId != _userManager.GetUserId(User))
             { //if the user is not the organizer,he can't delete the post
                 return Forbid();
             }
             if (@event != null)
             {
+                // Remove related EventParticipants entries
+                _context.Participants.RemoveRange(@event.Participants);
                 _context.Events.Remove(@event);
             }
 

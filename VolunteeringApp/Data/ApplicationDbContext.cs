@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 using VolunteeringApp.Models.Chat;
 using VolunteeringApp.Models.Identity;
 using VolunteeringApp.Models.Social;
@@ -25,6 +26,12 @@ namespace VolunteeringApp.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.Entity<EventParticipant>()
+                .HasOne(ep => ep.Event)
+                .WithMany(e => e.Participants)
+                .HasForeignKey(ep => ep.EventId)
+                .OnDelete(DeleteBehavior.Cascade);
             //SeedRoles(builder);
         }
         //private static void SeedRoles(ModelBuilder modelBuilder)

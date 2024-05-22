@@ -39,6 +39,7 @@ namespace VolunteeringApp.Controllers
                 .Where(e=>e.EventId==id)
                 .Include(e => e.Citizen)
                 .Include(e => e.Event);
+            ViewBag.AuthenticatedUserId = _userManager.GetUserId(User);
             return View(await applicationDbContext.ToListAsync());
         }
         // GET

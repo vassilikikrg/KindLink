@@ -167,7 +167,7 @@ namespace VolunteeringApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Conversations");
+                    b.ToTable("Conversations", (string)null);
                 });
 
             modelBuilder.Entity("VolunteeringApp.Models.Chat.GroupMember", b =>
@@ -185,7 +185,7 @@ namespace VolunteeringApp.Migrations
 
                     b.HasIndex("ConversationId");
 
-                    b.ToTable("GroupMembers");
+                    b.ToTable("GroupMembers", (string)null);
                 });
 
             modelBuilder.Entity("VolunteeringApp.Models.Chat.Message", b =>
@@ -215,7 +215,7 @@ namespace VolunteeringApp.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("Messages");
+                    b.ToTable("Messages", (string)null);
                 });
 
             modelBuilder.Entity("VolunteeringApp.Models.Identity.AppIdentityUser", b =>
@@ -335,7 +335,7 @@ namespace VolunteeringApp.Migrations
 
                     b.HasIndex("OrganizerId");
 
-                    b.ToTable("Events");
+                    b.ToTable("Events", (string)null);
                 });
 
             modelBuilder.Entity("VolunteeringApp.Models.Social.EventParticipant", b =>
@@ -350,7 +350,7 @@ namespace VolunteeringApp.Migrations
 
                     b.HasIndex("CitizenId");
 
-                    b.ToTable("EventParticipants");
+                    b.ToTable("EventParticipants", (string)null);
                 });
 
             modelBuilder.Entity("VolunteeringApp.Models.Social.FollowRelationship", b =>
@@ -365,7 +365,7 @@ namespace VolunteeringApp.Migrations
 
                     b.HasIndex("FollowedId");
 
-                    b.ToTable("FollowRelationships");
+                    b.ToTable("FollowRelationships", (string)null);
                 });
 
             modelBuilder.Entity("VolunteeringApp.Models.Social.Post", b =>
@@ -393,7 +393,7 @@ namespace VolunteeringApp.Migrations
 
                     b.HasIndex("AuthorId");
 
-                    b.ToTable("Posts");
+                    b.ToTable("Posts", (string)null);
                 });
 
             modelBuilder.Entity("VolunteeringApp.Models.Identity.Citizen", b =>
@@ -406,7 +406,7 @@ namespace VolunteeringApp.Migrations
                     b.Property<string>("Lastname")
                         .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("Citizens");
+                    b.ToTable("Citizens", (string)null);
                 });
 
             modelBuilder.Entity("VolunteeringApp.Models.Identity.Organization", b =>
@@ -423,7 +423,7 @@ namespace VolunteeringApp.Migrations
                     b.Property<string>("Website")
                         .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("Organizations");
+                    b.ToTable("Organizations", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

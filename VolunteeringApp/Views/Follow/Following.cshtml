@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<VolunteeringApp.Models.Social.FollowRelationship>
 
 @{
-    ViewData["Title"] = "View";
+    ViewData["Title"] = "Following";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @using VolunteeringApp.Models.Enums
@@ -9,25 +9,41 @@
 
 <h1 class="display-4">Following</h1>
 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
-        @foreach (var item in Model)
-        {
-            <div class="col card m-3 p-0">
-                <div class="card-header">
-                    @{
-                        var organizationType = item.Followed.OrganizationType.GetDisplayName();
+    @foreach (var item in Model)
+    {
+        <div class="col card m-3 p-0 shadow-sm">
+            <!-- Card Header with Badge -->
+            <div class="card-header position-relative d-flex flex-column align-items-center p-4" style="background-color: var(--bg-color);">
+                <!-- Badge -->
+                @{
+                    var organizationType = item.Followed.OrganizationType.GetDisplayName();
+                }
+                <span class="badge @item.Followed.OrganizationType position-absolute" style="top: 10px; right: 10px; font-size: 0.8rem;">@organizationType</span>
+                <!-- Profile Picture -->
+                <div class="mb-3">
+                    @if (item.Followed.Image != null && item.Followed.Image.Length > 0)
+                    {
+                        <img src="data:image/jpeg;base64,@Convert.ToBase64String(item.Followed.Image)" alt="Profile Picture" class="rounded-circle shadow" style="height:100px;width:100px; object-fit: cover;">
                     }
-                    <!--Organization Name,Username,Type-->
-                    <h5 class="card-title">@Html.DisplayFor(modelItem => item.Followed.OfficialName)</h5>
-                    <h6 class="card-subtitle mb-2 text-body-secondary fw-light">&#64; @Html.DisplayFor(modelItem => item.Followed.UserName)</h6>
-                    <h5 class="card-text text-end">
-                        <span class="badge @item.Followed.OrganizationType">@organizationType</span>
-                    </h5>
+                    else
+                    {
+                        <img src="~/images/avatar.png" alt="Profile Picture" class="rounded-circle shadow" style="height:100px;width:100px; object-fit: cover;">
+                    }
                 </div>
-                <div class="card-body">
-                    <!--Organization Description-->
+                <!-- Organization Name and Username -->
+                <div class="text-center">
+                    <h5 class="card-title mb-0">@Html.DisplayFor(modelItem => item.Followed.OfficialName)</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">@@@Html.DisplayFor(modelItem => item.Followed.UserName)</h6>
+                </div>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body d-flex flex-column p-4">
+                <!-- Organization Description -->
+                <div class="mb-3">
+                    <h6>Description</h6>
                     @if (item.Followed.Description != null)
                     {
-                        <p class="card-text text-truncate">@Html.DisplayFor(modelItem => item.Followed.Description)</p>
+                        <p class="card-text">@Html.DisplayFor(modelItem => item.Followed.Description)</p>
                     }
                     else
                     {
@@ -35,12 +51,34 @@
                             <i>No description provided</i>
                         </p>
                     }
-                    <!--Links-->
-                <div class="mb-auto">
-                    <a class="btn btn-dark" asp-controller="Chat" asp-action="CreateOrFetchPrivateChat" asp-route-id="@item.Followed.Id">Message</a>
-                    <a class="btn btn-outline-dark" asp-action="Details" asp-route-id="@item.Followed.Id">Details</a>
                 </div>
+                <!-- Action Buttons -->
+                <div class="mt-auto">
+                    <a class="btn btn-primary-custom w-100 mb-2" asp-controller="Chat" asp-action="CreateOrFetchPrivateChat" asp-route-id="@item.Followed.Id">
+                        <i class="bi bi-send-fill"></i> Message
+                    </a>
+                    <a class="btn btn-outline-primary-custom w-100" asp-action="Details" asp-route-id="@item.Followed.Id">
+                        <i class="bi bi-info-circle"></i> Details
+                    </a>
                 </div>
             </div>
-        }
+        </div>
+    }
 </div>
+
+<style>
+    .card-title,
+    .card-subtitle {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .card-text {
+        max-height: 4.5em; /* Adjust height for description truncation */
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 3; /* Number of lines to show */
+        -webkit-box-orient: vertical;
+    }
+</style>

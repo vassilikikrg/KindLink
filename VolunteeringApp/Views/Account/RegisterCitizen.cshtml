@@ -18,6 +18,9 @@
                     <div class="mb-3">
                         <label asp-for="UserName" class="form-label">Username</label>
                         <input asp-for="UserName" class="form-control" />
+                        <div id="usernameHelpBlock" class="form-text">
+                            Your username must be between 3 and 20 characters and only contain letters, numbers, and underscores.
+                        </div>
                         <span asp-validation-for="UserName" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
@@ -28,6 +31,9 @@
                     <div class="mb-3">
                         <label asp-for="Password" class="form-label">Password</label>
                         <input asp-for="Password" class="form-control" />
+                        <div id="passwordHelpBlock" class="form-text">
+                            Your password must be at least 6 characters and contain at least one non alphanumeric character, one digit ('0'-'9') and one uppercase ('A'-'Z').
+                        </div>
                         <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
@@ -43,11 +49,18 @@
                     <div class="mb-3">
                         <label asp-for="Description" class="form-label"></label>
                         <input asp-for="Description" class="form-control" type="text" />
+                        <div id="descriptionHelpBlock" class="form-text">
+                           Description can be up to 500 characters long.
+                        </div>
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
                         <label asp-for="ImageFile" class="form-label">Profile Image</label>
                         <input asp-for="ImageFile" class="form-control" />
+                        <div id="imageHelpBlock" class="form-text">
+                            *Optional
+                            Accepted extensions .jpeg, .png, .gif
+                        </div>
                         <span asp-validation-for="ImageFile" class="text-danger"></span>
                     </div>
                     <div class="d-grid gap-2 mt-3">

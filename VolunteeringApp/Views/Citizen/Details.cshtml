@@ -101,7 +101,13 @@
                     {
                         foreach (var item in ViewData["Following"] as IEnumerable<VolunteeringApp.Models.Social.FollowRelationship>)
                         {
-                            <a href="@Url.Action("Details", "Organization", new { id = item.FollowedId })" class="list-group-item">@item.Followed.OfficialName (&#64;@item.Followed.UserName)</a>
+                            <a href="@Url.Action("Details", "Organization", new { id = item.FollowedId })" class="list-group-item list-group-item-action d-flex align-items-center">
+                                <img src="@(item.Followed.Image != null && item.Followed.Image.Length > 0 ? "data:image/jpeg;base64," + Convert.ToBase64String(item.Followed.Image) : Url.Content("~/images/avatar.png"))"
+                                     alt="Profile Picture"
+                                     class="rounded-circle me-3"
+                                     style="height: 24px; width: 24px; object-fit: cover;">
+                                <span>@item.Followed.OfficialName (&#64;@item.Followed.UserName)</span>
+                            </a>
                         }
                     }
                     else
@@ -125,7 +131,17 @@
                     {
                         foreach (var item in ViewData["MyUpcomingEvents"] as IEnumerable<VolunteeringApp.Models.Social.EventParticipant>)
                         {
-                            <a href="@Url.Action("Details", "Events", new { id = item.Event.Id })" class="list-group-item">@item.Event.Title (@item.Event.StartTime.ToString("ddd, dd MMM yyyy 'at' hh:mm tt"))</a>
+                            <a href="@Url.Action("Details", "Events", new { id = item.Event.Id })" class="list-group-item">
+                                <div class="d-flex align-items-center">
+                                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(@item.Event.Image)" class="img-thumbnail me-3 shadow" alt="Event Image" style="width: 50px; height: 50px; object-fit: cover;">
+                                    <div>
+                                        <div class="fs-6"><strong>@item.Event.Title</strong></div>
+                                        <div class="text-muted">
+                                            @item.Event.StartTime.ToString("ddd, dd MMM yyyy 'at' hh:mm tt")
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
                         }
                     }
                     else
@@ -137,7 +153,17 @@
                     {
                         foreach (var item in ViewData["MyPastEvents"] as IEnumerable<VolunteeringApp.Models.Social.EventParticipant>)
                         {
-                            <a href="@Url.Action("Details", "Events", new { id = item.Event.Id })" class="list-group-item">@item.Event.Title (@item.Event.StartTime.ToString("ddd, dd MMM yyyy 'at' hh:mm tt"))</a>
+                            <a href="@Url.Action("Details", "Events", new { id = item.Event.Id })" class="list-group-item">
+                                <div class="d-flex align-items-center">
+                                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(@item.Event.Image)" class="img-thumbnail me-3 shadow" alt="Event Image" style="width: 50px; height: 50px; object-fit: cover;">
+                                    <div>
+                                        <div class="fs-6"><strong>@item.Event.Title</strong></div>
+                                        <div class="text-muted">
+                                            @item.Event.StartTime.ToString("ddd, dd MMM yyyy 'at' hh:mm tt")
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
                         }
                     }
                     else

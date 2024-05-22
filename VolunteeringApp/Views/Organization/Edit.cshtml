@@ -5,54 +5,92 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Edit profile</h1>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit" asp-controller="Organization" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <input type="hidden" asp-for="Image" />
-            <div class="form-group">
-                <label asp-for="UserName" class="control-label"></label>
-                <input asp-for="UserName" class="form-control" readonly />
-                <span asp-validation-for="UserName" class="text-danger"></span>
+<h1 class="text-center display-6">Edit Profile</h1>
+<hr/>
+<div class="container d-flex justify-content-center">
+    <form asp-action="Edit" asp-controller="Organization" enctype="multipart/form-data" class="row g-3 w-75">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="Image" />
+
+        <!-- Username -->
+        <div class="col-md-6">
+            <label asp-for="UserName" class="form-label"></label>
+            <input asp-for="UserName" class="form-control" readonly />
+            <div id="usernameHelpBlock" class="form-text">
+                Username can't be changed.
             </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" readonly />
-                <span asp-validation-for="Email" class="text-danger"></span>
+            <span asp-validation-for="UserName" class="text-danger"></span>
+        </div>
+
+        <!-- Email -->
+        <div class="col-md-6">
+            <label asp-for="Email" class="form-label"></label>
+            <input asp-for="Email" class="form-control" readonly />
+            <div id="emailHelpBlock" class="form-text">
+                Email can't be changed.
             </div>
-            <div class="form-group">
-                <label asp-for="OfficialName" class="control-label"></label>
-                <input asp-for="OfficialName" class="form-control" />
-                <span asp-validation-for="OfficialName" class="text-danger"></span>
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <!-- Official Name -->
+        <div class="col-md-6">
+            <label asp-for="OfficialName" class="form-label"></label>
+            <input asp-for="OfficialName" class="form-control" />
+            <div id="officialnameHelpBlock" class="form-text">
+                Official name cannot exceed 100 characters
             </div>
-            <div class="form-group">
-                <label asp-for="OrganizationType" class="control-label"></label>
-                <select asp-for="OrganizationType" class="form-control" asp-items="Html.GetEnumSelectList<VolunteeringApp.Models.Enums.OrganizationType>()">
-                </select>
-                <span asp-validation-for="OrganizationType" class="text-danger"></span>
+            <span asp-validation-for="OfficialName" class="text-danger"></span>
+        </div>
+
+        <!-- Organization Type -->
+        <div class="col-md-6">
+            <label asp-for="OrganizationType" class="form-label"></label>
+            <select asp-for="OrganizationType" class="form-select" asp-items="Html.GetEnumSelectList<VolunteeringApp.Models.Enums.OrganizationType>()">
+            </select>
+            <span asp-validation-for="OrganizationType" class="text-danger"></span>
+        </div>
+
+        <!-- Description -->
+        <div class="col-md-12">
+            <label asp-for="Description" class="form-label"></label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+            <div id="descriptionHelpBlock" class="form-text">
+                Description can be up to 500 characters long.
             </div>
-            <div class="form-group">
-                <label asp-for="PhoneNumber" class="control-label"></label>
-                <input asp-for="PhoneNumber" class="form-control" />
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <!-- Phone Number -->
+        <div class="col-md-6">
+            <label asp-for="PhoneNumber" class="form-label"></label>
+            <input asp-for="PhoneNumber" class="form-control" />
+            <div id="phoneHelpBlock" class="form-text">
+                Phone must only contain numeric characters.
             </div>
-            <div class="form-group">
-                <label asp-for="Website" class="control-label"></label>
-                <input asp-for="Website" class="form-control" />
-                <span asp-validation-for="Website" class="text-danger"></span>
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+
+        <!-- Website -->
+        <div class="col-md-6">
+            <label asp-for="Website" class="form-label"></label>
+            <input asp-for="Website" class="form-control" />
+            <span asp-validation-for="Website" class="text-danger"></span>
+        </div>
+        <!-- Profile Image -->
+        <div class="col-md-12">
+            <label class="form-label">New Profile Image</label>
+            <input type="file" class="form-control" id="ImageFile" name="ImageFile" />
+            <div id="imageHelpBlock" class="form-text">
+                Accepted extensions: .jpeg, .png, .gif
             </div>
-            <div class="mb-3">
-                <label class="form-label">New profile imagee</label>
-                <input type="file" class="form-control" id="ImageFile" name="ImageFile" />
-                <span for="ImageFile" class="text-danger"></span>
-            </div>
-            <div class="form-group mt-3">
-                <input type="submit" value="Apply changes" class="btn btn-dark" />
-                <a asp-action="Details" asp-route-id="@Model?.Id" class="btn btn-outline-dark">Back to Profile</a>
-            </div>
-        </form>
-    </div>
+            <span for="ImageFile" class="text-danger"></span>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="col-12 d-flex justify-content-center">
+            <input type="submit" value="Apply Changes" class="btn btn-primary-custom me-3" />
+            <a asp-action="Details" asp-route-id="@Model?.Id" class="btn btn-outline-secondary-custom">Back to Profile</a>
+        </div>
+    </form>
 </div>

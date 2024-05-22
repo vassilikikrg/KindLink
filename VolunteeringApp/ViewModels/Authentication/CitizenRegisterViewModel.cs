@@ -26,6 +26,7 @@ namespace VolunteeringApp.ViewModels.Authentication
         [Display(Name = "Last Name")]
         public string Lastname { get; set; }
 
+        [StringLength(500, ErrorMessage = "Maximum length is 500 characters")]
         public string? Description { get; set; }
 
         public IFormFile? ImageFile { get; set; }
