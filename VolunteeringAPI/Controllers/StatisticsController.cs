@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using VolunteeringApp.Data;
 
 namespace VolunteeringAPI.Controllers
 {
@@ -8,16 +10,18 @@ namespace VolunteeringAPI.Controllers
     public class StatisticsController : ControllerBase
     {
         private readonly ILogger<StatisticsController> _logger;
+        private readonly ApplicationDbContext _context;
 
-        public StatisticsController(ILogger<StatisticsController> logger)
+        public StatisticsController(ILogger<StatisticsController> logger, ApplicationDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         [HttpGet]
         [Route("users/total")]
-        public async Task<StatisticModel> GetTotalUsersStatistics() {
-            var statsValue = 1500;
+        public  StatisticModel GetTotalUsersStatistics() {
+            var statsValue = _context.Users.Count();
 
             return new StatisticModel
             {
@@ -31,9 +35,9 @@ namespace VolunteeringAPI.Controllers
 
         [HttpGet]
         [Route("events/total")]
-        public async Task<StatisticModel> GetTotalEventsStatistics()
+        public StatisticModel GetTotalEventsStatistics()
         {
-            var statsValue = 100;
+            var statsValue = _context.Events.Count();
 
             return new StatisticModel
             {
