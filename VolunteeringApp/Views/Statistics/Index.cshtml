@@ -1,0 +1,70 @@
+﻿@model IEnumerable<VolunteeringApp.ViewModels.Statistics.StatisticsViewModel>
+
+@{
+    ViewData["Title"] = "Statistics";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .display-4 {
+        font-size: 2.5rem;
+        color: var(--burgundy-color);
+    }
+
+    .text-muted {
+        font-size: 0.9rem;
+    }
+
+    .icon {
+        font-size: 4rem;
+        color: var(--burgundy-color);
+        margin-bottom: 1rem;
+    }
+</style>
+<div class="container">
+    <h1 class="text-center my-5 display-3">
+        Platform Statistics <i class="bi bi-graph-up icon"></i>
+    </h1>
+    <div class="row">
+        @foreach (var stat in Model)
+        {
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body text-center d-flex flex-column">
+                        <h5 class="card-title">@stat.Title</h5>
+                        <p class="card-text">
+                            @if (stat.Type == VolunteeringApp.ViewModels.Statistics.StatisticsViewModel.StatisticType.Count)
+                            {
+                                <span class="display-4">@stat.Value</span>
+                            }
+                            else if (stat.Type == VolunteeringApp.ViewModels.Statistics.StatisticsViewModel.StatisticType.Percentage)
+                            {
+                                <span class="display-4">@stat.Value %</span>
+                            }
+                            else if (stat.Type == VolunteeringApp.ViewModels.Statistics.StatisticsViewModel.StatisticType.Average)
+                            {
+                                <span class="display-4">@stat.Value</span>
+                            }
+                            else if (stat.Type == VolunteeringApp.ViewModels.Statistics.StatisticsViewModel.StatisticType.List)
+                            {
+                                <ul class="list-unstyled">
+                                    @foreach (var item in (List<string>)stat.Value)
+                                    {
+                                        <li>@item</li>
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <span class="display-4">@stat.Value</span>
+                            }
+                        </p>
+                        <p class="text-muted">@stat.Description</p>
+                    </div>
+                    <div class="card-footer text-muted text-center">
+                        Generated at: @stat.GeneratedAt.ToShortDateString()
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
