@@ -31,9 +31,9 @@
                     }
                 </div>
                 <!-- Organization Name and Username -->
-                <div class="text-center">
-                    <h5 class="card-title mb-0">@Html.DisplayFor(modelItem => item.Followed.OfficialName)</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">@@@Html.DisplayFor(modelItem => item.Followed.UserName)</h6>
+                <div class="text-center w-100">
+                    <h5 class="card-title mb-0 text-truncate" style="font-size: 1rem;">@Html.DisplayFor(modelItem => item.Followed.OfficialName)</h5>
+                    <h6 class="card-subtitle mb-2 text-muted text-truncate" style="font-size: 0.85rem;">@@@Html.DisplayFor(modelItem => item.Followed.UserName)</h6>
                 </div>
             </div>
             <!-- Card Body -->
@@ -57,7 +57,7 @@
                     <a class="btn btn-primary-custom w-100 mb-2" asp-controller="Chat" asp-action="CreateOrFetchPrivateChat" asp-route-id="@item.Followed.Id">
                         <i class="bi bi-send-fill"></i> Message
                     </a>
-                    <a class="btn btn-outline-primary-custom w-100" asp-action="Details" asp-route-id="@item.Followed.Id">
+                    <a class="btn btn-outline-primary-custom w-100" asp-controller="Organization" asp-action="Details" asp-route-id="@item.Followed.Id">
                         <i class="bi bi-info-circle"></i> Details
                     </a>
                 </div>
@@ -67,12 +67,32 @@
 </div>
 
 <style>
-    .card-title,
+    .card-title {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 1rem;
+    }
+
+        .card-title:hover {
+            white-space: normal;
+            text-overflow: clip;
+            display: -webkit-box;
+            -webkit-line-clamp: 2; /* Allows up to 2 lines */
+            -webkit-box-orient: vertical;
+        }
+
     .card-subtitle {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        font-size: 0.85rem;
     }
+
+        .card-subtitle:hover {
+            white-space: normal;
+            text-overflow: clip;
+        }
 
     .card-text {
         max-height: 4.5em; /* Adjust height for description truncation */

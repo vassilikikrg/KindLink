@@ -84,7 +84,9 @@
                                 <li><a class="dropdown-item" asp-controller="Events" asp-action="Index" asp-route-eventType="Past">Past Events</a></li>
                             </ul>
                         </li>
-
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Statistics" asp-action="Index">Platform Statistics</a>
+                        </li>
                     </ul>
                     <form class="d-flex me-5" role="search" asp-controller="Organization" asp-action="Index" method="get">
                         <input class="form-control me-2" type="search" placeholder="Search an organization" aria-label="Search" name="searchString">

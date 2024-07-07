@@ -75,6 +75,9 @@
                 }
             </dd>
         </dl>
+        <div>
+            <a class="btn btn-outline-primary-custom" asp-controller="Chat" asp-action="CreateOrFetchPrivateChat" asp-route-id="@Model?.Id"><i class ="bi bi-send-fill"></i> Message</a>
+        </div>
     </div>
     @if (ViewBag.isTheProfileOwner == true)
     {
